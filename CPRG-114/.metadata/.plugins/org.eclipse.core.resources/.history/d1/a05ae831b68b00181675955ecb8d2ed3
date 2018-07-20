@@ -1,0 +1,26 @@
+/**
+ * 
+ */
+package ca.sait.mystore.dao;
+
+import java.util.List;
+import java.util.UUID;
+
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+
+import ca.sait.dto.Role;
+import ca.sait.mystore.entity.RoleEntity;
+import ca.sait.mystore.entity.ShoppingCartItemEntity;
+
+/**
+ *
+ */
+public final class ShoppingCartDAO extends AbstractDAO<ShoppingCartEntity> {
+
+    protected ShoppingCartDAO(final EntityManager entityManager) {
+        super(entityManager, ShoppingCartEntity.class);
+    }
+    
+ 
+}

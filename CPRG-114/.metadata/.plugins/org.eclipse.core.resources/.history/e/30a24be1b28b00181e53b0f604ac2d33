@@ -1,0 +1,9 @@
+package ca.sait.mystore.entity;
+
+import javax.annotation.Generated;
+import javax.persistence.metamodel.StaticMetamodel;
+
+@Generated(value="Dali", date="2018-06-05T19:25:50.458-0600")
+@StaticMetamodel(ShoppingCartEntity.class)
+public class ShoppingCartEntity_ extends AbstractEntity_ {
+}

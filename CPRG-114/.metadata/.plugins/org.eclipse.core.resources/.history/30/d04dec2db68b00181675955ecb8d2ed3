@@ -1,0 +1,34 @@
+
+menu.home=Home
+menu.products=Products
+menu.aboutus=About Us
+menu.contactus=Contact Us
+menu.cart=Shopping Cart
+menu.register=Contact Us
+
+
+## About Us page
+aboutus.title = About Us
+
+
+## Contact Us page
+contactus.title = Contact Us
+
+
+## Home Page
+home.title = Home
+
+
+## Products Page
+products.title = Products List
+
+
+# Product Page
+product.title = Product
+
+
+# Register Page
+register.title = Register/Login
+
+# Shopping Cart
+cart.title = Your Shopping Cart

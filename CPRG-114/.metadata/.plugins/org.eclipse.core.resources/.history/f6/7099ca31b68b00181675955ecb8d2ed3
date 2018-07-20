@@ -1,0 +1,55 @@
+/**
+ * 
+ */
+package ca.sait.dto;
+
+import java.util.Objects;
+
+/**
+ * @author Hong Lu
+ * 
+ */
+public class CartItem {
+    
+    private final Product product;
+    private final int quantity;
+    private final double price;
+    
+    public CartItem(Product product, int quantity, double price) {
+        this.product = product;
+        this.quantity = quantity;
+        this.price = price;
+    }
+    
+    /**
+     * @return the product
+     */
+    public Product getProduct() {
+        return product;
+    }
+    /**
+     * @return the quantity
+     */
+    public int getQuantity() {
+        return quantity;
+    }
+    /**
+     * @return the price
+     */
+    public double getPrice() {
+        return price;
+    }
+
+    @Override
+    public int hashCode() {
+        
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        
+        if (Object == null) return false;
+        return Objects.equals(a, b)
+    }
+
+}

@@ -1,0 +1,12 @@
+/**
+ * 
+ */
+package ca.sait.jpa.service;
+
+/**
+ * @author Hong Lu
+ * 
+ */
+public class TestPersonService {
+
+}

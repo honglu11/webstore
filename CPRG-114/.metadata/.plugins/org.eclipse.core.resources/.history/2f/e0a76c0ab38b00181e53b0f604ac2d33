@@ -1,0 +1,84 @@
+/**
+ * 
+ */
+package ca.sait.dto;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * @author Hong Lu
+ * 
+ */
+public final class CartItem implements Serializable {
+    
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 4746006258024800256L;
+    private final Product product;
+    private int quantity;
+    private final double price;
+    
+    public CartItem(Product product, double price) {
+        this.product = product;
+        this.price = price;
+    }
+    
+    public CartItem(Product product, int quantity, double price) {
+        this.product = product;
+        this.quantity = quantity;
+        this.price = price;
+    }
+    
+    public CartItem addQuantity(final int quantity) {
+        this.quantity += quantity;
+        return this;
+    }
+       
+    /**
+     * @return the product
+     */
+    public Product getProduct() {
+        return product;
+    }
+    /**
+     * @return the quantity
+     */
+    public int getQuantity() {
+        return quantity;
+    }
+    /**
+     * @return the price
+     */
+    public double getPrice() {
+        return price;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(product, price);
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        
+        if (obj == null) return false;
+        if (obj.getClass() != CartItem.class) return false;
+        final CartItem other = (CartItem)obj;
+        
+        return Objects.equals(product, other.product) && Objects.equals(price, other.price);
+    }
+    
+    @Override // a way to duplicate the object
+    protected Object clone() throws CloneNotSupportedException {
+        throw new CloneNotSupportedException(); // a way to hacker the clone, not allow clone
+    }
+    
+    @Override
+    public String toString() {
+        
+        return getProduct().getName().concat(":".concat(product.getPrice().toString()));
+    }
+
+}

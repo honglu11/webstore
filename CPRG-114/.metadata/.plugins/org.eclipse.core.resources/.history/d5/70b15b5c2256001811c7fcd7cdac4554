@@ -1,0 +1,159 @@
+/**
+ * 
+ */
+package ca.sait.mystore.ejb;
+
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.ejb.EJB;
+import javax.ejb.Local;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.persistence.NoResultException;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import ca.sait.dto.Person;
+import ca.sait.dto.Product;
+import ca.sait.mystore.dao.DAOManagerFactory;
+import ca.sait.mystore.dao.PersonDAO;
+import ca.sait.mystore.dao.ProductDAO;
+import ca.sait.mystore.dao.RoleDAO;
+import ca.sait.mystore.entity.PersonEntity;
+import ca.sait.mystore.entity.ProductEntity;
+import ca.sait.services.NoEntityFoundException;
+import ca.sait.services.NonUniqueException;
+import ca.sait.services.PersonService;
+import ca.sait.services.ValidationException;
+
+/**
+ * @author Chris Elias
+ *
+ */
+@Stateless
+@Local(PersonService.class)
+public class PersonServiceImpl implements PersonService {
+
+    @EJB
+    private DAOManagerFactory daoFactory;
+
+    @Inject
+    private Validator validator;
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see ca.sait.services.PersonService#create(ca.sait.dto.Person)
+     */
+    @Override
+    public UUID persist(Person person) throws ValidationException, NonUniqueException {
+        final Set<ConstraintViolation<Person>> issues = validator.validate(person);
+
+        if (!issues.isEmpty()) {
+            final Map<String, String> inputErrors = new HashMap<>();
+            issues.forEach(issue -> {
+                final String attributeName = issue.getPropertyPath().toString();
+                final String errorMsg = issue.getMessage();
+                inputErrors.put(attributeName, errorMsg);
+            });
+
+            throw new ValidationException(inputErrors);
+        }
+
+        final PersonDAO personDAO = daoFactory.getPersonDAO();
+
+        PersonEntity entity;
+
+        if (person.getOid() == null) {
+            try {
+                personDAO.findByEmail(person.getEmail());
+                throw new NonUniqueException("email exists: " + person.getEmail());
+            } catch (final NoResultException ex) {
+                entity = new PersonEntity();
+            }
+
+        } else {
+            entity = personDAO.find(person.getOid());
+            try {
+                final PersonEntity entity2 = personDAO.findByEmail(person.getEmail());
+                if (entity2.getOid().equals(entity.getOid())) {
+
+                } else {
+                    throw new NonUniqueException("email exists: " + person.getEmail());
+                }
+            } catch (final NoResultException ex) {
+
+            }
+        }
+        
+        final RoleDAO roleDAO = daoFactory.getRoleDAO();
+        entity.setEmail(person.getEmail());
+        entity.setFirstName(person.getFirstName());
+        entity.setLastName(person.getLastName());
+        entity.setPassword(person.getPassword());
+        entity.setBirthdate(person.getBirthdate());
+  
+        entity.getRoles().add(roleDAO.findByName(person.getRoles().get(0)));
+
+        if (person.getOid() == null) {
+            personDAO.persist(entity);
+        }
+
+        return entity.getOid();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see ca.sait.services.PersonService#findByEmail(java.lang.String)
+     */
+    @Override
+    public Person findByEmail(String email) throws NoEntityFoundException {
+        try {
+
+            return daoFactory.getPersonDAO().findByEmailDTO(email);
+        } catch (final NoResultException ex) {
+            throw new NoEntityFoundException("No email: " + email);
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see ca.sait.services.PersonService#findById(java.util.UUID)
+     */
+    @Override
+    public Person findById(UUID id) throws NoEntityFoundException {
+        try {
+            return daoFactory.getPersonDAO().findDTO(id);
+        } catch (final NoResultException ex) {
+            throw new NoEntityFoundException("No oid: " + id);
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see ca.sait.services.PersonService#findAll()
+     */
+    @Override
+    public List<Person> findAll() {
+        return daoFactory.getPersonDAO().findAllDTO();
+    }
+
+    @Override
+    public void removePerson(UUID oid) throws NoEntityFoundException {
+        PersonEntity personEntity = daoFactory.getPersonDAO().find(oid);
+        if (personEntity == null)
+            throw new NoEntityFoundException("No oid: " + oid);
+
+        daoFactory.getPersonDAO().delete(personEntity);
+
+    }
+}

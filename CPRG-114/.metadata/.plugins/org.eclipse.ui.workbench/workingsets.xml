@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workingSetManager>
+<workingSet editPageId="org.eclipse.ui.resourceWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1525222486150_1" label="mystore-app" name="mystore-app">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/mystore-admin" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/mystore-ejb" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/mystore-ear" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/mystore-app" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/mystore-web" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/mystore-common" type="4"/>
+</workingSet>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1525220282524_0" label="Window Working Set" name="Aggregate for window 1525220282523"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1525392096025_2" label="Window Working Set" name="Aggregate for window 1525392096025"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1525960429028_3" label="Window Working Set" name="Aggregate for window 1525960429028"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1526601827762_4" label="Window Working Set" name="Aggregate for window 1526601827762"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1527205726066_5" label="Window Working Set" name="Aggregate for window 1527205726066"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1527639680631_6" label="Window Working Set" name="Aggregate for window 1527639680631"/>
+</workingSetManager>

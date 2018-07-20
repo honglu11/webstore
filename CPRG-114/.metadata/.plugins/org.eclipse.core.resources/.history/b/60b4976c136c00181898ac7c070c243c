@@ -1,0 +1,33 @@
+/**
+ * 
+ */
+package ca.sait.services;
+
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.persistence.NoResultException;
+
+import ca.sait.dto.CartItem;
+import ca.sait.dto.Person;
+import ca.sait.dto.ShoppingCart;
+import ca.sait.mystore.entity.ShoppingCartEntity;
+import ca.sait.mystore.entity.ShoppingCartItemEntity;
+
+/**
+ * @param <ShoppingCartItemEntity>
+ *
+ */
+public interface ShoppingCartService {
+
+   public void checkout(String email, Set<CartItem> cartItem) throws NoEntityFoundException;
+   
+   public CartItem findById(UUID id) throws NoEntityFoundException;
+
+   public List<CartItem> findAll();
+   
+   public ShoppingCart findCartById(UUID id) throws NoEntityFoundException;
+
+   public List<ShoppingCart> findAllCart();
+}

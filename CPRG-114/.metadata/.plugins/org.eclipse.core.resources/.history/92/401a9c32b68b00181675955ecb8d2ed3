@@ -1,0 +1,88 @@
+<%@ tag description="Main Page template" pageEncoding="UTF-8"%>
+<%@ attribute name="title" fragment="true" %>
+<%@ attribute name="extraJavascript" fragment="true" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<fmt:setLocale value="${pageContext.request.locale}" />
+<fmt:setBundle basename="lang" var="lang" />
+<c:set var="paramLocale"><%= ca.sait.mystore.web.Constants.PARAM_LOCALE %></c:set>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title><jsp:invoke fragment="title"/></title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+  <link href="<c:url value="/css/store.css" />" rel="stylesheet">        
+</head>
+
+<body>
+  <header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <a class="navbar-brand" href="#">CPRG MyStore</a>
+    <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+      <div class="collapse navbar-collapse" id="navbarsMyStore">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item ${navigation['HOME']}">
+            <a class="nav-link" href="<c:url value="/ui/home"/>"><fmt:message key="menu.home" bundle="${lang}" /></a>
+          </li>
+          <li class="nav-item ${navigation['PRODUCTS']}">
+            <a class="nav-link" href='<c:url value="/ui/products"/>' ><fmt:message key="menu.products" bundle="${lang}" /></a>
+          </li>
+          <li class="nav-item ${navigation['PRODUCT']}">
+            <a class="nav-link" href='<c:url value="/ui/product"/>' ><fmt:message key="menu.product" bundle="${lang}" /></a>
+          </li>
+          <li class="nav-item ${navigation['SHOPPINGCART']}" >
+            <a class="nav-link" href='<c:url value="/ui/shoppingcart"/>' ><fmt:message key="menu.cart" bundle="${lang}" /></a>
+          </li>
+          <li class="nav-item ${navigation['CONTACTUS']}">
+            <a class="nav-link" href='<c:url value="/ui/contactus"/>' ><fmt:message key="menu.contactus" bundle="${lang}" /></a>
+          </li>
+          <li class="nav-item ${navigation['ABOUTUS']}">
+            <a class="nav-link" href='<c:url value="/ui/aboutus"/>' ><fmt:message key="menu.aboutus" bundle="${lang}" /></a>
+          </li>
+        </ul>
+
+        <c:if test="${empty pageContext.request.userPrincipal}">
+        <a class="btn btn-outline-light" href="<c:url value="/ui/register"/>"><fmt:message key="menu.register" bundle="${lang}" /></a>
+        </c:if>
+        
+        <c:if test="${not empty pageContext.request.userPrincipal}">
+        <a class="btn btn-outline-light" href="<c:url value="/logout"/>"><fmt:message key="menu.logout" bundle="${lang}" /></a>
+        </c:if>
+        
+        &nbsp;&nbsp;
+      </div>
+      
+      <form method="post" id="langSelector">
+        <select name="${paramLocale}" onchange='document.getElementById("langSelector").submit();'>
+          <c:forEach items="${supportedLocales}" var="localeEntry">
+            <c:set var="selected" value="" />
+            <c:if test="${localeEntry.key == pageContext.request.locale}">
+              <c:set var="selected" value="selected='true'" />
+            </c:if>
+            <option value="${localeEntry.key}" ${selected}>${localeEntry.value.displayName}</option>
+          </c:forEach>
+        </select>
+      </form>
+      
+    </nav>
+  </header>
+  
+  <div class="container-fluid">
+      <jsp:doBody/>
+  </div>
+  
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>  
+  <jsp:invoke fragment="extraJavascript"/>
+  
+</body>
+</html>

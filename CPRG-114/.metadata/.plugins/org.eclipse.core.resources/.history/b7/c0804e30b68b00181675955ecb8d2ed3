@@ -1,0 +1,59 @@
+/**
+ * 
+ */
+package ca.sait.mystore.admin.mvc.model;
+
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.enterprise.inject.Model;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import ca.sait.dto.Product;
+import ca.sait.services.ProductService;
+
+/**
+ *
+ */
+@Model
+public class ProductsModel extends AbstractModel {
+    
+    @Inject private ProductService productService;
+    
+    public ProductsModel() {
+        logger().trace("ENTER ProductsModel()");
+        logger().trace("EXIT ProductsModel()");
+    }
+    
+    @PostConstruct
+    private void postConstruct() {
+        logger().trace("ENTER postConstruct()");
+        logger().trace("EXIT postConstruct()");
+    }
+
+    /* (non-Javadoc)
+     * @see ca.sait.mystore.web.mvc.model.AbstractView#process(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     */
+    @Override
+    protected String process(HttpServletRequest request, HttpServletResponse response) {
+        logger().trace("ENTER process(request,resposne)");
+        
+        try {
+            return "/WEB-INF/jsp/products.jsp";
+        } finally {
+            logger().trace("EXIT process(request,resposne)");
+        }
+    }
+    
+    @Override
+    public String getNavigationName() {
+        return "PRODUCTS";
+    }
+    
+    public List<Product> getAllProducts() {
+        return productService.findAll();
+    }
+
+}

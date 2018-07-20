@@ -1,0 +1,38 @@
+/**
+ * 
+ */
+package ca.sait.mystore.dao;
+
+import java.util.List;
+import java.util.UUID;
+
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+
+import ca.sait.dto.Product;
+import ca.sait.dto.Role;
+import ca.sait.mystore.entity.ProductEntity;
+import ca.sait.mystore.entity.RoleEntity;
+import ca.sait.mystore.entity.ShoppingCartEntity;
+import ca.sait.mystore.entity.ShoppingCartItemEntity;
+
+/**
+ *
+ */
+public final class ShoppingCartDAO extends AbstractDAO<ShoppingCartEntity> {
+
+    protected ShoppingCartDAO(final EntityManager entityManager) {
+        super(entityManager, ShoppingCartEntity.class);
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public List<Cart> findAllDTO() {
+        final TypedQuery<Product> query =  
+                getEntityManager().createNamedQuery(ProductEntity.QUERY_DTO_FIND_ALL, Product.class);
+
+        return query.getResultList();
+    }
+}

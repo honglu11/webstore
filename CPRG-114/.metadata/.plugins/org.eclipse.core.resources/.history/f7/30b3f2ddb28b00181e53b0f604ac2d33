@@ -1,0 +1,16 @@
+!SESSION 2018-06-24 10:33:22.333 -----------------------------------------------
+eclipse.buildId=4.7.3.M20180330-0640
+java.version=1.8.0_144
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.jee.product
+
+This is a continuation of log file C:\Users\honglu\opt\CPRG-114\.metadata\.bak_0.log
+Created Time: 2018-06-24 10:52:00.878
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842760 2018-06-24 10:52:00.879
+!MESSAGE Server Starting
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842769 2018-06-24 10:52:10.918
+!MESSAGE Server Startup Succeeded

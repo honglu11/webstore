@@ -1,0 +1,106 @@
+package ca.sait.mystore.entity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+
+@Entity(name="Product")
+@Table(name="product")
+@NamedQueries({
+    @NamedQuery(name=ProductEntity.QUERY_DTO_FIND_BY_OID, query="SELECT " + ProductEntity.CONSTRUCT_PARAM + " FROM Product p WHERE p.oid = :oid"),
+    @NamedQuery(name=ProductEntity.QUERY_DTO_FIND_BY_NAME, query="SELECT " + ProductEntity.CONSTRUCT_PARAM + " FROM Product p WHERE p.name = :name"),
+    @NamedQuery(name=ProductEntity.QUERY_DTO_FIND_ALL, query="SELECT " + ProductEntity.CONSTRUCT_PARAM + " FROM Product p"),
+    
+    @NamedQuery(name=ProductEntity.QUERY_FIND_BY_OID, query="SELECT p FROM Product p WHERE p.oid = :oid"),
+    @NamedQuery(name=ProductEntity.QUERY_FIND_BY_NAME, query="SELECT p FROM Product p WHERE p.name = :name"),    
+    @NamedQuery(name=ProductEntity.QUERY_FIND_ALL, query="SELECT p FROM Product p"),
+})
+public class ProductEntity extends AbstractEntity {
+
+        public static final String QUERY_DTO_FIND_BY_OID = "ProductDTO.findByOid";
+        public static final String QUERY_DTO_FIND_BY_NAME = "ProductDTO.findByName";
+        public static final String QUERY_DTO_FIND_ALL = "ProductDTO.findAll";
+
+        public static final String QUERY_FIND_BY_OID = "ProductEntity.findByOid";
+        public static final String QUERY_FIND_BY_NAME = "ProductEntity.findByName";
+        public static final String QUERY_FIND_ALL = "ProductEntity.findAll";
+
+        protected static final String CONSTRUCT_PARAM =
+                "new ca.sait.dto.Product( " +
+                "   p.oid," +
+                "   p.name," +
+                "   p.description," +
+                "   p.price," +
+                "   p.inventoryQuantity" +
+                ")";    
+        
+    @Column(name="product_name", length=35, nullable=false)
+    private String name;
+    
+    @Column(name="description", length=1024)
+    private String description;
+    
+    @Column(name="price", length=10, precision=2)
+    private Double price;
+
+    @Column(name="inventory_quantity", length=10, nullable=true)
+    private Integer inventoryQuantity;
+    
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * @return the price
+     */
+    public Double getPrice() {
+        return price;
+    }
+
+    /**
+     * @param price the price to set
+     */
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    /**
+     * @return the inventoryQuantity
+     */
+    public Integer getInventoryQuantity() {
+        return inventoryQuantity;
+    }
+
+    /**
+     * @param inventoryQuantity the inventoryQuantity to set
+     */
+    public void setInventoryQuantity(Integer inventoryQuantity) {
+        this.inventoryQuantity = inventoryQuantity;
+    }
+}

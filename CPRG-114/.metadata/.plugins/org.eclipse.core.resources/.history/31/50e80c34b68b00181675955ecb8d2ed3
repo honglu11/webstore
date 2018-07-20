@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee webapp_4_0.xsd"
+    version="4.0">
+    <display-name>Admin</display-name>
+    <context-param>
+        <description>The locales supported by the application
+        </description>
+        <param-name>supported-locales</param-name>
+        <param-value>en-US|fr-CA</param-value>
+    </context-param>
+
+    <security-constraint>
+        <display-name>MyStore-ShoppingCart</display-name>
+        <web-resource-collection>
+            <web-resource-name>Admin-Pages</web-resource-name>
+            <url-pattern>/ui/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description>Admin Roles</description>
+            <role-name>admin</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <transport-guarantee>NONE</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+    
+    <login-config>
+        <auth-method>FORM</auth-method>
+         <realm-name>RealmUsersRoles</realm-name>
+        <form-login-config>
+            <form-login-page>/login.jsp</form-login-page>
+            <form-error-page>/login-error.jsp</form-error-page>
+        </form-login-config>
+    </login-config>
+    <security-role>
+        <role-name>Admin</role-name>
+    </security-role>
+</web-app>

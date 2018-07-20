@@ -1,0 +1,130 @@
+/**
+ * 
+ */
+package ca.sait.mystore.admin.mvc.model;
+
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.enterprise.inject.Model;
+import javax.inject.Inject;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import ca.sait.dto.CartItem;
+import ca.sait.dto.CartStatus;
+import ca.sait.dto.ShoppingCart;
+import ca.sait.services.NoEntityFoundException;
+import ca.sait.services.ShoppingCartService;
+
+/**
+ *
+ */
+@Model
+public class ShoppingCartModel extends AbstractModel {
+    private final Map<CartItem, CartItem> items = new LinkedHashMap<>(); 
+    
+    @Inject private ShoppingCartService shoppingCartService;  
+    private ShoppingCart cart;
+    private List<CartItem> itemsByCart;
+
+    /* (non-Javadoc)
+     * @see ca.sait.mystore.web.mvc.model.AbstractView#process(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     */
+    @Override
+    protected String process(HttpServletRequest request, HttpServletResponse response) {
+        logger().trace("ENTER process(request,resposne)");
+        
+        try {
+            final Optional<String> optAction = Optional.ofNullable(request.getParameter("action"));
+            final String action = optAction.orElse("").toUpperCase();
+            
+            switch(action) {
+            case "COMPLETE": {
+                complete(request);
+                break;
+            }
+            case "CANCEL": {
+                
+                break;
+            }
+          }
+            
+            
+            
+            return "/WEB-INF/jsp/carts.jsp";
+        } finally {
+            logger().trace("EXIT process(request,resposne)");
+        }
+    }
+    
+    public void complete(HttpServletRequest request) throws ServletException {
+      final String oid = request.getParameter("oid");
+      
+      cart.setStatus(CartStatus.COMPLETED);
+      cart.setShippedDate(new Date());
+      setSuccessMessage("You have Complete the order, will ship on " + cart.getShippedDate());
+  
+        
+    }
+
+    @Override
+    public String getNavigationName() {
+        return "CARTS";
+    }
+    
+    public List<CartItem> getAllItems() {
+        return shoppingCartService.findAll();
+    }
+    
+    public List<ShoppingCart> getAllCarts() {
+        return shoppingCartService.findAllCart();
+    }   
+    
+    
+    public ShoppingCart getCart() {
+        if (getOid() != null && cart ==null) {                   
+            try {
+               cart =  shoppingCartService.findCartById(getOid());
+            } catch (NoEntityFoundException ex) {
+               setErrorMessage("Entity not found: " + getOid());
+            }
+        }
+        
+        return cart;  
+        
+    }
+    
+    public List<CartItem> getItemsByCart() {
+        logger().trace("ENTER getItemsByCart()");
+        logger().debug("getCart()", getCart());
+        if (getCart() != null) {                   
+            try {
+               itemsByCart =  shoppingCartService.findByCart(getCart());
+               logger().debug("itemsByCart {}", itemsByCart);
+            } catch (NoEntityFoundException ex) {
+               setErrorMessage("Entity not found: " + getCart());
+            }
+        } else {
+            return null;
+        }
+        logger().debug("getCart()", getCart().getOid());
+        logger().trace("EXIT getItemsByCart()");
+        return itemsByCart;
+
+    }
+
+    /**
+     * @return the items
+     */
+    public Set<CartItem> getItems() {
+        return items.keySet();
+    }
+    
+}

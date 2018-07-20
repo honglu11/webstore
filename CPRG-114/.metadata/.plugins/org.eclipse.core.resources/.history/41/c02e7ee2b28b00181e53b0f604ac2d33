@@ -1,0 +1,105 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="t" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<fmt:setLocale value="${pageContext.request.locale}" />
+<fmt:setBundle basename="lang" var="lang" />
+
+<t:template>
+
+    <jsp:attribute name="title">My Store</jsp:attribute>
+    <jsp:attribute name="extraJavascript" />
+    
+    <jsp:body>
+    <h1><fmt:message key="menu.register" bundle="${lang}" /></h1>    
+        
+    <div class="row">
+      <div class="col-sm-5">
+        <div class="card">
+          <div class="card-header">Login</div>
+          <div class="card-body">
+          
+            <c:if test="${not empty registerModel.successMessage}">
+            <div class="alert alert-success" role="alert">
+              ${registerModel.successMessage}
+            </div>
+            </c:if>
+            
+            <c:if test="${not empty registerModel.errorMessage}">
+            <div class="alert alert-danger" role="alert">
+              ${registerModel.errorMessage}
+            </div>
+            </c:if>
+        
+            <c:if test="${empty pageContext.request.userPrincipal}">
+            <form method="POST" action="<c:url value="/ui/register" />" >
+              <input type="hidden" name="action" value="login">
+            
+              <div class="form-group">
+                <label for="logEmail">Email</label>
+                <input id="loginEmail" name="email" value="" type="text" class="form-control">
+              </div>
+                  
+              <div class="form-group">
+                <label for="loginPassword">Password</label>
+                <input id="loingPassword" name="password" value="" type="password" class="form-control">
+              </div>
+                
+              <span class="float-right pt-1">
+                <button type="submit" class="btn btn-primary">Login</button>
+              </span>
+            </form>
+            </c:if>
+          </div>
+          <script type="text/javascript">
+            document.getElementById("loginEmail").focus();
+          </script>
+        </div>
+      </div>
+      
+      <div class="col-sm-5">
+        <div class="card">
+          <div class="card-header">Register</div>
+          <div class="card-body">
+            <c:if test="${empty pageContext.request.userPrincipal}">
+            <form method="POST" action="<c:url value="/ui/register" />" >
+              <input type="hidden" name="action" value="register">
+              <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input id="firstName" name="firstName" value="${personsModel.person.firstName}" type="text" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input id="lastName" name="lastName" value="${personsModel.person.lastName}" type="text" class="form-control">
+              </div>
+                  
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input id="email" name="email" value="${personsModel.person.email}" type="text" class="form-control">
+              </div>
+                  
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input id="password" name="password" value="" type="password" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input id="confirmPassword" name="confirmPassword" value="" type="password" class="form-control">
+              </div>
+
+              <span class="float-right pt-1">
+                <button type="submit" class="btn btn-primary">Register</button>
+              </span>
+              
+            </form>
+            </c:if>
+          </div>
+        </div>
+      </div>
+    </div>    
+    </jsp:body>
+</t:template>
+

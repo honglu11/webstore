@@ -1,0 +1,55 @@
+/**
+ * 
+ */
+package ca.sait.mystore.dao;
+
+import java.util.List;
+import java.util.UUID;
+
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+
+import ca.sait.dto.Product;
+import ca.sait.dto.Role;
+import ca.sait.dto.ShoppingCart;
+import ca.sait.mystore.entity.ProductEntity;
+import ca.sait.mystore.entity.RoleEntity;
+import ca.sait.mystore.entity.ShoppingCartEntity;
+import ca.sait.mystore.entity.ShoppingCartItemEntity;
+
+/**
+ *
+ */
+public final class ShoppingCartDAO extends AbstractDAO<ShoppingCartEntity> {
+
+    protected ShoppingCartDAO(final EntityManager entityManager) {
+        super(entityManager, ShoppingCartEntity.class);
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public List<ShoppingCart> findAllDTO() {
+        final TypedQuery<ShoppingCart> query =  
+                getEntityManager().createNamedQuery(ShoppingCartEntity.QUERY_DTO_FIND_ALL, ShoppingCart.class);
+
+        return query.getResultList();
+    }
+    
+    public ShoppingCart findDTO(UUID id) {
+        final TypedQuery<ShoppingCart> query = 
+                getEntityManager().createNamedQuery(ShoppingCartEntity.QUERY_DTO_FIND_BY_OID, ShoppingCart.class);
+        query.setParameter("oid", id);
+        
+        return query.getSingleResult();
+    } 
+    
+    public ShoppingCartEntity findEntityById(UUID id) {
+        final TypedQuery<ShoppingCartEntity> query = 
+                getEntityManager().createNamedQuery(ShoppingCartEntity.QUERY_FIND_BY_OID, ShoppingCartEntity.class);
+        query.setParameter("oid", id);
+        
+        return query.getSingleResult();
+    } 
+}

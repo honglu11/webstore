@@ -1,0 +1,55 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="t" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<fmt:setLocale value="${pageContext.request.locale}" />
+<fmt:setBundle basename="lang" var="lang" />
+
+<t:template>
+
+    <jsp:attribute name="title">My Store</jsp:attribute>
+    <jsp:attribute name="extraJavascript" />
+    
+    <jsp:body>
+        <h1><fmt:message key="menu.cart" bundle="${lang}" /></h1>      
+         <div class="row">
+          <div class="col-sm-5">
+          
+            <div class="card">
+              <div class="card-header">Shopping Cart Items</div>
+              <div class="card-body">
+                <table id="itemlist" class="table table-striped table-bordered" style="width:100%">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th width="60%">Description</th>
+                      <th>Price</th>
+                      <th>Qty</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                   <c:forEach var="item" items="${Cart.items}">
+                   <tr>
+                       <td>${item.product.name}</td>
+                       <td>${item.product.description}</td>
+                       <td>${item.price}</td>
+                       <td>${item.quantity}</td>
+                   </tr>                   
+                   </c:forEach>                  
+                  </tbody>
+                </table>
+                  
+              </div> 
+            </div>
+           </div> 
+          </div>
+          
+          <form id="addQtyform" method="post">
+            <span class="float-right pt-1">
+               <button type="submit" name="checkout" value="checkout" class="btn btn-primary">Check Out</button>
+            </span>
+          </form>
+               
+    </jsp:body>
+</t:template>

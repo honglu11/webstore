@@ -1,0 +1,33 @@
+/**
+ * 
+ */
+package ca.sait.mystore.ejb;
+
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.jms.JMSContext;
+
+import ca.sait.event.SubmitCartEvent;
+import ca.sait.mystore.HasLogger;
+
+/**
+ * @author Hong Lu
+ * 
+ */
+@Stateless
+@LocalBean
+public class HandleCartEvents implements HasLogger {
+    
+    //@Inject private JMSContext context; // old way can use jms to send out Asyn
+    
+    public void handleSubmitCart(SubmitCartEvent event) {
+        logger().trace("ENTER handleSubmitCart(event)");
+        logger().debug("Cart OID: {}", event.getCartOid().toString());
+        
+        //context.createProducer().send(null, event.getCartOid().toString());
+        
+        logger().debug("EXIT handleSubmitCart(event)");
+    }
+
+}

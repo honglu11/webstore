@@ -1,0 +1,57 @@
+/**
+ * 
+ */
+package ca.sait.util;
+
+import java.util.Collection;
+import java.util.stream.Collectors;
+
+/**
+ *
+ */
+public class CollectionUtils {
+
+    /**
+     * 
+     * @param collection
+     * @param o
+     * @return
+     */
+    // must static
+    public static boolean contains(Collection<?> collection, Object o) {
+        if (collection == null)
+            return false;
+        
+        return collection.contains(o);
+     }
+    
+    /**
+     * 
+     * @param collection
+     * @param seperator
+     * @return
+     */
+    public static String join(Collection<?> collection, String seperator) {
+        if (collection == null)
+            return "";
+        
+        return collection.stream()
+            .map(i -> i.toString())
+            .collect(Collectors.joining(seperator));
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

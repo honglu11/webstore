@@ -1,0 +1,98 @@
+/**
+ * 
+ */
+package ca.sait.mystore.dao;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+
+import ca.sait.dto.Person;
+import ca.sait.mystore.entity.PersonEntity;
+
+/**
+ *
+ */
+public final class PersonDAO extends AbstractDAO<PersonEntity> {
+
+    protected PersonDAO(final EntityManager entityManager) {
+        super(entityManager, PersonEntity.class);
+    }
+
+    /**
+     * 
+     * @param id
+     * @return
+     */
+    public Person findDTO(UUID id) {
+        final TypedQuery<Person> query = getEntityManager().createNamedQuery(PersonEntity.QUERY_DTO_FIND_BY_OID,
+                Person.class);
+        query.setParameter("oid", id);
+
+        return query.getSingleResult();
+    }
+
+    /**
+     * 
+     * @param email
+     * @return
+     */
+    public PersonEntity findByEmail(String email) {
+        final TypedQuery<PersonEntity> query = getEntityManager().createNamedQuery(PersonEntity.QUERY_FIND_BY_EMAIL,
+                PersonEntity.class);
+        query.setParameter("email", email);
+
+        return query.getSingleResult();
+    }
+
+    /**
+     * 
+     * @param email
+     * @return
+     */
+    public Person findByEmailDTO(String email) {
+        final TypedQuery<Person> query = getEntityManager().createNamedQuery(PersonEntity.QUERY_DTO_FIND_BY_EMAIL,
+                Person.class);
+        query.setParameter("email", email);
+
+        return query.getSingleResult();
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public List<Person> findAllDTO() {
+        final TypedQuery<PersonEntity> query = getEntityManager().createNamedQuery(PersonEntity.QUERY_FIND_ALL,
+                PersonEntity.class);
+
+        final List<PersonEntity> results = query.getResultList();
+        final List<Person> people = new ArrayList<>(results.size());
+
+        results.forEach(entity -> {
+            final Person dto = new Person(entity.getOid(), entity.getFirstName(), entity.getLastName(),
+                    entity.getEmail(), entity.getPassword(), entity.getBirthdate());
+        entity.getRoles().forEach(role -> {
+            dto.getRoles().add(role.getRoleName());
+        });
+            people.add(dto);
+        });
+
+        return people;
+
+    }
+    
+    private Person convert(PersonEntity entity) {
+        final Person dto = new Person(entity.getOid(), entity.getFirstName(), entity.getLastName(),
+                    entity.getEmail(), entity.getPassword(), entity.getBirthdate());
+        
+        entity.getRoles().forEach(role -> {
+            dto.getRoles().add(role.getRoleName());
+        });
+        
+        return dto;
+    }
+}

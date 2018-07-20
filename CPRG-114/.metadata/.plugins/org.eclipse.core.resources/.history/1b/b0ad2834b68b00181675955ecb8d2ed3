@@ -1,0 +1,84 @@
+/**
+ * 
+ */
+package ca.sait.mystore.web.mvc.session;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import ca.sait.dto.CartItem;
+import ca.sait.dto.Product;
+import ca.sait.services.NoEntityFoundException;
+import ca.sait.services.ProductService;
+import ca.sait.util.HasLogger;
+
+/**
+ * @author Hong Lu
+ * 
+ */
+@SessionScoped
+@Named("Cart") // CartSession final cannot extends
+public class CartSession implements Serializable, HasLogger {
+    
+    @Inject
+    private ProductService productService;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -2189052512208952356L;
+    private final Map<CartItem, CartItem> items = new LinkedHashMap<>(); // reorder
+    //private final Map<String, CartItem> items = new LinkedHashMap<>(); // reorder
+
+    /**
+     * @return the items
+     */
+    public Set<CartItem> getItems() {
+        return items.keySet();
+    }
+    
+    public void addItem(String productOid, int qty) throws NoEntityFoundException {
+        
+        logger().info("ENTER addItem");
+        
+        final Product product = productService.findById(UUID.fromString(productOid));
+        final CartItem item = new CartItem(product, product.getPrice());
+        
+        // very power techique for the map use key in this way, thread safe
+        items.computeIfAbsent(item, k -> item );
+        items.computeIfPresent(item, (key, value) -> value.addQuantity(qty));
+        
+//        final String cartkey = product.getName() + ":" + product.getPrice().toString(); // cost more memory
+//        items.computeIfAbsent(cartkey, k -> item );
+//        items.computeIfPresent(cartkey, (key, value) -> value.addQuantity(qty));
+        
+        logger().info("Cart Item {}", item.getQuantity());
+        
+        logger().info("EXIT addItem");
+    }
+    
+    public Product getIndividualProduct(String productOid) throws NoEntityFoundException {
+        return productService.findById(UUID.fromString(productOid));
+    }
+    
+    public void checkout() {        
+        items.clear();
+    }
+    
+    public void persist() {        
+        
+    }
+    
+    
+    
+}
+

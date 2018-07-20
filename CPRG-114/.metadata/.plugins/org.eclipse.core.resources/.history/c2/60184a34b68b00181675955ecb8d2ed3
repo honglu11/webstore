@@ -1,0 +1,14 @@
+/**
+ * 
+ */
+package ca.sait.jpa.service;
+
+import ca.sait.jpa.AbstractJPATest;
+
+/**
+ * @author Hong Lu
+ * 
+ */
+public class TestPersonService extends AbstractJPATest {
+
+}

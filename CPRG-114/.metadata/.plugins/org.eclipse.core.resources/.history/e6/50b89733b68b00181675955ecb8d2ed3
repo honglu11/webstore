@@ -1,0 +1,87 @@
+/**
+ * 
+ */
+package ca.sait.mystore.dao;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import javax.ejb.EJB;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+
+import ca.sait.dto.Person;
+import ca.sait.dto.Product;
+import ca.sait.dto.Role;
+import ca.sait.dto.ShoppingCart;
+import ca.sait.mystore.entity.PersonEntity;
+import ca.sait.mystore.entity.ProductEntity;
+import ca.sait.mystore.entity.RoleEntity;
+import ca.sait.mystore.entity.ShoppingCartEntity;
+import ca.sait.mystore.entity.ShoppingCartItemEntity;
+import ca.sait.util.HasLogger;
+
+/**
+ *
+ */
+public final class ShoppingCartDAO extends AbstractDAO<ShoppingCartEntity> implements HasLogger  {
+   
+    @EJB
+    private DAOManagerFactory daoManagerFactory;
+    
+    protected ShoppingCartDAO(final EntityManager entityManager) {
+        super(entityManager, ShoppingCartEntity.class);
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public List<ShoppingCart> findAllDTO() {
+        List<ShoppingCartEntity> results = findAll();
+        final Stream<ShoppingCartEntity> stream;
+        if (results.size() > 100_000)
+            stream = results.parallelStream(); 
+        else
+            stream = results.stream(); 
+        
+        return results.stream().map(this::convert).collect(Collectors.toList());
+        
+        
+    }
+    
+    public ShoppingCart findDTO(UUID id) {
+       
+        return convert(find(id));
+    } 
+    
+    public ShoppingCartEntity findEntityById(UUID id) {
+        final TypedQuery<ShoppingCartEntity> query = 
+                getEntityManager().createNamedQuery(ShoppingCartEntity.QUERY_FIND_BY_OID, ShoppingCartEntity.class);
+        query.setParameter("oid", id);
+        
+        return query.getSingleResult();
+    } 
+    
+    public List<ShoppingCartEntity> findAll() {
+        final TypedQuery<ShoppingCartEntity> query =  
+                getEntityManager().createNamedQuery(ShoppingCartEntity.QUERY_FIND_ALL, ShoppingCartEntity.class);
+
+        return query.getResultList();
+        
+    }
+    
+    public ShoppingCart convert(ShoppingCartEntity entity) {
+        logger().debug("ShoppingCartEntity {}", entity.getCustomer().getOid());
+        
+        //DAOManagerFactory daoManagerFactory = new DAOManagerFactory();
+        logger().debug("daoManagerFactory {}", daoManagerFactory.getPersonDAO());
+        Person customer = daoManagerFactory.getPersonDAO().findDTO(entity.getCustomer().getOid());
+        logger().debug("Person {}", customer.getOid());
+        final ShoppingCart dto = new ShoppingCart(entity.getOid(), customer, entity.getShippedDate(),entity.getStatus());
+
+        return dto;
+    }
+}

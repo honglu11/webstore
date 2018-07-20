@@ -1,0 +1,123 @@
+package ca.sait.dto;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Objects;
+import java.util.UUID;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ * 
+ *
+ */
+@XmlRootElement(name="product")
+public final class Product implements Serializable {
+
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -2913915544137604708L;
+
+    @XmlAttribute(name="oid")
+    private final UUID oid;
+    
+    @NotNull(message="Name is required")
+    @Size(min=4, max=35, message = "Name must be between 4 to 35 chars in length")
+    @XmlElement(name="name", required=true)
+    private final String name;
+    
+    @XmlElement(name="description", required=true)
+    @Size(max=1024, message="Description can not exceed 1024 chars")
+    private final String description;
+    
+    @XmlElement(name="price", required=true)
+    private final Double price;
+    
+    @XmlElement(name="inventoryQuantity", required=true)
+    private Integer inventoryQuantity;
+    
+    public Product() {
+        this(null, null, null, null, null);
+    }
+    
+    public Product(UUID oid, String name, String description, 
+            Double price, Integer inventoryQuantity ) {
+        this.oid = oid;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.inventoryQuantity = inventoryQuantity;
+    }
+    
+    /**
+     * @return the oid
+     */
+    public UUID getOid() {
+        return oid;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @return the price
+     */
+    public Double getPrice() {
+        return price;
+    }
+
+    /**
+     * @return the inventoryQuantity
+     */
+    public Integer getInventoryQuantity() {
+        return inventoryQuantity;
+    }
+    
+    
+    /**
+     * Set the inventoryQuantity.
+     */
+    public void setInventoryQuantity(int inventoryQuantity) {
+        this.inventoryQuantity = inventoryQuantity;
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(oid);
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        
+        if (obj == null) return false;
+        if (obj == this) return true;
+        if (obj.getClass() != Product.class) return false;
+        final Product other = (Product)obj;
+        
+        return Objects.equals(oid, other.oid);
+    }
+
+
+    @Override // a way to duplicate the object
+    protected Object clone() throws CloneNotSupportedException {
+        throw new CloneNotSupportedException(); // a way to hacker the clone, not allow clone
+    }
+
+}

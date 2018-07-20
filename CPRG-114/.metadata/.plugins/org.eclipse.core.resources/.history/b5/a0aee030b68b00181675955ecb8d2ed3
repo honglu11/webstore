@@ -1,0 +1,140 @@
+/**
+ * 
+ */
+package ca.sait.mystore.web.mvc.model;
+
+import java.sql.Date;
+import java.util.Optional;
+
+import javax.enterprise.inject.Model;
+import javax.inject.Inject;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import ca.sait.dto.Person;
+import ca.sait.dto.Role;
+import ca.sait.services.NonUniqueException;
+import ca.sait.services.PersonService;
+import ca.sait.services.RoleService;
+import ca.sait.services.ValidationException;
+
+/**
+ *
+ */
+@Model
+public class RegisterModel extends AbstractModel {
+
+    @Inject
+    private PersonService personService;
+    @Inject
+    private RoleService roleService;
+    private Person person;
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see ca.sait.mystore.web.mvc.model.AbstractView#process(javax.servlet.http.
+     * HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     */
+    @Override
+    protected String process(HttpServletRequest request, HttpServletResponse response) {
+        logger().trace("ENTER process(request,resposne)");
+
+        try {
+            final Optional<String> optAction = Optional.ofNullable(request.getParameter("action"));
+            final String action = optAction.orElse("").toUpperCase();
+
+            switch (action) {
+            case "LOGIN": {
+                final String email = request.getParameter("email");
+                final String password = request.getParameter("password");
+
+                try {
+                    request.login(email, password);
+                    setSuccessMessage("You have logged In");
+
+                    logger().info("Logged in as : {}", request.getUserPrincipal().getName());
+                } catch (final ServletException ex) {
+                    setErrorMessage("Invalid Username/password");
+                }
+
+                break;
+            }
+            case "REGISTER": {
+
+                break;
+            }
+            }
+
+            return "/WEB-INF/jsp/register.jsp";
+        } finally {
+            logger().trace("EXIT process(request,resposne)");
+        }
+    }
+
+    private void register(HttpServletRequest request) {
+        logger().trace("ENTER register(request,resposne)");
+        String firstName = "";
+        String lastName = "";
+        String email = "";
+
+        String password = "";
+        String confirmPassword = "";
+
+        if (request.getParameter("firstName") != null)
+            firstName = request.getParameter("firstName");
+        if (request.getParameter("lastName") != null)
+            lastName = request.getParameter("lastName");
+        if (request.getParameter("email") != null)
+            email = request.getParameter("email");
+
+        if (request.getParameter("password") != null)
+            password = request.getParameter("password");
+        if (request.getParameter("confirmPassword") != null) {
+            confirmPassword = request.getParameter("confirmPassword");
+        }
+
+        if (request.getParameter("password") != null && request.getParameter("confirmPassword") != null) {
+            if (confirmPassword != password) {
+                setErrorMessage("confirmPassword is not the same as the password");
+            }
+        }
+
+        try {
+            Date birthdate = Date.valueOf("2000-11-11");
+
+            person = new Person(getOid(), firstName, lastName, email, password, birthdate);
+            final Role role = roleService.findByName("guest");
+
+            for (String roleName : person.getRoles()) {
+                logger().debug("roleName" + roleName);
+            }
+            person.getRoles().add(role.getName());
+
+            for (String roleName : person.getRoles()) {
+                logger().debug("roleName" + roleName);
+            }
+            if (getErrors().isEmpty()) {
+                setOid(personService.persist(person));
+                setSuccessMessage("Updated");
+            } else {
+                setErrorMessage("Data Error Issues");
+            }
+
+        } catch (final ValidationException ex) {
+            ex.getValidationErrors().forEach(getErrors()::put);
+            setErrorMessage(ex.getMessage());
+        } catch (final NonUniqueException ex) {
+            setErrorMessage(ex.getMessage());
+        }
+
+        logger().trace("EXIT register(request,resposne)");
+    }
+
+    @Override
+    public String getNavigationName() {
+        return "REGISTER";
+    }
+
+}

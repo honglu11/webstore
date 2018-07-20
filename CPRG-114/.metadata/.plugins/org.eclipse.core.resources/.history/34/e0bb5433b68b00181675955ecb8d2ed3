@@ -1,0 +1,12 @@
+/**
+ * 
+ */
+package ca.sait.services;
+
+/**
+ * @author Hong Lu
+ * 
+ */
+public class ValidationException {
+
+}

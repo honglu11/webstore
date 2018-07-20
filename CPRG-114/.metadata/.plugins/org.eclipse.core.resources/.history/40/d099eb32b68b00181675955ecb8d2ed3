@@ -1,0 +1,167 @@
+/**
+ * 
+ */
+package ca.sait.jpa.entity;
+
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.UUID;
+
+import org.junit.jupiter.api.Test;
+
+import ca.sait.dto.Person;
+import ca.sait.jpa.AbstractJPATest;
+import ca.sait.mystore.dao.DAOManagerFactory;
+import ca.sait.mystore.dao.PersonDAO;
+import ca.sait.mystore.entity.PersonEntity;
+import ca.sait.mystore.entity.RoleEntity;
+
+/**
+ * @author celias
+ *
+ */
+public class CreateAdmin extends AbstractJPATest {
+
+    @Override
+    protected Class<?>[] entities() {
+        return new Class<?>[] {
+            PersonEntity.class,
+            RoleEntity.class
+        };
+    }
+
+    @Test
+    public void create() {
+        
+        final UUID uuid = jpa(entityManager -> {
+            final PersonEntity entity = new PersonEntity();
+            entity.setFirstName("Admin");
+            entity.setLastName("Admin");
+            entity.setPassword("admin");
+            entity.setEmail("admin");
+            entity.setBirthdate(Date.valueOf(LocalDate.now()));
+            
+            final DAOManagerFactory daoFactory = new DAOManagerFactory(entityManager);
+            final PersonDAO dao = daoFactory.getPersonDAO();
+            final RoleEntity adminRole = daoFactory.getRoleDAO().findByName("admin");
+            
+            entity.getRoles().add(adminRole);
+            
+            return dao.persist(entity);
+        });
+        
+        final Person person = jpa(entityManager -> {
+            final DAOManagerFactory daoFactory = new DAOManagerFactory(entityManager);
+            final PersonDAO dao = daoFactory.getPersonDAO();
+            return dao.findDTO(uuid);
+        });
+        
+        logger().info("person: {}", person.getFirstName());
+    }
+    
+    @Test
+    public void createGuest() {
+        
+        final UUID uuid = jpa(entityManager -> {
+            final PersonEntity entity = new PersonEntity();
+            entity.setFirstName("Guest2");
+            entity.setLastName("Guest2");
+            entity.setPassword("guest");
+            entity.setEmail("guest2");
+            entity.setBirthdate(Date.valueOf(LocalDate.now()));
+            
+            final DAOManagerFactory daoFactory = new DAOManagerFactory(entityManager);
+            final PersonDAO dao = daoFactory.getPersonDAO();
+            final RoleEntity guestRole = daoFactory.getRoleDAO().findByName("guest");
+            
+            entity.getRoles().add(guestRole);
+            
+            return dao.persist(entity);
+        });
+        
+        final Person person = jpa(entityManager -> {
+            final DAOManagerFactory daoFactory = new DAOManagerFactory(entityManager);
+            final PersonDAO dao = daoFactory.getPersonDAO();
+            return dao.findDTO(uuid);
+        });
+        
+        logger().info("person: {}", person.getFirstName());
+    }
+    
+    @Test
+    public void createMore() {
+        
+        final UUID uuid = jpa(entityManager -> {
+            final PersonEntity entity = new PersonEntity();
+            entity.setFirstName("Wendy");
+            entity.setLastName("Wang");
+            entity.setPassword("wang");
+            entity.setEmail("Wendy.wang@zhaolidance.com");
+            entity.setBirthdate(Date.valueOf(LocalDate.now()));
+            
+            final DAOManagerFactory daoFactory = new DAOManagerFactory(entityManager);
+            final PersonDAO dao = daoFactory.getPersonDAO();
+            final RoleEntity teacherRole = daoFactory.getRoleDAO().findByName("teacher");
+            
+            entity.getRoles().add(teacherRole);
+            
+            return dao.persist(entity);
+        });
+        
+        final Person person = jpa(entityManager -> {
+            final DAOManagerFactory daoFactory = new DAOManagerFactory(entityManager);
+            final PersonDAO dao = daoFactory.getPersonDAO();
+            return dao.findDTO(uuid);
+        });
+        
+        logger().info("person: {}", person.getFirstName());
+    }
+    
+    @Test
+    public void delete() {
+        
+        final UUID uuid = jpa(entityManager -> {
+            final PersonEntity entity = new PersonEntity();
+            entity.setFirstName("Wendy1");
+            entity.setLastName("Wang1");
+            entity.setPassword("wang");
+            entity.setEmail("Wendy.wang1@zhaolidance.com");
+            entity.setBirthdate(Date.valueOf(LocalDate.now()));
+            
+            final DAOManagerFactory daoFactory = new DAOManagerFactory(entityManager);
+            final PersonDAO dao = daoFactory.getPersonDAO();
+            final RoleEntity teacherRole = daoFactory.getRoleDAO().findByName("teacher");
+            
+            entity.getRoles().add(teacherRole);
+            
+            return dao.persist(entity);
+        });
+        
+        final Person person = jpa(entityManager -> {
+            final DAOManagerFactory daoFactory = new DAOManagerFactory(entityManager);
+            final PersonDAO dao = daoFactory.getPersonDAO();
+            return dao.findDTO(uuid);
+        });
+        
+        logger().info("person: {}", person.getFirstName());
+        
+        jpa(entityManager -> {
+       
+            final DAOManagerFactory daoFactory = new DAOManagerFactory(entityManager);
+            final PersonDAO dao = daoFactory.getPersonDAO();
+            
+            final Person deletedPerson = dao.findDTO(uuid);
+            final PersonEntity entity = dao.find(uuid);
+            logger().info("entity: {}", entity.getBirthdate());
+            daoFactory.getPersonDAO().delete(entity);
+            logger().info("delet " + dao.find(uuid));
+        });
+        
+    }
+}
+
+
+
+
+
+

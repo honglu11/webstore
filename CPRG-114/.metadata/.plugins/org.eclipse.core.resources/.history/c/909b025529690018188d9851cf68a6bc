@@ -1,0 +1,19 @@
+/**
+ * 
+ */
+package ca.sait.services;
+
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
+import ca.sait.dto.CartItem;
+import ca.sait.dto.Person;
+
+/**
+ *
+ */
+public interface ShoppingCartService {
+
+   public void checkout(String email, Set<CartItem> cartItem);
+}

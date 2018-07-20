@@ -1,0 +1,131 @@
+/**
+ * 
+ */
+package ca.sait.mystore.admin.mvc.model;
+
+import java.sql.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Model;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import ca.sait.dto.Person;
+import ca.sait.dto.Product;
+import ca.sait.services.NoEntityFoundException;
+import ca.sait.services.NonUniqueException;
+import ca.sait.services.PersonService;
+import ca.sait.services.ProductService;
+import ca.sait.services.ValidationException;
+
+/**
+ *
+ */
+@Named("Persons")
+@RequestScoped
+public class PersonsModel extends AbstractModel {
+    
+   @Inject private PersonService personService;
+   
+   private Map<String,String> errors; 
+    
+    private UUID uuid;
+    
+    public PersonsModel() {
+        logger().trace("ENTER PersonsModel()");
+        logger().trace("EXIT PersonsModel()");
+    }
+    
+    @PostConstruct
+    private void postConstruct() {
+        logger().trace("ENTER postConstruct()");
+        logger().trace("EXIT postConstruct()");
+    }
+
+    /* (non-Javadoc)
+     * @see ca.sait.mystore.web.mvc.model.AbstractView#process(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     */
+    @Override
+    protected String process(HttpServletRequest request, HttpServletResponse response) {
+        logger().trace("ENTER process(request,resposne)");
+        
+        try {
+            final String [] resources = request.getRequestURI().substring(request.getContextPath().length()).split("/");
+            for (String resource : resources) {
+                logger().debug("Resource: {}", resource);
+            }
+            
+            try  {
+            uuid = UUID.fromString(resources[resources.length-1]);
+            } catch(final IllegalArgumentException ex) {
+                // sillence
+            }
+            
+            final String action = request.getParameter("action");
+            if ("persist".equals(action)) {
+                persist(request);
+            }
+            
+            return "/WEB-INF/jsp/persons.jsp";
+        } finally {
+            logger().trace("EXIT process(request,resposne)");
+        }
+    }
+    
+    private void persist(HttpServletRequest request) {
+        final String firstName = request.getParameter("firstName");
+        final String lastName = request.getParameter("lastName");
+        final String email = request.getParameter("email");
+        final String birthdateTmp = request.getParameter("birthdate");
+        final String password = request.getParameter("password");
+        
+        final Date birthdate = birthdateTmp == null ? null : Date.valueOf(birthdateTmp);
+       
+        final Person person = new Person(uuid, firstName, lastName, email, password, birthdate);
+        
+        try {
+            uuid = personService.persist(person);
+            request.setAttribute("SUCCESS_MESSAGE", "Updated");
+        } catch (final ValidationException ex) {
+            errors = ex.getValidationErrors();
+            request.setAttribute("ERROR_MESSAGE", ex.getMessage());
+        } catch (final NonUniqueException ex) {
+            request.setAttribute("ERROR_MESSAGE", ex.getMessage());
+        }
+        
+//        if ("good".equals(name)) {
+//           request.setAttribute("SUCCESS_MESSAGE", "This will be a success message");
+//        } else if ("bad".equals(name)) {
+//           request.setAttribute("ERROR_MESSAGE", "This will be a error message");
+//        }
+    }
+    
+    @Override
+    public String getNavigationName() {
+        return "PERSONS";
+    }
+    
+    public Person getPerson() {
+        if (uuid == null) {
+            return new Person();
+        } else {
+            try {
+               return personService.findById(uuid);
+            } catch (NoEntityFoundException ex) {
+                logger().error("Entity not found: {}", uuid);
+                return new Person();
+            }
+        }
+    }
+    
+    public List<Person> getAllPersons() {
+        return personService.findAll();
+    }
+
+}

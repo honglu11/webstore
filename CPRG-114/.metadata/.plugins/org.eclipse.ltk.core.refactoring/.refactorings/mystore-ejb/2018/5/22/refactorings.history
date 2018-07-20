@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move element &apos;CartItem.java&apos; to &apos;mystore-common/src/main/java/ca.sait.dto&apos;&#x0D;&#x0A;- Original project: &apos;mystore-ejb&apos;&#x0D;&#x0A;- Destination element: &apos;mystore-common/src/main/java/ca.sait.dto&apos;&#x0D;&#x0A;- Original element: &apos;ca.sait.dto.CartItem.java&apos;&#x0D;&#x0A;- Update references to refactored element" description="Move compilation unit" destination="=mystore-common/src\/main\/java&lt;ca.sait.dto" element1="/src\/main\/java&lt;ca.sait.dto{CartItem.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.move" patterns="*" policy="org.eclipse.jdt.ui.moveResources" qualified="false" references="true" stamp="1527641705007" units="1" version="1.0"/>
+</session>

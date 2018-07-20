@@ -1,0 +1,61 @@
+/**
+ * 
+ */
+package ca.sait.mystore.ejb;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.ejb.EJB;
+import javax.ejb.Local;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.persistence.NoResultException;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import ca.sait.dto.CartItem;
+import ca.sait.dto.Person;
+import ca.sait.dto.Product;
+import ca.sait.mystore.dao.DAOManagerFactory;
+import ca.sait.mystore.dao.ProductDAO;
+import ca.sait.mystore.entity.PersonEntity;
+import ca.sait.mystore.entity.ProductEntity;
+import ca.sait.mystore.entity.ShoppingCartEntity;
+import ca.sait.services.NoEntityFoundException;
+import ca.sait.services.NonUniqueException;
+import ca.sait.services.PersonService;
+import ca.sait.services.ProductService;
+import ca.sait.services.ShoppingCartService;
+import ca.sait.services.ValidationException;
+import ca.sait.util.HasLogger;
+
+/**
+ * @author Hong Lu
+ *
+ */
+@Stateless
+@Local(ShoppingCartService.class)
+public class ShoppingCartServiceImpl implements ShoppingCartService, HasLogger {
+
+   @EJB private PersonServiceImpl personService;
+
+    @Override
+    public void checkout(String email, Set<CartItem> cartItems) throws NoEntityFoundException {
+        logger().trace("ENTER checkout(String email, Set<CartItem> cartItem)");
+        final ShoppingCartEntity cartEntity = new ShoppingCartEntity();
+        final PersonEntity customer = personService.findEntityByEmail(email);
+        cartEntity.setShoppingDate(new Date());
+        cartEntity.setCustomer(customer);
+        
+        cartItems.forEach(item -> {logger().debug("Item: {}", item);});
+        
+        logger().trace("EXIT checkout(String email, Set<CartItem> cartItem)");
+
+    }
+
+}

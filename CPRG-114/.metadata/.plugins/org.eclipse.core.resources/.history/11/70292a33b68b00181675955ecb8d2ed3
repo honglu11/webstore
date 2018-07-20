@@ -1,0 +1,51 @@
+/**
+ * 
+ */
+package ca.sait.mystore.web.mvc.model;
+
+import javax.enterprise.inject.Model;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ *
+ */
+@Model
+public class RegisterModel extends AbstractModel {
+
+    /* (non-Javadoc)
+     * @see ca.sait.mystore.web.mvc.model.AbstractView#process(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     */
+    @Override
+    protected String process(HttpServletRequest request, HttpServletResponse response) {
+        logger().trace("ENTER process(request,resposne)");
+        
+        try {
+            final String action = request.getParameter("action");
+            // constance on the left
+            if ("login".equalsIgnoreCase(action)) {
+                final String email = request.getParameter("email");
+                final String password = request.getParameter("password");
+                
+                try {
+                    request.login(email, password);
+                    setSuccessMessage("You have logged In");
+                } catch (final ServletException ex) {
+                    setErrorMessage("Invalid Username/password");
+                }
+            } else if ("register".equalsIgnoreCase(action)) {
+            }
+            
+            return "/WEB-INF/jsp/register.jsp";
+        } finally {
+            logger().trace("EXIT process(request,resposne)");
+        }
+    }
+    
+    @Override
+    public String getNavigationName() {
+        return "REGISTER";
+    }
+
+}

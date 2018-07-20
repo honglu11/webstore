@@ -1,0 +1,29 @@
+/**
+ * 
+ */
+package ca.sait.services;
+
+import java.util.Map;
+
+/**
+ * @author Hong Lu
+ * 
+ */
+public class ValidationException extends Exception {
+    
+    private final Map<String, String> validationErrors;
+
+
+    public ValidationException(final Map<String, String> validationErrors ) {
+        super("Validation Errors");
+        this.validationErrors = validationErrors;
+    }
+    
+    /**
+     * @return the validationErrors
+     */
+    public Map<String, String> getValidationErrors() {
+        return validationErrors;
+    }
+
+}

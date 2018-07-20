@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="CreateAdmin.delete" project="mystore-ejb" tests="1" started="1" failures="0" errors="0" ignored="0">
+  <testsuite name="ca.sait.jpa.entity.CreateAdmin" time="2.298" displayname="CreateAdmin" uniqueid="[engine:junit-jupiter]/[class:ca.sait.jpa.entity.CreateAdmin]">
+    <testcase name="delete" classname="ca.sait.jpa.entity.CreateAdmin" time="2.298" displayname="delete()" uniqueid="[engine:junit-jupiter]/[class:ca.sait.jpa.entity.CreateAdmin]/[method:delete()]"/>
+  </testsuite>
+</testrun>

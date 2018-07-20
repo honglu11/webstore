@@ -1,0 +1,62 @@
+/**
+ * 
+ */
+package ca.sait.mystore.web.mvc.session;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import ca.sait.dto.CartItem;
+import ca.sait.dto.Product;
+import ca.sait.services.NoEntityFoundException;
+import ca.sait.services.ProductService;
+
+/**
+ * @author Hong Lu
+ * 
+ */
+@SessionScoped
+@Named("Cart") // CartSession final cannot extends
+public class CartSession implements Serializable {
+    
+    @Inject
+    private ProductService productService;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -2189052512208952356L;
+    private final Map<CartItem, CartItem> items = new LinkedHashMap<>(); // reorder
+
+    /**
+     * @return the items
+     */
+    public Set<CartItem> getItems() {
+        return items.keySet();
+    }
+    
+    public void addItem(String productOid, int qty) throws NoEntityFoundException {
+        
+        final Product product = productService.findById(UUID.fromString(productOid));
+        final CartItem item = new CartItem(product, product.getPrice());
+        items.computeIfAbsent(item, k -> item );
+        items.computeIfPresent(item, (key, value) -> value.addQuantity(qty));
+    }
+    
+    public void checkout() {
+        items.clear();
+    }
+    
+    
+    
+}
+

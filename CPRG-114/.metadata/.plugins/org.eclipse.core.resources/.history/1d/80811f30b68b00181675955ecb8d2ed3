@@ -1,0 +1,66 @@
+/**
+ * 
+ */
+package ca.sait.mystore.ejb;
+
+import java.util.List;
+import java.util.UUID;
+
+import javax.ejb.EJB;
+import javax.ejb.Local;
+import javax.ejb.Stateless;
+
+import ca.sait.dto.Person;
+import ca.sait.dto.Product;
+import ca.sait.mystore.dao.DAOManagerFactory;
+import ca.sait.mystore.entity.PersonEntity;
+import ca.sait.mystore.entity.ProductEntity;
+import ca.sait.services.PersonService;
+import ca.sait.services.ProductService;
+
+/**
+ * @author Chris Elias
+ *
+ */
+@Stateless
+@Local(ProductService.class)
+public class ProductServiceImpl 
+implements ProductService {
+
+    @EJB
+    private DAOManagerFactory daoFactory;
+    
+    /* (non-Javadoc)
+     * @see ca.sait.services.PersonService#create(ca.sait.dto.Person)
+     */
+    @Override
+    public UUID create(Product product) {
+        final ProductEntity entity = new ProductEntity();
+        entity.setName(product.getName());
+        entity.setDescription(product.getDescription());
+        entity.setPrice(product.getPrice());
+        entity.setInventoryQuantity(product.getInventoryQuantity());
+        
+        daoFactory.getProductDAO().persist(entity);
+
+        return entity.getOid();
+    }  
+
+    @Override
+    public Product findByName(String name) {
+        // TODO Auto-generated method stub
+        return daoFactory.getProductDAO().findByNameDTO(name);
+    }
+
+    @Override
+    public Product findById(UUID id) {
+        // TODO Auto-generated method stub
+        return daoFactory.getProductDAO().findDTO(id);
+    }
+
+    @Override
+    public List<Product> findAll() {
+        // TODO Auto-generated method stub
+        return daoFactory.getProductDAO().findAllDTO();
+    }
+}

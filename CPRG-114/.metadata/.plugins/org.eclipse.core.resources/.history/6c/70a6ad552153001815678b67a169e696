@@ -1,0 +1,13 @@
+package ca.sait.services;
+
+import javax.ejb.ApplicationException;
+
+
+public class NonUniqueException extends Exception {
+
+   
+
+    public NonUniqueException(String message) {
+        super(message);
+    }
+}

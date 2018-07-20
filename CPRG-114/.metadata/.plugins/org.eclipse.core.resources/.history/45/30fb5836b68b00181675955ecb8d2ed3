@@ -1,0 +1,72 @@
+/**
+ * 
+ */
+package ca.sait.jpa.service;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.junit.jupiter.api.Test;
+
+import ca.sait.dto.Person;
+import ca.sait.dto.Product;
+import ca.sait.jpa.AbstractJPATest;
+import ca.sait.mystore.HasLogger;
+import ca.sait.mystore.dao.DAOManagerFactory;
+import ca.sait.mystore.dao.PersonDAO;
+import ca.sait.mystore.ejb.PersonServiceImpl;
+import ca.sait.mystore.entity.PersonEntity;
+import ca.sait.mystore.entity.ProductEntity;
+import ca.sait.mystore.entity.RoleEntity;
+import ca.sait.services.PersonService;
+import ca.sait.services.ProductService;
+
+/**
+ * @author Hong Lu
+ * 
+ */
+public class TestProductService extends AbstractJPATest {
+    
+   @Inject private ProductService productService;
+    
+    @Override
+    protected Class<?>[] entities() {
+        return new Class<?>[] {
+            ProductEntity.class,
+        };
+    }
+    
+    @Test
+    public void testGetAllProduct() {
+        
+        jpa(entityManager -> {
+         
+            
+            final List<Product> products = productService.findAll();
+            logger().info("persons: {}", products.get(0).getName());
+            logger().info("persons: {}", products.get(1).getName());
+      
+        });
+        
+
+        
+        
+    }
+    
+    
+//    @Test
+//    public void testGetAllPerson() {
+//                
+//            
+//            final List<Person> persons = personService.findAll();
+//            logger().info("persons: {}", persons.get(0).getFirstName());
+//            logger().info("persons: {}", persons.get(1).getFirstName());
+//
+//
+//        
+//        
+//    }
+    
+
+}

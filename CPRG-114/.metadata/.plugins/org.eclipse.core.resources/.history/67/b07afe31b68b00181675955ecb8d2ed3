@@ -1,0 +1,63 @@
+/**
+ * 
+ */
+package ca.sait.dto;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * @author Hong Lu
+ * 
+ */
+public class CartItem implements Serializable {
+    
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 4746006258024800256L;
+    private final Product product;
+    private final int quantity;
+    private final double price;
+    
+    public CartItem(Product product, int quantity, double price) {
+        this.product = product;
+        this.quantity = quantity;
+        this.price = price;
+    }
+    
+    /**
+     * @return the product
+     */
+    public Product getProduct() {
+        return product;
+    }
+    /**
+     * @return the quantity
+     */
+    public int getQuantity() {
+        return quantity;
+    }
+    /**
+     * @return the price
+     */
+    public double getPrice() {
+        return price;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(product, price);
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        
+        if (obj == null) return false;
+        if (obj.getClass() != CartItem.class) return false;
+        final CartItem other = (CartItem)obj;
+        
+        return Objects.equals(product, other.product) && Objects.equals(price, other.price);
+    }
+
+}

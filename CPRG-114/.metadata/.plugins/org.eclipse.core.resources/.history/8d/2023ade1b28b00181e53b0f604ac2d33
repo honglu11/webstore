@@ -1,0 +1,46 @@
+/**
+ * 
+ */
+package ca.sait.mystore.web.mvc.session;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
+
+import ca.sait.dto.CartItem;
+
+/**
+ * @author Hong Lu
+ * 
+ */
+@SessionScoped
+@Named("Cart") // CartSession final cannot extends
+public final class CartSession implements Serializable {
+    
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -2189052512208952356L;
+    private final Map<CartItem, CartItem> items = new LinkedHashMap<>(); // reorder
+
+    /**
+     * @return the items
+     */
+    public  Map<CartItem, CartItem> getItems() {
+        return items;
+    }
+    
+    @Override // a way to duplicate the object
+    protected Object clone() throws CloneNotSupportedException {
+        throw new CloneNotSupportedException(); // a way to hacker the clone, not allow clone
+    }
+
+}
+

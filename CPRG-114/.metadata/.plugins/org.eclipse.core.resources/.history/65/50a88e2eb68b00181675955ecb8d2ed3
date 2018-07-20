@@ -1,0 +1,67 @@
+/**
+ * 
+ */
+package ca.sait.mystore.web.mvc.model;
+
+import static ca.sait.util.StringUtils.isEmptyOrNull;
+
+import java.util.UUID;
+
+import javax.enterprise.inject.Model;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import ca.sait.dto.CartItem;
+import ca.sait.dto.Product;
+import ca.sait.mystore.web.mvc.session.CartSession;
+import ca.sait.services.NoEntityFoundException;
+import ca.sait.services.ProductService;
+
+/**
+ *
+ */
+@Model
+public class ShoppingCartModel extends AbstractModel {
+    
+    @Inject
+    private CartSession cartSession;
+    
+    @Inject
+    private ProductService productService;
+    
+
+    /* (non-Javadoc)
+     * @see ca.sait.mystore.web.mvc.model.AbstractView#process(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     */
+    @Override
+    protected String process(HttpServletRequest request, HttpServletResponse response) {
+        logger().trace("ENTER process(request,resposne)");
+        
+        try {
+            final String productOid = request.getParameter("oid");
+            final String quantity = request.getParameter("quantity");
+            
+            if (isEmptyOrNull(productOid) && isEmptyOrNull(quantity)) {
+                try {
+                final int qty = Integer.parseInt(quantity);
+                final Product product = productService.findById(UUID.fromString(productOid));
+                final CartItem cartItem = new CartItem(product, qty, product.getPrice());
+                }
+            catch (final NoEntityFoundException ex) {
+                setErrorMessage("Invalid Product Id");
+            }
+            }
+            
+                return "/WEB-INF/jsp/shoppingcart.jsp";    
+        } finally {
+            logger().trace("EXIT process(request,resposne)");
+        }
+     
+    }
+
+    @Override
+    public String getNavigationName() {
+        return "SHOPPINGCART";
+    }
+}

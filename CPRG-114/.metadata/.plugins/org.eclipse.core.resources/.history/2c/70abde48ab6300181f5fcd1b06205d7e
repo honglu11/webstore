@@ -1,0 +1,35 @@
+/**
+ * 
+ */
+package ca.sait.mystore.web.mvc.session;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
+
+import ca.sait.dto.CartItem;
+
+/**
+ * @author Hong Lu
+ * 
+ */
+@SessionScoped
+@Named("Cart")
+public class CartSession implements Serializable {
+    
+    private final Set<CartItem> items = new LinkedHashSet<>(); // reorder
+
+    /**
+     * @return the items
+     */
+    public Set<CartItem> getItems() {
+        return items;
+    }
+
+}
+

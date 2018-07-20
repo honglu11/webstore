@@ -1,0 +1,231 @@
+/**
+ * 
+ */
+package ca.sait.mystore.admin.mvc.model;
+
+import java.sql.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Model;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import ca.sait.dto.Person;
+import ca.sait.dto.Product;
+import ca.sait.dto.Role;
+
+import ca.sait.services.NoEntityFoundException;
+import ca.sait.services.NonUniqueException;
+import ca.sait.services.PersonService;
+import ca.sait.services.ProductService;
+import ca.sait.services.RoleService;
+import ca.sait.services.ValidationException;
+
+/**
+ *
+ */
+@Named("Persons")
+@RequestScoped
+public class PersonsModel extends AbstractModel {
+
+    @Inject
+    private PersonService personService;
+    @Inject
+    private RoleService roleService;
+    private Person person; // = private Person person = null;
+
+    public PersonsModel() {
+        logger().trace("ENTER PersonsModel()");
+        logger().trace("EXIT PersonsModel()");
+    }
+
+    @PostConstruct
+    private void postConstruct() {
+        logger().trace("ENTER postConstruct()");
+        logger().trace("EXIT postConstruct()");
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see ca.sait.mystore.web.mvc.model.AbstractView#process(javax.servlet.http.
+     * HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     */
+    @Override
+    protected String process(HttpServletRequest request, HttpServletResponse response) {
+        logger().trace("ENTER process(request,resposne)");
+
+        // try {
+        // final String [] resources =
+        // request.getRequestURI().substring(request.getContextPath().length()).split("/");
+        // for (String resource : resources) {
+        // logger().debug("Resource: {}", resource);
+        // }
+        //
+        // try {
+        // setOid(UUID.fromString(resources[resources.length-1]));
+        // } catch(final IllegalArgumentException ex) {
+        // // sillence
+        // }
+        try {
+            final String action = request.getParameter("action");
+            logger().trace("action {}", action);
+            if ("persist".equals(action)) {
+                persist(request);               
+            }
+            
+            if ("delete".equals(action)) {
+                logger().info("will delete");
+                delete(request);                
+            }
+
+            return "/WEB-INF/jsp/persons.jsp";
+        } finally {
+            logger().trace("EXIT process(request,resposne)");
+        }
+    }
+    
+    private void delete(HttpServletRequest request) {
+        logger().trace("ENTER delete(request)");
+        String oid = null;
+        logger().info("request.getParameter(\"oid\") " + request.getParameter("oid"));
+        if (request.getParameter("oid") != null) {
+            oid = request.getParameter("oid");
+        } else {
+            setErrorMessage("Oid is empty, must select a person oid for delete");
+        }
+
+        if (oid != null && !oid.trim().isEmpty()) {
+        
+        try {
+            Person person = personService.findById(UUID.fromString(oid));
+            
+            //person.getRoles().rem.remove(role.getName());
+            personService.removePerson(UUID.fromString(oid));
+            getAllPersons().remove(person);
+        } catch (NoEntityFoundException e) {
+            setErrorMessage("Cannot delete none exsit person: " + e);
+        }
+        setSuccessMessage("Delete this person successfully");
+        }
+
+        logger().trace("EXIT delete(request)");
+
+    }
+
+    private void persist(HttpServletRequest request) {
+        logger().trace("ENTER persist(request,resposne)");
+        String firstName = "";
+        String lastName = "";
+        String email = "";
+        String birthdateTmp ="";
+        String password = "";
+        String selectedRole ="";        
+        
+        if (request.getParameter("firstName") != null) 
+         firstName = request.getParameter("firstName");
+        if (request.getParameter("lastName") != null)
+         lastName = request.getParameter("lastName");
+        if (request.getParameter("email") != null)
+         email = request.getParameter("email");
+        if (request.getParameter("birthdate") != null)
+         birthdateTmp = request.getParameter("birthdate");
+        if (request.getParameter("password") != null)
+         password = request.getParameter("password");
+        if (request.getParameter("role") != null )
+         selectedRole = request.getParameter("role");
+
+        logger().debug("selectedRole" + selectedRole);
+        
+        try {
+            Date birthdate = null;
+            
+            try {
+                birthdate = Date.valueOf(birthdateTmp);
+            } catch (Exception ex) {
+                getErrors().put("birthdate", birthdateTmp + " is not a valid date");
+            }
+        
+        logger().debug("birthdateTmp" + birthdateTmp);
+        
+        logger().debug("birthdate" + birthdate);
+
+        person = new Person(getOid(), firstName, lastName, email, password, birthdate);
+        final Role role = roleService.findByName(selectedRole);
+        
+        for( String roleName : person.getRoles()) {
+            logger().debug("roleName" + roleName); 
+        }
+        person.getRoles().add(role.getName());
+        
+        for( String roleName : person.getRoles()) {
+            logger().debug("roleName" + roleName); 
+        }
+        if (getErrors().isEmpty()) {
+            setOid(personService.persist(person));
+            setSuccessMessage("Updated");
+        } else {
+            setErrorMessage("Data Error Issues");
+        }
+               
+        } catch (final ValidationException ex) {
+            ex.getValidationErrors().forEach(getErrors()::put);
+            setErrorMessage(ex.getMessage());
+        } catch (final NonUniqueException ex) {
+            setErrorMessage(ex.getMessage());
+        }
+
+        // if ("good".equals(name)) {
+        // request.setAttribute("SUCCESS_MESSAGE", "This will be a success message");
+        // } else if ("bad".equals(name)) {
+        // request.setAttribute("ERROR_MESSAGE", "This will be a error message");
+        // }
+        logger().trace("EXIT persist(request,resposne)");
+    }
+
+    @Override
+    public String getNavigationName() {
+        return "PERSONS";
+    }
+
+    public Person getPerson() {
+        if (getOid() != null && person ==null) {                   
+            try {
+               person =  personService.findById(getOid());
+            } catch (NoEntityFoundException ex) {
+               setErrorMessage("Entity not found: " + getOid());
+            }
+        }
+        
+//        if (person == null) {
+//            if (getOid() == null) {
+//                person = new Person();
+//            } else {
+//                try {
+//                    person = personService.findById(getOid());
+//                } catch (NoEntityFoundException ex) {
+//                    logger().error("Entity not found: {}", getOid());
+//                }
+//            }
+//        }
+
+        return person;
+
+    }
+
+    public List<Person> getAllPersons() {
+        return personService.findAll();
+    }
+
+    public List<Role> getAllRoles() {
+        logger().trace("ENTER getAllRoles()");
+        return roleService.findAll();
+    }
+
+}

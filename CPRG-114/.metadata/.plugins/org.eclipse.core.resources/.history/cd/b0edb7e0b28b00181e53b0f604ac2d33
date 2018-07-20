@@ -1,0 +1,83 @@
+/**
+ * 
+ */
+package ca.sait.mystore.dao;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import javax.ejb.EJB;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+
+import ca.sait.dto.CartItem;
+import ca.sait.dto.Person;
+import ca.sait.dto.Product;
+import ca.sait.dto.Role;
+import ca.sait.dto.ShoppingCart;
+import ca.sait.mystore.entity.PersonEntity;
+import ca.sait.mystore.entity.ProductEntity;
+import ca.sait.mystore.entity.RoleEntity;
+import ca.sait.mystore.entity.ShoppingCartEntity;
+import ca.sait.mystore.entity.ShoppingCartItemEntity;
+
+/**
+ *
+ */
+public final class ShoppingCartItemDAO extends AbstractDAO<ShoppingCartItemEntity> {
+    
+    @EJB
+    private DAOManagerFactory daoManagerFactory;
+
+    protected ShoppingCartItemDAO(final EntityManager entityManager) {
+        super(entityManager, ShoppingCartItemEntity.class);
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public List<CartItem> findAllDTO() {
+        List<ShoppingCartItemEntity> results = findAll();
+        final Stream<ShoppingCartItemEntity> stream;
+        if (results.size() > 100_000)
+            stream = results.parallelStream(); 
+        else
+            stream = results.stream(); 
+        
+        return results.stream().map(this::convert).collect(Collectors.toList());
+
+    }
+    
+    public CartItem findDTO(UUID id) {
+       
+        return convert(findEntityById(id));
+    } 
+    
+    public ShoppingCartItemEntity findEntityById(UUID id) {
+        final TypedQuery<ShoppingCartItemEntity> query = 
+                getEntityManager().createNamedQuery(ShoppingCartItemEntity.QUERY_FIND_BY_OID, ShoppingCartItemEntity.class);
+        query.setParameter("oid", id);
+        
+        return query.getSingleResult();
+    } 
+    
+    public List<ShoppingCartItemEntity> findAll() {
+        final TypedQuery<ShoppingCartItemEntity> query =  
+                getEntityManager().createNamedQuery(ShoppingCartItemEntity.QUERY_FIND_ALL, ShoppingCartItemEntity.class);
+
+        return query.getResultList();
+    }
+    
+    private CartItem convert(ShoppingCartItemEntity entity) {
+//        DAOManagerFactory daoManagerFactory = new DAOManagerFactory();
+        Product product = daoManagerFactory.getProductDAO().convert(entity.getProduct());
+        ShoppingCart cart = daoManagerFactory.getShoppingCartDAO().findDTO(entity.getCart().getOid());
+        
+        final CartItem dto = new CartItem(entity.getOid(), cart, product, entity.getQuantity(), entity.getPrice());
+        
+        return dto;
+    }
+}

@@ -1,0 +1,84 @@
+package ca.sait.dto;
+
+import java.util.Date;
+
+import java.util.UUID;
+
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ * 
+ *
+ */
+@XmlRootElement(name="product")
+public class Product {
+
+
+    @XmlAttribute(name="oid")
+    private final UUID oid;
+    
+    @XmlElement(name="name", required=true)
+    private final String name;
+    
+    @XmlElement(name="description", required=true)
+    private final String description;
+    
+    @XmlElement(name="price", required=true)
+    private final Double price;
+    
+    @XmlElement(name="inventoryQuantity", required=true)
+    private final Integer inventoryQuantity;
+    
+    public Product() {
+        this(null, null, null, null, null);
+    }
+    
+    public Product(UUID oid, String name, String description, 
+            Double price, Integer inventoryQuantity ) {
+        this.oid = oid;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.inventoryQuantity = inventoryQuantity;
+    }
+    
+    /**
+     * @return the oid
+     */
+    public UUID getOid() {
+        return oid;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @return the price
+     */
+    public Double getPrice() {
+        return price;
+    }
+
+    /**
+     * @return the inventoryQuantity
+     */
+    public Integer getInventoryQuantity() {
+        return inventoryQuantity;
+    }
+
+
+
+}

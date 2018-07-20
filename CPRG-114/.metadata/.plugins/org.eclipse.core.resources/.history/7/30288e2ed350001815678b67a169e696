@@ -1,0 +1,91 @@
+/**
+ * 
+ */
+package ca.sait.mystore.admin.mvc.model;
+
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Model;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import ca.sait.dto.Person;
+import ca.sait.dto.Product;
+import ca.sait.services.NoEntityFoundException;
+import ca.sait.services.PersonService;
+import ca.sait.services.ProductService;
+
+/**
+ *
+ */
+@Named("Persons")
+@RequestScoped
+public class PersonsModel extends AbstractModel {
+    
+   @Inject private PersonService personService;
+    
+    private UUID uuid;
+    
+    public PersonsModel() {
+        logger().trace("ENTER PersonsModel()");
+        logger().trace("EXIT PersonsModel()");
+    }
+    
+    @PostConstruct
+    private void postConstruct() {
+        logger().trace("ENTER postConstruct()");
+        logger().trace("EXIT postConstruct()");
+    }
+
+    /* (non-Javadoc)
+     * @see ca.sait.mystore.web.mvc.model.AbstractView#process(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     */
+    @Override
+    protected String process(HttpServletRequest request, HttpServletResponse response) {
+        logger().trace("ENTER process(request,resposne)");
+        
+        try {
+            final String [] resources = request.getRequestURI().substring(request.getContextPath().length()).split("/");//request.getRequestURI().split("/");
+            for (String resource : resources) {
+                logger().debug("Resource: {}", resource);
+            }
+            
+            try  {
+            uuid = UUID.fromString(resources[resources.length-1]);
+            } catch(final IllegalArgumentException ex) {
+                // sillence
+            }
+            return "/WEB-INF/jsp/persons.jsp";
+        } finally {
+            logger().trace("EXIT process(request,resposne)");
+        }
+    }
+    
+    @Override
+    public String getNavigationName() {
+        return "PERSONS";
+    }
+    
+    public Person getPerson() {
+        if (uuid == null) {
+            return new Person();
+        } else {
+            try {
+               return personService.findById(uuid);
+            } catch (NoEntityFoundException ex) {
+                logger().error("Entity not found: {}", uuid);
+                return new Person();
+            }
+        }
+    }
+    
+    public List<Person> getAllPersons() {
+        return personService.findAll();
+    }
+
+}

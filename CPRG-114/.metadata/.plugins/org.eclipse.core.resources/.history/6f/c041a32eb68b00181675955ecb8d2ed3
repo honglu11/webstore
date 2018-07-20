@@ -1,0 +1,107 @@
+/**
+ * 
+ */
+package ca.sait.mystore.entity;
+
+import java.util.Date;
+import java.util.UUID;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+
+import ca.sait.dto.CartStatus;
+import ca.sait.dto.Person;
+
+/**
+ *
+ * @author Chris Elias
+ * @author Alberta Utility Billing
+ */
+@Entity(name="ShoppingCartItem")
+@Table(name="shopping_cart_tem")
+@NamedQueries({    
+    @NamedQuery(name=ShoppingCartItemEntity.QUERY_FIND_BY_OID, query="SELECT s FROM ShoppingCartItem s WHERE s.oid = :oid"),
+    @NamedQuery(name=ShoppingCartItemEntity.QUERY_FIND_ALL, query="SELECT s FROM ShoppingCartItem s"),
+})
+public class ShoppingCartItemEntity extends AbstractEntity {
+
+    public static final String QUERY_FIND_BY_OID = "ShoppingCartItemEntity.findByOid";
+    public static final String QUERY_FIND_ALL = "ShoppingCartItemEntity.findAll";     
+    
+    @ManyToOne(optional=false, fetch=FetchType.LAZY)
+    @JoinColumn(name="cart_oid", nullable=false, updatable=false)
+    private ShoppingCartEntity cart;
+
+    @ManyToOne(optional=false, fetch=FetchType.EAGER)
+    @JoinColumn(name="product_oid", nullable=false, updatable=false)
+    private ProductEntity product;
+    
+    @Column(name="quantity", nullable=false)
+    private int quantity;
+
+    @Column(name="price", nullable=false, length=10, precision=2)
+    private double price;
+
+    /**
+     * @return the cart
+     */
+    public ShoppingCartEntity getCart() {
+        return cart;
+    }
+
+    /**
+     * @param cart the cart to set
+     */
+    public void setCart(ShoppingCartEntity cart) {
+        this.cart = cart;
+        this.cart.getItems().add(this);// create relationship between cartEntity and itemEntity
+    }
+
+    /**
+     * @return the product
+     */
+    public ProductEntity getProduct() {
+        return product;
+    }
+
+    /**
+     * @param product the product to set
+     */
+    public void setProduct(ProductEntity product) {
+        this.product = product;
+    }
+
+    /**
+     * @return the quantity
+     */
+    public int getQuantity() {
+        return quantity;
+    }
+
+    /**
+     * @param quantity the quantity to set
+     */
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    /**
+     * @return the price
+     */
+    public double getPrice() {
+        return price;
+    }
+
+    /**
+     * @param price the price to set
+     */
+    public void setPrice(double price) {
+        this.price = price;
+    }
+}

@@ -1,0 +1,26 @@
+/**
+ * 
+ */
+package ca.sait.jpa.service;
+
+import ca.sait.jpa.AbstractJPATest;
+import ca.sait.mystore.entity.PersonEntity;
+import ca.sait.mystore.entity.RoleEntity;
+
+/**
+ * @author Hong Lu
+ * 
+ */
+public class TestPersonService extends AbstractJPATest {
+
+    @Override
+    protected Class<?>[] entities() {
+        return new Class<?>[] {
+            PersonEntity.class,
+            RoleEntity.class
+        };
+    }
+    
+    
+
+}

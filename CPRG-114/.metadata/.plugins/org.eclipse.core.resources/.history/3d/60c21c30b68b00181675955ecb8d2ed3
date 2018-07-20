@@ -1,0 +1,12 @@
+/**
+ * 
+ */
+package ca.sait.dto;
+
+/**
+ * @author Hong Lu
+ * 
+ */
+public class CartItem {
+
+}
