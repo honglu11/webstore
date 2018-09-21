@@ -1,0 +1,95 @@
+package com.example.tests;
+
+import java.util.regex.Pattern;
+import java.util.concurrent.TimeUnit;
+import org.junit.*;
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
+import org.openqa.selenium.*;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
+
+public class UntitledTestCase {
+  private WebDriver driver;
+  private String baseUrl;
+  private boolean acceptNextAlert = true;
+  private StringBuffer verificationErrors = new StringBuffer();
+
+  @Before
+  public void setUp() throws Exception {
+    driver = new FirefoxDriver();
+    baseUrl = "https://www.katalon.com/";
+    driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+  }
+
+  @Test
+  public void testUntitledTestCase() throws Exception {
+    driver.get("https://login.dev.netbanx.com/office/public/preLogin.htm?errorMessage=");
+    driver.findElement(By.id("j_username")).click();
+    driver.findElement(By.id("j_username")).clear();
+    driver.findElement(By.id("j_username")).sendKeys("falcon");
+    driver.findElement(By.id("j_password")).clear();
+    driver.findElement(By.id("j_password")).sendKeys("falconfalcon");
+    driver.findElement(By.id("loginBtn")).click();
+    driver.findElement(By.id("_menuReports")).click();
+    driver.findElement(By.id("paymentMethod")).click();
+    new Select(driver.findElement(By.id("paymentMethod"))).selectByVisibleText("Alternate Payments");
+    driver.findElement(By.xpath("//option[@value='ALTP']")).click();
+    driver.findElement(By.id("sDate")).click();
+    driver.findElement(By.id("sDate")).clear();
+    driver.findElement(By.id("sDate")).sendKeys("2017-06-19");
+    driver.findElement(By.linkText("10")).click();
+    driver.findElement(By.id("eDate")).click();
+    driver.findElement(By.id("eDate")).clear();
+    driver.findElement(By.id("eDate")).sendKeys("2017-06-19");
+    driver.findElement(By.linkText("9")).click();
+    driver.findElement(By.id("eDate")).click();
+    driver.findElement(By.id("eDate")).click();
+    driver.findElement(By.id("eDate")).clear();
+    driver.findElement(By.id("eDate")).sendKeys("2017-12-09");
+    driver.findElement(By.xpath("//html")).click();
+    driver.findElement(By.id("btnSearch")).click();
+  }
+
+  @After
+  public void tearDown() throws Exception {
+    driver.quit();
+    String verificationErrorString = verificationErrors.toString();
+    if (!"".equals(verificationErrorString)) {
+      fail(verificationErrorString);
+    }
+  }
+
+  private boolean isElementPresent(By by) {
+    try {
+      driver.findElement(by);
+      return true;
+    } catch (NoSuchElementException e) {
+      return false;
+    }
+  }
+
+  private boolean isAlertPresent() {
+    try {
+      driver.switchTo().alert();
+      return true;
+    } catch (NoAlertPresentException e) {
+      return false;
+    }
+  }
+
+  private String closeAlertAndGetItsText() {
+    try {
+      Alert alert = driver.switchTo().alert();
+      String alertText = alert.getText();
+      if (acceptNextAlert) {
+        alert.accept();
+      } else {
+        alert.dismiss();
+      }
+      return alertText;
+    } finally {
+      acceptNextAlert = true;
+    }
+  }
+}
