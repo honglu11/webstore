@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Package: ca.sait.cli
+Built-By: honglu
+Build-Jdk: 1.8.0_144
+Created-By: Maven Integration for Eclipse
+Main-Class: ca.sait.cli.Main
+

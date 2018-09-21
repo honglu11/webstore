@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="java.util.UUID"/>
+<fullyQualifiedTypeName name="ca.sait.bookstore.model.Item"/>
+<fullyQualifiedTypeName name="java.util.LinkedList"/>
+<fullyQualifiedTypeName name="ca.sait.bookstore.model.BeverageFactory"/>
+<fullyQualifiedTypeName name="ca.sait.bookstore.model.Beverage"/>
+<fullyQualifiedTypeName name="ca.sait.bookstore.model.BeverageSizeType"/>
+<fullyQualifiedTypeName name="ca.sait.bookstore.model.BeverageOptions"/>
+<fullyQualifiedTypeName name="ca.sait.bookstore.model.HelpCommandType"/>
+<fullyQualifiedTypeName name="ca.sait.produce.RawMaterial"/>
+<fullyQualifiedTypeName name="ca.sait.produce.db.InventoryItem"/>
+<fullyQualifiedTypeName name="ca.sait.produce.Produce"/>
+<fullyQualifiedTypeName name="ca.sait.produce.Fruit"/>
+<fullyQualifiedTypeName name="ca.sait.produce.db.PLUVegetableDB"/>
+<fullyQualifiedTypeName name="ca.sait.produce.Product"/>
+<fullyQualifiedTypeName name="ca.sait.produce.FinishedProduct"/>
+<fullyQualifiedTypeName name="ca.sait.model.Person"/>
+<fullyQualifiedTypeName name="org.junit.Test"/>
+<fullyQualifiedTypeName name="java.util.NoSuchElementException"/>
+<fullyQualifiedTypeName name="java.util.HashSet"/>
+<fullyQualifiedTypeName name="java.util.Collection"/>
+<fullyQualifiedTypeName name="java.util.LinkedHashSet"/>
+<fullyQualifiedTypeName name="java.util.HashMap"/>
+<fullyQualifiedTypeName name="java.util.Map"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.util.Collections"/>
+<fullyQualifiedTypeName name="java.util.Set"/>
+<fullyQualifiedTypeName name="java.util.stream.Collectors"/>
+</qualifiedTypeNameHistroy>

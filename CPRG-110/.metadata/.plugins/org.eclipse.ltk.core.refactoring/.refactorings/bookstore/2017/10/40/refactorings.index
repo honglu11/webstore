@@ -1,0 +1,9 @@
+1507076536075	Rename type 'Item'
+1507076607617	Extract interface 'Item'
+1507077073990	Rename type 'Beverage'
+1507077097264	Extract interface 'Beverage'
+1507077119189	Delete element
+1507077250046	Extract interface 'Beverage'
+1507078440864	Rename type 'BeverageImpl'
+1507078470966	Copy compilation unit
+1507080128612	Copy compilation unit

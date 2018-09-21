@@ -1,0 +1,33 @@
+package ca.sait.bookstore.model;
+
+public class Beverage extends Item {
+	private char size;
+	
+	public Beverage(String name, double price) {
+		this(name, price, 'M');
+	}
+	
+	public Beverage(String name, double price, String size) {
+		super(name, price);
+		this.size = size;
+		
+	}
+	/**
+	 * @return the size
+	 */
+	public char getSize() {
+		return size;
+	}
+	/**
+	 * @param size the size to set
+	 */
+	public void setSize(char size) {
+		this.size = size;
+	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return super.toString() + " - " + getSize();
+	}
+}

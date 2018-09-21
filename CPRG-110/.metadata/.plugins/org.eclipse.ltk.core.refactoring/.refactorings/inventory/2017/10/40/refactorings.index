@@ -1,0 +1,6 @@
+1507341861778	Copy compilation unit
+1507350152412	Rename type 'HarvestFruitCommandType'
+1507350165278	Delete element
+1507352815379	Extract method 'getFruitList'
+1507353109851	Extract method 'getFruitVariety'
+1507355751076	Delete element
