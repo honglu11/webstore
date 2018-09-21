@@ -1,0 +1,29 @@
+<configuration xmlns="urn:hornetq"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="urn:hornetq /schema/hornetq-jms.xsd">
+   
+   <connection-factory name="NettyConnectionFactory">
+      <xa>false</xa>
+      <connectors>
+         <connector-ref connector-name="netty"/>
+      </connectors>
+      <entries>
+         <entry name="/ConnectionFactory"/>
+      </entries>
+      
+      <consumer-window-size>0</consumer-window-size>
+   </connection-factory>
+
+   <topic name="sait.ONE">
+    <entry name="/topic/sait.ONE" />
+   </topic>
+   
+   <topic name="sait.TWO">
+    <entry name="/topic/sait.TWO" />
+   </topic>
+   
+   <queue name="sait.THREE">
+    <entry name="/queue/sait.THREE" />
+   </queue>
+   
+</configuration>

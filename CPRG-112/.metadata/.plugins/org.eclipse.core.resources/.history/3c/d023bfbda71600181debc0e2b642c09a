@@ -1,0 +1,172 @@
+/**
+ * 
+ */
+package ca.sait.mystore.mvc.model.admin;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.annotation.Resource;
+import javax.enterprise.inject.Model;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.transaction.UserTransaction;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ca.sait.mystore.entity.Product;
+import ca.sait.mystore.mvc.model.ViewModel;
+
+/**
+ *
+ */
+@Model
+public class AdminProductModel extends ViewModel {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    private List<Product> products;
+    private Product product;
+    private String actionMessage;
+    private Map<String, String> inputErros = new HashMap<>();
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Resource
+    private UserTransaction transaction;
+
+    @Inject
+    private Validator validator;
+
+    @Override
+    public void handle(HttpServletRequest request, HttpServletResponse response) {
+        logger.trace("ENTER handle(request, response)");
+
+        try {
+            retrieveAllProducts();
+
+            transaction.begin();
+
+            final String oid = request.getParameter("oid");
+            if (oid != null && !oid.trim().isEmpty()) {
+                final UUID uuid = UUID.fromString(oid);
+                product = entityManager.find(Product.class, uuid);
+            } else {
+                product = new Product();
+            }
+
+            final String action = request.getParameter("action");
+            logger.debug("action: {}", action);
+
+            if (action != null) {
+                switch (action.toLowerCase()) {
+                case "update":
+                    update(request);
+                    break;
+                case "delete":
+                    break;
+                case "cancel":
+                    break;
+                default:
+                    logger.warn("Unknown action: {}", action);
+                }
+            }
+        } catch (final Exception ex) {
+            logger.error(ex.getMessage(), ex);
+            actionMessage = ex.getMessage();
+            return;
+        } finally {
+            try {
+                transaction.commit();
+            } catch (final Exception ex) {
+                logger.error(ex.getMessage(), ex);
+
+                try {
+                    transaction.rollback();
+                } catch (final Exception exRollback) {
+                    logger.error(exRollback.getMessage(), exRollback);
+                }
+            }
+
+            logger.trace("EXIT handle(request, response)");
+        }
+    }
+
+    private void retrieveAllProducts() {
+        logger.trace("ENTER retrieveAllProducts()");
+
+        final TypedQuery<Product> query = entityManager.createNamedQuery(Product.FIND_ALL, Product.class);
+        products = query.getResultList();
+
+        logger.trace("EXIT retrieveAllProducts()");
+    }
+
+    private void update(HttpServletRequest request) {
+        logger.trace("ENTER update(request)");
+
+        final String productName = request.getParameter("productName");
+        final String price = request.getParameter("price");
+        final String invQuantity = request.getParameter("invQuantity");
+        final String description = request.getParameter("description");
+
+        product.setDescription(description);
+        product.setInventoryQty(Integer.parseInt(invQuantity));
+        product.setPrice(Double.parseDouble(price));
+        product.setProductName(productName);
+
+        final Set<ConstraintViolation<Product>> issues = validator.validate(product);
+
+        if (issues.isEmpty()) {
+
+            if (product.getOid() == null) {
+                // logger.debug("Generated new OID: {}", product.getOid().toString());
+                actionMessage = "Created New Product";
+
+                entityManager.persist(product);
+            } else {
+                logger.debug("Updated OID: {}", product.getOid().toString());
+                actionMessage = "Updated Product";
+            }
+        } else {
+            
+        }
+        logger.trace("EXIT update(request)");
+    }
+
+    public String getActionMessage() {
+        return actionMessage;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+    
+    /**
+     * @return the inputErros
+     */
+    public Map<String, String> getInputErros() {
+        return inputErros;
+    }
+
+    /**
+     * @param inputErros the inputErros to set
+     */
+    public void setInputErros(Map<String, String> inputErros) {
+        this.inputErros = inputErros;
+    }
+}

@@ -1,0 +1,69 @@
+/**
+ * 
+ */
+package ca.sait.mystore.mvc.model;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+import javax.enterprise.inject.Model;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.transaction.UserTransaction;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ca.sait.mystore.entity.Person;
+
+/**
+ *
+ */
+@Model
+public class HomeModel extends ViewModel {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+    
+    @PersistenceContext
+    private EntityManager entityManager;
+   
+    @Resource
+    private UserTransaction transaction;
+    
+    @PostConstruct
+    private void postConstruct() {
+        logger.trace("ENTER postConstruct()");
+        
+        try {
+            final TypedQuery<Person> query = entityManager.createNamedQuery(Person.FIND_BY_EMAIL, Person.class);
+            query.setParameter("email", "admin");
+            
+            if (query.getResultList().isEmpty()) {
+                transaction.begin();
+                final Person person = new Person();
+                person.setEmail("admin");
+                person.setPassword("admin");
+                person.setFirstName("admin");
+                person.setLastName("admin");
+                person.setRole("Admin");
+                
+                entityManager.persist(person);
+                transaction.commit();
+            }
+        } catch(final Exception ex) {
+            logger.error(ex.getMessage(), ex);
+        } finally {
+            logger.trace("EXIT postConstruct()");
+        }
+    }
+
+    
+    @Override
+    public void handle(HttpServletRequest request, HttpServletResponse response) {
+        logger.trace("ENTER handle(request, response)");
+        
+        logger.trace("EXIT handle(request, response)");
+    }
+}

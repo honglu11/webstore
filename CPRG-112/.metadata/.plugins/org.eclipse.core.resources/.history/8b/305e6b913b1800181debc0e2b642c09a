@@ -1,0 +1,17 @@
+package ca.sait.mystore.entity;
+
+import java.util.UUID;
+import javax.annotation.Generated;
+import javax.persistence.metamodel.SingularAttribute;
+import javax.persistence.metamodel.StaticMetamodel;
+
+@Generated(value="Dali", date="2018-02-22T18:47:49.475-0700")
+@StaticMetamodel(PersonBackup.class)
+public class PersonBackup_ {
+	public static volatile SingularAttribute<PersonBackup, UUID> oid;
+	public static volatile SingularAttribute<PersonBackup, String> firstName;
+	public static volatile SingularAttribute<PersonBackup, String> lastName;
+	public static volatile SingularAttribute<PersonBackup, String> email;
+	public static volatile SingularAttribute<PersonBackup, String> password;
+	public static volatile SingularAttribute<PersonBackup, String> role;
+}

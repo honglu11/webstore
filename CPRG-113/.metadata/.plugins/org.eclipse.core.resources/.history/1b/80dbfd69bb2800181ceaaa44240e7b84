@@ -1,0 +1,23 @@
+package ca.sait.ejb;
+
+import java.util.concurrent.atomic.AtomicLong;
+
+import javax.ejb.Local;
+import javax.ejb.LocalBean;
+import javax.ejb.Singleton;
+
+/**
+ * Session Bean implementation class SingletonEJB
+ */
+@Singleton
+@LocalBean
+@Local(SingletonEJBLocal.class)
+public class SingletonEJB implements SingletonEJBLocal {
+
+    private final AtomicLong COUNTER = new AtomicLong();
+    
+    public long getCount() {
+        return COUNTER.incrementAndGet();        
+    }
+
+}

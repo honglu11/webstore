@@ -1,0 +1,89 @@
+/**
+ *
+ */
+package ca.sait.model;
+
+import javax.enterprise.inject.Model;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ca.sait.entity.Person;
+
+/**
+ * @author honglu
+ *
+ */
+// Modle cannot be final class, cannot be abstract
+@Model
+public class PersonDetailsFrom implements MVCModel {
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
+    private Person person;
+    
+    
+    /**
+     * @return the person
+     */
+    public Person getPerson() {
+        return person;
+    }
+
+
+    /**
+     * @param person the person to set
+     */
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    private final StringBuilder errorMessage = new StringBuilder();
+
+    public PersonDetailsFrom() {
+        logger.trace("ENTER Constructor of Person");
+        logger.trace("EXIT Constructor of Person");
+    }
+   
+
+    @Override
+    public String toString() {
+        return "";
+    }
+
+    // deal with the business logic
+    public boolean isValid() {
+        logger.trace("ENTER isValid()");
+        if (person.getFirstName() == null || person.getFirstName().trim().isEmpty()) {
+            errorMessage.append("Required First Name");
+        }
+
+        if (person.getLastName() == null || person.getLastName().trim().isEmpty()) {
+            errorMessage.append(" Required Last Name");
+        }
+
+        logger.debug("errorMessage {} ", errorMessage.toString());
+        logger.debug("isValid() ", errorMessage.toString().isEmpty());
+        logger.trace("EXIT isValid()");
+        return errorMessage.toString().isEmpty();
+    }
+
+    @Override
+    public String getErrorMessage() {
+        // TODO Auto-generated method stub
+        return errorMessage.toString();
+    }
+
+    @Override
+    public void handle(HttpServletRequest request, HttpServletResponse response) {
+        logger.trace("ENTER handler");
+        final String firstName = request.getParameter("firstname");
+        final String lastName = request.getParameter("lastname");
+        person = new Person(firstName, lastName);
+        logger.debug("First Name", firstName);
+        logger.debug("Last Name", lastName);
+        logger.trace("EXIT handler");
+    }
+ 
+}

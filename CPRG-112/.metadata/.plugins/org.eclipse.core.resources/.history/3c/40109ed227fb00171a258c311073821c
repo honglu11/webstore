@@ -1,0 +1,43 @@
+package ca.sait.http.listener;
+
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Application Lifecycle Listener implementation class ApplicatoinListener
+ *
+ */
+@WebListener // application level when deploy get application information
+public class ApplicatoinListener implements ServletContextListener {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    /**
+     * Default constructor. 
+     */
+    public ApplicatoinListener() {
+        // TODO Auto-generated constructor stub
+    }
+
+     /**
+     * @see ServletContextListener#contextDestroyed(ServletContextEvent)
+     */
+    public void contextDestroyed(ServletContextEvent sce)  { 
+         logger.trace("ENTER contextDestroyed");
+         logger.trace("EXIT contextDestroyed");
+    }
+
+	/**
+     * @see ServletContextListener#contextInitialized(ServletContextEvent)
+     */
+    public void contextInitialized(ServletContextEvent sce)  { 
+        logger.trace("ENTER contextInitialized"); // only initiialize once
+        final String appName = "test";
+        sce.getServletContext().setAttribute("appName", appName); // get SevletContext() in application level
+        logger.trace("EXIT contextInitialized");
+    }
+	
+}

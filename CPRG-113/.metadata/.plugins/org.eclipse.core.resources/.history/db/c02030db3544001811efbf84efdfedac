@@ -1,0 +1,12 @@
+/**
+ * 
+ */
+package ca.sait.myStore.rs.resources;
+
+/**
+ * @author honglu
+ *
+ */
+public class PersonResource {
+
+}

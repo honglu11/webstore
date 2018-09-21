@@ -1,0 +1,5 @@
+package ca.sait.mvc.model;
+
+public class BasicModel {
+
+}

@@ -1,0 +1,74 @@
+/**
+ * 
+ */
+package ca.sait.ejb;
+
+import java.util.UUID;
+
+import javax.annotation.Resource;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.jms.JMSConsumer;
+import javax.jms.JMSContext;
+import javax.jms.JMSException;
+import javax.jms.JMSProducer;
+import javax.jms.Message;
+import javax.jms.Queue;
+import javax.jms.TextMessage;
+import javax.jms.Topic;
+
+import ca.sait.HasLogger;
+
+/**
+ * @author honglu
+ *
+ */
+@Stateless
+@LocalBean
+public class RequestReponseEJB implements HasLogger {
+    
+    @Inject
+    private JMSContext jmsContext;
+
+    @Resource(lookup = "java:/jms/queue/ResponseQueue") // inject this one in
+    private Queue responseQueue;
+
+    @Resource(lookup = "java:/jms/topic/RequestTopic") // inject this one in
+    private Topic requestTopic;
+    
+    private final String correlationId = UUID.randomUUID().toString(); // if message won't change don't use correlationId, if don't need to reply, degrade the performance
+    private final String msgSelector = "JMSCorrelationID='" + correlationId + "'";
+    
+    // if have multiple message need correlationId link message together.
+    public String sendMessage(String message) throws JMSException {
+        logger().trace("ENTER sendMessage(String message)");
+        try {
+            jmsContext.createContext(JMSContext.AUTO_ACKNOWLEDGE);
+            final TextMessage textMessage = jmsContext.createTextMessage(message);
+            textMessage.setJMSCorrelationID(correlationId); // same as setStringProperties
+            textMessage.setJMSReplyTo(responseQueue);
+            
+            JMSProducer producer = jmsContext.createProducer();
+            producer.send(requestTopic, textMessage);
+            logger().debug("message sent");
+            // final Destination tmp = jmsContext.createTemporaryQueue(); dynamic create queue expensive
+           
+            try ( final JMSConsumer consumer = jmsContext.createConsumer(responseQueue, msgSelector);) {
+            //jmsContext.createProducer().send(requestTopic, textMessage);
+            // logger().debug("message sent");
+            //return "Yikes";
+            //final Message responseMsg = consumer.receive();
+            
+            //return responseMsg.getBody(String.class);
+                //return consumer.receive(100).getBody(String.class);
+                return consumer.receiveBody(String.class, 6000);
+            }
+        } finally {
+            logger().trace("EXIT sendMessage(String message)");
+           // return "";
+        }
+        
+    }
+
+}

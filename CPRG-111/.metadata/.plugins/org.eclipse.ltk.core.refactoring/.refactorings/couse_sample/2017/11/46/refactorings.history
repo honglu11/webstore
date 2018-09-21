@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;couse_sample/src/main/java/ca/sait/hr/process/server.properties&apos; to &apos;Server.properties&apos;" description="Rename resource &apos;server.properties&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/main/java/ca/sait/hr/process/server.properties" name="Server.properties" stamp="1510976646817" updateReferences="true"/>
+</session>

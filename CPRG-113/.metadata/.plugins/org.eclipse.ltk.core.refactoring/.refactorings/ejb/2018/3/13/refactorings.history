@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;HelloTopicMDB.java&apos; to &apos;ejb/src/main/java/ca.sait.ejb&apos;&#x0D;&#x0A;- Original project: &apos;ejb&apos;&#x0D;&#x0A;- Destination element: &apos;ejb/src/main/java/ca.sait.ejb&apos;&#x0D;&#x0A;- Original element: &apos;ca.sait.ejb.HelloTopicMDB.java&apos;" description="Copy compilation unit" destination="/src\/main\/java&lt;ca.sait.ejb" element1="/src\/main\/java&lt;ca.sait.ejb{HelloTopicMDB.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1522371659972" units="1" version="1.0"/>
+</session>

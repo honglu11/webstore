@@ -1,0 +1,85 @@
+package ca.sait.http.listener;
+
+import javax.servlet.ServletContextAttributeEvent;
+import javax.servlet.ServletContextAttributeListener;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Application Lifecycle Listener implementation class ApplicationListener
+ *
+ */
+@WebListener
+public class ApplicationListener implements ServletContextListener, ServletContextAttributeListener {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    /**
+     * @see ServletContextListener#contextDestroyed(ServletContextEvent)
+     */
+    @Override
+    public void contextDestroyed(ServletContextEvent sce) {
+        logger.trace("ENTER contextDestroyed(sce)");
+        logger.trace("EXIT contextDestroyed(sce)");
+    }
+
+    /**
+     * @see ServletContextListener#contextInitialized(ServletContextEvent)
+     */
+    @Override
+    public void contextInitialized(ServletContextEvent sce) {
+        logger.trace("ENTER contextInitialized(sce)");
+
+        final String appName = "test";
+        sce.getServletContext().setAttribute("appName", appName);
+
+        logger.trace("EXIT contextInitialized(sce)");
+    }
+
+    /**
+     * @see ServletContextAttributeListener#attributeAdded(ServletContextAttributeEvent)
+     */
+    @Override
+    public void attributeAdded(ServletContextAttributeEvent event) {
+        logger.trace("ENTER attributeAdded(event)");
+
+        logger.debug("Source: {}", event.getSource());
+        logger.debug("Attribute: {}", event.getName());
+        logger.debug("Value: {}", event.getValue());
+
+        logger.trace("EXIT attributeAdded(se)");
+
+    }
+
+    /**
+     * @see ServletContextAttributeListener#attributeRemoved(ServletContextAttributeEvent)
+     */
+    @Override
+    public void attributeRemoved(ServletContextAttributeEvent event) {
+        logger.trace("ENTER attributeRemoved(event)");
+
+        logger.debug("Source: {}", event.getSource());
+        logger.debug("Attribute: {}", event.getName());
+        logger.debug("Value: {}", event.getValue());
+
+        logger.trace("EXIT attributeRemoved(se)");
+    }
+
+    /**
+     * @see ServletContextAttributeListener#attributeReplaced(ServletContextAttributeEvent)
+     */
+    @Override
+    public void attributeReplaced(ServletContextAttributeEvent event) {
+        logger.trace("ENTER attributeReplaced(event)");
+
+        logger.debug("Source: {}", event.getSource());
+        logger.debug("Attribute: {}", event.getName());
+        logger.debug("Value: {}", event.getValue());
+
+        logger.trace("EXIT attributeReplaced(se)");
+    }
+}

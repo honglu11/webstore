@@ -1,0 +1,75 @@
+/**
+ * 
+ */
+package ca.sait.mystore.ejb;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import javax.ejb.Local;
+import javax.ejb.Stateless;
+
+import ca.sait.dto.Person;
+import ca.sait.mystore.dao.PersonDAO;
+import ca.sait.mystore.entity.PersonEntity;
+import ca.sait.services.PersonService;
+
+/**
+ * @author Chris Elias
+ *
+ */
+@Stateless
+@Local(PersonService.class)
+public class PersonServiceImpl 
+implements PersonService {
+    @Inject
+    private PersonDAO personDAO;
+
+    /* (non-Javadoc)
+     * @see ca.sait.services.PersonService#create(ca.sait.dto.Person)
+     */
+    @Override
+    public void create(Person person) {
+        if ( null == personDAO.find(person.getOid())) {
+            PersonEntity personEntity = new PersonEntity();
+            personEntity.setOid(person.getOid());
+            personEntity.setBirthdate(person.getBirthdate());
+            personEntity.setEmail(person.getEmail());
+            personEntity.setFirstName(person.getFirstName());
+            personEntity.setLastName(person.getLastName());
+            //personEntity.setCreateDate(Date.UTC(2018, 04, 01, 0, 0, 0));
+            personEntity.setCreatedBy("test");
+            personEntity.setLastModifiedBy("test");
+            //personEntity.setLastModified(lastModified);
+            
+            personDAO.persist(personEntity);
+        }
+        
+    }
+
+    /* (non-Javadoc)
+     * @see ca.sait.services.PersonService#findByEmail(java.lang.String)
+     */
+    @Override
+    public Person findByEmail(String findByEmail) {
+        
+    }
+
+    /* (non-Javadoc)
+     * @see ca.sait.services.PersonService#findById(java.util.UUID)
+     */
+    @Override
+    public Person findById(UUID id) {
+    }
+
+    /* (non-Javadoc)
+     * @see ca.sait.services.PersonService#findAll()
+     */
+    @Override
+    public List<Person> findAll() {
+        return null;
+    }
+}

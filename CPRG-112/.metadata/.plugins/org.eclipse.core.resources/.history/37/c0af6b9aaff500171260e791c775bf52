@@ -1,0 +1,6 @@
+package ca.sait.model;
+
+public interface MVCModel {
+    public String getErrorMessage();
+
+}

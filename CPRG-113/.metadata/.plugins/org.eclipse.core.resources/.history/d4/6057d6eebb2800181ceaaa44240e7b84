@@ -1,0 +1,41 @@
+package ca.sait.ejb;
+
+import java.util.concurrent.atomic.AtomicLong;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.ejb.Local;
+import javax.ejb.LocalBean;
+import javax.ejb.Singleton;
+
+import ca.sait.business.SingletonEJBLocal;
+
+/**
+ * Session Bean implementation class SingletonEJB
+ */
+@Singleton
+@LocalBean
+@Local(SingletonEJBLocal.class)
+public class SingletonEJB implements SingletonEJBLocal {
+
+    private final AtomicLong COUNTER = new AtomicLong();
+    
+    // cannot gurrantee thread safe when increase since singleton
+    public long getCount() {
+        return COUNTER.incrementAndGet();        
+    }
+    
+    @PostConstruct
+    private void postConstruct() {
+        logger.trace("ENTER postConstruct");
+        logger.trace("EXIT postConstruct");
+    }
+    
+    @PreDestroy
+    private void preDestroy() {
+        logger.trace("ENTER preDestroy");
+        logger.trace("EXIT preDestroy");
+
+    }
+
+}

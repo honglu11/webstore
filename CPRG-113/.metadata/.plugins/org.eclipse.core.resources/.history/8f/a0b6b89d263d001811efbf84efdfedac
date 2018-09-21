@@ -1,0 +1,22 @@
+package ca.sait.mystore.entity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity(name="Product")
+@Table(name="product")
+public class ProductEntity extends AbstractEntity {
+    
+    @Column(name="product_name", length = 35, nullable=false)
+    private String name;
+    
+    @Column(name="description", length = 1024)
+    private String description;
+    
+    @Column(name="price", length = 10, precision=2)
+    private Double price;
+    
+    
+
+}

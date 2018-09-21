@@ -1,0 +1,260 @@
+/**
+ * 
+ */
+package ca.sait.mystore.mvc.model.shopping;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.annotation.Resource;
+import javax.enterprise.inject.Model;
+import javax.inject.Inject;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.EntityManager;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NoResultException;
+import javax.persistence.OneToMany;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.TypedQuery;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Status;
+import javax.transaction.SystemException;
+import javax.transaction.UserTransaction;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ca.sait.mystore.entity.Person;
+import ca.sait.mystore.entity.Product;
+import ca.sait.mystore.entity.ShoppingCart;
+import ca.sait.mystore.entity.ShoppingCartItem;
+import ca.sait.mystore.mvc.model.ViewModel;
+
+/**
+ *
+ */
+@Model
+public class ShoppingCartModel extends ViewModel {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    private List<ShoppingCart> shoppingCarts;
+    private ShoppingCart shoppingCart;
+    private String actionMessage;
+
+    private Person customer;   
+
+    private List<ShoppingCartItem> items;
+
+    // private String invQuantity;
+    // private String price;
+
+    private Map<String, String> inputErrors = new HashMap<>();
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Resource
+    private UserTransaction transaction; // either create or reuse, here since filter create one, then here is reuse.
+
+    @Inject
+    private Validator validator;
+
+    @Override
+    public void handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        logger.trace("ENTER handle(request, response)");
+
+        try {
+            retrieveAllShoppingCarts();
+
+            final String oid = request.getParameter("oid");
+            if (oid != null && !oid.trim().isEmpty()) {
+                final UUID uuid = UUID.fromString(oid);
+                shoppingCart = entityManager.find(ShoppingCart.class, uuid);
+                // if (product.getPrice() != null)
+                // price = product.getPrice().toString();
+                //
+                // if (product.getInventoryQty() != null)
+                // invQuantity = product.getInventoryQty().toString();
+
+            } else {
+                shoppingCart = new ShoppingCart();
+            }
+
+            final String action = request.getParameter("action");
+            logger.debug("action: {}", action);
+
+            if (action != null) {
+                switch (action.toLowerCase()) {
+                case "update":
+                    update(request);
+                    break;
+                case "delete":
+                    break;
+                case "cancel":
+                    break;
+                default:
+                    logger.warn("Unknown action: {}", action);
+                }
+            }
+        } catch (final Exception ex) {
+            logger.error(ex.getMessage(), ex);
+            actionMessage = ex.getMessage();
+
+        } finally {
+
+            if (transaction.getStatus() == Status.STATUS_ACTIVE && !inputErrors.isEmpty())
+                transaction.setRollbackOnly();
+
+            logger.trace("EXIT handle(request, response)");
+        }
+    }
+
+    private void retrieveAllShoppingCarts() {
+        logger.trace("ENTER retrieveAllShoppingCarts()");
+
+        final TypedQuery<ShoppingCart> query = entityManager.createNamedQuery(ShoppingCart.SELECT_ALL,
+                ShoppingCart.class);
+        shoppingCarts = query.getResultList();
+
+        logger.trace("EXIT retrieveAllShoppingCarts()");
+    }
+
+    private void update(HttpServletRequest request) {
+        logger.trace("ENTER update(request)");
+
+        final String startDate = request.getParameter("startDate");
+        final String submitDate = request.getParameter("submitDate");
+        final String shipDate = request.getParameter("shipDate");
+        
+        // how to get customer email
+        final String customerEmail = request.getParameter("customerEmail");
+
+        // question how to get person and items?
+
+        // try {
+        // product.setInventoryQty(Integer.parseInt(invQuantity));
+        // } catch ( final Exception ex) {
+        // inputErrors.put("invQuantity", invQuantity.concat(" invalid number"));
+        // }
+        //
+        // try {
+        // product.setPrice(Double.parseDouble(price));
+        // } catch ( final Exception ex) {
+        // inputErrors.put("price", price.concat(" invalid price"));
+        // }
+
+        shoppingCart.setStartDate(stringToDate(startDate));
+        shoppingCart.setSubmitDate(stringToDate(submitDate));
+        shoppingCart.setShipDate(stringToDate(shipDate));
+        final TypedQuery<Person> queryPerson = entityManager.createNamedQuery(Person.FIND_BY_EMAIL, Person.class);
+        shoppingCart.setCustomer(queryPerson.setParameter("email", customerEmail).getSingleResult());
+
+        // how to get customer??
+        
+        final Set<ConstraintViolation<ShoppingCart>> issues = validator.validate(shoppingCart);
+
+        if (issues.isEmpty()) {
+
+            if (shoppingCart.getOid() == null) {
+
+                actionMessage = "Created New ShoppingCart";
+                final TypedQuery<ShoppingCart> query = entityManager.createNamedQuery(ShoppingCart.FIND_BY_CUSTOMER, ShoppingCart.class);
+                query.setParameter("customer", shoppingCart.getCustomer());
+                // query.setMaxResults(5);
+
+                try {
+                    final ShoppingCart s = query.getSingleResult();
+                    inputErrors.put("shoppingCart", "Already Exists");
+                    actionMessage = "Unable to create new shoppingCart";
+
+                } catch (final NoResultException ex) {
+
+                    entityManager.persist(shoppingCart);
+                    shoppingCarts.add(shoppingCart);
+                    actionMessage = "Create New ShoppingCart";
+                }
+            } else {
+                logger.debug("Updated OID: {}", shoppingCart.getOid().toString());
+                actionMessage = "Updated ShoppingCart";
+            }
+        } else {
+            issues.forEach(issue -> {
+                final String attributeName = issue.getPropertyPath().toString();
+                final String errorMsg = issue.getMessage();
+
+                logger.debug("Attribute Name: {})", attributeName);
+                logger.debug("Error Message: {})", errorMsg);
+
+                inputErrors.put(attributeName, errorMsg);
+
+            });
+
+        }
+        logger.trace("EXIT update(request)");
+    }
+
+    public String getActionMessage() {
+        return actionMessage;
+    }
+
+    /**
+     * @return the inputErros
+     */
+    public Map<String, String> getInputErrors() {
+        return inputErrors;
+    }
+
+    /**
+     * @param inputErros
+     *            the inputErros to set
+     */
+    public void setInputErrros(Map<String, String> inputErrors) {
+        this.inputErrors = inputErrors;
+    }
+    
+    /**
+     * @return the customer
+     */
+    public Person getCustomer() {
+        return customer;
+    }
+
+    /**
+     * @param customer the customer to set
+     */
+    public void setCustomer(Person customer) {
+        this.customer = customer;
+    }
+
+    public String dateToString(Date date) {
+        // final DateTimeFormatter dateFormatter =
+        // DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        // final String formattedDate = date.format(dateFormatter);
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+
+        return df.format(date);
+    }
+
+    public Date stringToDate(String dateString) throws ParseException {
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        return df.parse(dateString);
+    }
+
+}

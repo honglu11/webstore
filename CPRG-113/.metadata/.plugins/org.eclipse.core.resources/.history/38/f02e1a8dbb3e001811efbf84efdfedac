@@ -1,0 +1,41 @@
+/**
+ * 
+ */
+package ca.sait.mystore.dao;
+
+import java.util.UUID;
+
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+
+import ca.sait.dto.Person;
+import ca.sait.mystore.entity.PersonEntity;
+
+/**
+ * @author celias
+ *
+ */
+@Stateless
+@LocalBean
+public class PersonDAO extends AbstractDAO<PersonEntity> {
+
+    public PersonDAO(final EntityManager entityManager) {
+        super(entityManager, PersonEntity.class);
+    }
+    
+    public Person findDTO(UUID id) {
+        return getEntityManager().find(Person.class, id);
+    }
+    
+    public PersonEntity findByEmail(String email) {
+        return null;
+    }
+    
+    public Person findByEmailDTO(String email) {
+        return null;
+    }
+ 
+    
+    
+}

@@ -1,0 +1,12 @@
+/**
+ * 
+ */
+package ca.sait.mvc.session;
+
+/**
+ * @author honglu
+ *
+ */
+public class SessionModel {
+
+}

@@ -1,0 +1,52 @@
+/**
+ * 
+ */
+package ca.sait.myStore.rs.resources;
+
+import java.util.Date;
+import java.util.UUID;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import ca.sait.dto.Person;
+import ca.sait.myStore.HasLogger;
+
+/**
+ * @author honglu
+ *
+ */
+@Path("/person")
+public class PersonResource implements HasLogger {
+
+    private Person person;
+
+    public PersonResource() {
+        final UUID oid = UUID.randomUUID();
+        final String firstName = "fred";
+        final String lastName = "jones";
+        final String email = "fjones@gmail.com";
+        final Date birthdate = new Date();
+       person = new Person(oid, firstName, lastName, email, birthdate);
+    }
+    
+    /**
+     * @return the person
+     */
+    // can produce mutiple content type. @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @GET
+    @Path("/xml")
+    @Produces({MediaType.APPLICATION_XML})
+    public Person getPersonXML() {
+        return person;
+    }
+
+    @GET
+    @Path("/json")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Person getPersonJSON() {
+        return person;
+    }
+}

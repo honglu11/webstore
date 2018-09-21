@@ -1,0 +1,22 @@
+/**
+ * 
+ */
+package ca.sait.ejb;
+
+import javax.interceptor.InvocationContext;
+
+/**
+ * @author honglu
+ *
+ */
+public class MyInterceptor implements HasLogger {
+    public Object ourInterceptorMethod(InvocationContext context) throws Exception {
+        logger().trace("ENTER ourInterceptorMethod(InvocationContext context)");
+        try { 
+            return context.proceed();
+        } finally {
+        logger().trace("EXIT ourInterceptorMethod(InvocationContext context)");
+        }
+    }
+
+}

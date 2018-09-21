@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Configure usage of the security domain "other" -->
+<jboss-web>
+    <security-domain>security-mystore</security-domain>
+    <disable-audit>false</disable-audit>
+</jboss-web>

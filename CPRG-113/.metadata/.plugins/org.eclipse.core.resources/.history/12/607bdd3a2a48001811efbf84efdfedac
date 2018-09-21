@@ -1,0 +1,42 @@
+/**
+ * 
+ */
+package ca.sait.services;
+
+import java.util.List;
+import java.util.UUID;
+
+import ca.sait.dto.Person;
+import ca.sait.dto.Product;
+
+/**
+ * @author Hong Lu
+ *
+ */
+
+public interface ProductService {
+
+    /**
+     * 
+     * @param product
+     */
+    public void create(Product product);
+    
+    /**
+     * 
+     * @param findByName
+     */
+    public Product findByName(String name);
+    
+    /**
+     * 
+     * @param id
+     */
+    public Product findById(UUID id);
+    
+    /**
+     * 
+     * @return
+     */
+    public List<Product> findAll();
+}

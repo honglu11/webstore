@@ -1,0 +1,6 @@
+ADD the security domain
+JBOSS_HOME/bin/jboss-cli.sh --connect --file=configure-security-domain.cli
+
+
+REMOVE the security domain
+JBOSS_HOME/bin/jboss-cli.sh --connect --file=remove-security-domain.cli 

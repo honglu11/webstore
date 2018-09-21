@@ -1,0 +1,14 @@
+/**
+ * 
+ */
+package ca.sait.ejb;
+
+import ca.sait.HasLogger;
+
+/**
+ * @author honglu
+ *
+ */
+public class RequestReponseEJB implements HasLogger {
+
+}

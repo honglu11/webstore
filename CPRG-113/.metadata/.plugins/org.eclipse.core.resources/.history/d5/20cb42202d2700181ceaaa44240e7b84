@@ -1,0 +1,29 @@
+package ca.sait.ejb;
+
+import javax.ejb.Local;
+import javax.ejb.Stateless;
+
+import ca.sait.business.MyFirst;
+
+/**
+ * Session Bean implementation class MyFirstEJB
+ */
+@Stateless
+@Local(MyFirst.class)
+public class MyFirstEJB implements MyFirst {
+
+    /**
+     * Default constructor. 
+     */
+    public MyFirstEJB() {
+        // TODO Auto-generated constructor stub
+    }
+
+    @Override
+    public String sayHello() {
+        // TODO Auto-generated method stub
+        return "Hello there!!!";
+    }
+    
+
+}

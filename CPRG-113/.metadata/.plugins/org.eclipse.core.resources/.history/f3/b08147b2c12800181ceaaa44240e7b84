@@ -1,0 +1,11 @@
+package ca.sait.mvc.model;
+
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Model;
+import javax.inject.Named;
+
+@RequestScoped
+@Named
+public class BasicModel {
+
+}

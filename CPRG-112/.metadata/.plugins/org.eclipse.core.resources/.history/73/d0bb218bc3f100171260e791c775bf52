@@ -1,0 +1,61 @@
+package ca.sait.http.servlet;
+
+import java.io.IOException;
+
+import javax.inject.Inject;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ca.sait.model.Person;
+
+/**
+ * Servlet implementation class PersonControllerServlet
+ */
+@WebServlet("/person")
+public class PersonControllerServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	private Logger logger = LoggerFactory.getLogger(getClass());
+	@Inject
+	private Person person;
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	// http://localhost:8280/introServlet/person?firstName=Hong&lastName=Lu&action=add
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		logger.trace("ENTER doGet(HttpServletRequest request, HttpServletResponse response)");
+		
+		final String action = request.getParameter("action");
+		// model information
+		// lefthand never null, the action null is ok, won't have null pointer exception
+		if ("add".equalsIgnoreCase(action)) {
+		final Person person = new Person();
+		person.setFirstName(request.getParameter("firstName"));
+		person.setLastName(request.getParameter("lastName"));
+		
+		request.setAttribute("person", person);
+		}
+		
+		final RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/personDetails.jsp");
+		requestDispatcher.forward(request, response);
+		
+		logger.trace("EXIT doGet(HttpServletRequest request, HttpServletResponse response)");
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		logger.trace("ENTER doPost(HttpServletRequest request, HttpServletResponse response)");
+		doGet(request, response);
+		logger.trace("EXIT doPost(HttpServletRequest request, HttpServletResponse response)");
+	}
+
+}

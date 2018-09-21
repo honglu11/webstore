@@ -1,0 +1,50 @@
+/**
+ * 
+ */
+package ca.sait.logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * @author honglu
+ *
+ */
+public class ExampleRunnableMain3 {
+	
+	private final Logger logger = LoggerFactory.getLogger(getClass());
+
+	/**
+	 * 
+	 */
+	public ExampleRunnableMain3() {
+		logger.trace("START ExampleThread()");
+		final ExampleRunnable3 r2 = new ExampleRunnable3(); // since i is private then two thread share the same i, the counter print out is screw up. two thread manipulate the same fields, i is put into temp memaory when thread swap, thread is confused by the values.
+		final Thread t1 = new Thread(r2);
+		final Thread t2 = new Thread(r2);
+		final Thread t3 = new Thread(r2);
+		final Thread t4 = new Thread(r2);
+		final Thread t5 = new Thread(r2);
+		final Thread t6 = new Thread(r2);
+	
+		t1.start();
+		t2.start();
+		t3.start();
+		t4.start();
+		t5.start();
+		t6.start();
+
+		
+		logger.trace("EXIT ExampleThread()");
+		
+	}
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		new ExampleRunnableMain3();
+
+	}
+
+}

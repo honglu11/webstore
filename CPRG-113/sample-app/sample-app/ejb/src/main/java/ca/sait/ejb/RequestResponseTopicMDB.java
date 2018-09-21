@@ -1,0 +1,59 @@
+package ca.sait.ejb;
+
+import javax.ejb.ActivationConfigProperty;
+import javax.ejb.MessageDriven;
+import javax.inject.Inject;
+import javax.jms.Destination;
+import javax.jms.JMSContext;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageListener;
+import javax.jms.TextMessage;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Message-Driven Bean implementation class for: HelloTopicMDB
+ */
+@MessageDriven(
+		activationConfig = { @ActivationConfigProperty(
+				propertyName = "destination", propertyValue = "java:/jms/topic/RequestTopic"), @ActivationConfigProperty(
+				propertyName = "destinationType", propertyValue = "javax.jms.Topic")
+		}, 
+		mappedName = "java:/jms/topic/RequestTopic")
+public class RequestResponseTopicMDB implements MessageListener {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+    @Inject
+    private JMSContext jmsContext;
+
+    /**
+    * @see MessageListener#onMessage(Message)
+    */
+   public void onMessage(Message message) {
+       logger.trace("ENTER onMessage(Message message)");
+       
+       try {
+       if (message instanceof TextMessage) {
+           final TextMessage text = (TextMessage)message;           
+               logger.info("Message: {}", text.getBody(String.class));
+               final Destination reply = message.getJMSReplyTo(); // get where to reply;
+               if ( reply != null ) {
+               final TextMessage replyMessage = jmsContext.createTextMessage("We got the message");
+               replyMessage.setJMSCorrelationID(message.getJMSCorrelationID()); // this correlationId will link information together, get original correlationId
+               jmsContext.createProducer().send(reply, replyMessage); // go to queue in response
+               }
+       } else {
+           logger.warn("Wrong message: {}", message.getClass().getName());
+       }
+       } catch(final JMSException ex) {
+           logger.error(ex.getMessage(), ex);
+       } finally {
+           logger.trace("EXIT onMessage(Message message)");
+           // java:/jms/queue/HelloTopic
+       }
+       
+   }
+
+}

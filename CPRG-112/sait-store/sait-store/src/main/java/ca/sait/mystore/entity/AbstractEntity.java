@@ -1,0 +1,130 @@
+/**
+ * 
+ */
+package ca.sait.mystore.entity;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.UUID;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+/**
+ * @author celias
+ *
+ */
+@SuppressWarnings("serial")
+@MappedSuperclass
+public class AbstractEntity
+implements Serializable {
+
+    @Id
+    @Column(name="oid", insertable=true, updatable=false, nullable=false, columnDefinition="CHAR(16) FOR BIT DATA")
+    private UUID oid;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name="create_date", insertable=true, updatable=false, nullable=false)
+    private Date createDate;
+    
+    @Temporal(TemporalType.DATE)
+    @Column(name="last_modified", insertable=false, updatable=true, nullable=true)
+    private Date lastModified;
+    
+    @Column(name="created_by", insertable=true, updatable=false, nullable=false, length=128)
+    private String createdBy;
+    
+    @Column(name="last_modified_by", insertable=false, updatable=true, nullable=true, length=128)
+    private String lastModifiedBy;
+
+    /**
+     * @return the oid
+     */
+    public UUID getOid() {
+        return oid;
+    }
+
+    /**
+     * @param oid the oid to set
+     */
+    public void setOid(UUID oid) {
+        this.oid = oid;
+    }
+
+    /**
+     * @return the createDate
+     */
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    /**
+     * @param createDate the createDate to set
+     */
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    /**
+     * @return the lastModified
+     */
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    /**
+     * @param lastModified the lastModified to set
+     */
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    /**
+     * @return the createdBy
+     */
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    /**
+     * @param createdBy the createdBy to set
+     */
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    /**
+     * @return the lastModifiedBy
+     */
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    /**
+     * @param lastModifiedBy the lastModifiedBy to set
+     */
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    @PrePersist
+    private void prePersist() {
+        if (oid == null)
+            oid = UUID.randomUUID();
+        
+        createDate = new Date();
+        createdBy = "Later";
+    }
+
+    @PreUpdate
+    private void preUpdate() {
+        lastModified = new Date();
+        lastModifiedBy = "Later";
+    }
+    
+}

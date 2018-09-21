@@ -1,0 +1,80 @@
+/**
+ * 
+ */
+package ca.sait.myStore.rs.resources;
+
+import java.util.Date;
+import java.util.UUID;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import ca.sait.dto.Person;
+import ca.sait.dto.Product;
+import ca.sait.myStore.HasLogger;
+
+/**
+ * @author honglu
+ *
+ */
+@Path("/product")
+public class ProductResource implements HasLogger {
+
+    private Product product;
+
+    public ProductResource() {
+        final UUID oid = UUID.randomUUID();
+        final String name = "computer";
+        final String description = "work station";
+        final double price = 10.22;
+
+        product = new Product(oid, name, description, price);
+    }
+
+    /**
+     * @return the person
+     */
+    // can produce mutiple content type. @Produces({MediaType.APPLICATION_XML,
+    // MediaType.APPLICATION_JSON})
+    @GET
+    // @Path("/xml")
+    @Path("{uuid}")
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    public Product getProduct(@PathParam("uuid") String uuid) {
+        logger().trace("ENTER getPerson()");
+        logger().debug("Submit UUID: {}", uuid);
+        try {
+            return pruduct;
+        } finally {
+            logger().trace("EXIT getPerson()");
+        }
+    }
+    
+    @DELETE
+    // @Path("/xml")
+    @Path("{uuid}")
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    public String deletePerson(@PathParam("uuid") String uuid) {
+        logger().trace("ENTER deletePerson()");
+        logger().debug("Submit UUID: {}", uuid);
+        try {
+            return uuid;
+        } finally {
+            logger().trace("EXIT deletePerson()");
+        }
+    }
+
+    // @GET
+    // @Path("/json")
+    // @Produces({MediaType.APPLICATION_JSON})
+    // public Person getPersonJSON() {
+    // return person;
+    // }
+}

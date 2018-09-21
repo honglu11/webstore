@@ -1,0 +1,37 @@
+package ca.sait.ejb;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateful;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Session Bean implementation class StatefulEJB
+ */
+@Stateful
+@LocalBean
+public class StatefulEJB implements StatefulEJBLocal {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+  
+    @PostConstruct
+    private void postConstruct() {
+        logger.trace("ENTER postConstruct");
+        logger.trace("EXIT postConstruct");
+    }
+    
+    @PreDestroy
+    private void preDestroy() {
+        logger.trace("ENTER preDestroy");
+        logger.trace("EXIT preDestroy");
+
+    }
+    
+    @Override
+    public String getMessage() {
+        return "hello statful";        
+    }
+
+}

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;ValidationException.java&apos; to &apos;hr/src/main/java/ca.sait.hr.server.pages&apos;&#x0D;&#x0A;- Original project: &apos;inventory&apos;&#x0D;&#x0A;- Destination element: &apos;hr/src/main/java/ca.sait.hr.server.pages&apos;&#x0D;&#x0A;- Original element: &apos;ca.sait.cli.ValidationException.java&apos;" description="Copy compilation unit" destination="=hr/src\/main\/java&lt;ca.sait.hr.server.pages" element1="/src\/main\/java&lt;ca.sait.cli{ValidationException.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1512922510276" units="1" version="1.0"/>
+</session>

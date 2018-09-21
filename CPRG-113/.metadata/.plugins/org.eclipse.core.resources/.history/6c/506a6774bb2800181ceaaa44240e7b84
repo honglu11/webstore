@@ -1,0 +1,10 @@
+package ca.sait.ejb;
+
+import javax.ejb.Local;
+
+@Local
+public interface SingletonEJBLocal {
+    
+    public long getCount();
+
+}

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workingSetManager>
+<workingSet editPageId="org.eclipse.ui.resourceWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1510953509772_1" label="hr" name="hr">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/couse_sample" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/threads" type="4"/>
+</workingSet>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1509497692259_0" label="Window Working Set" name="Aggregate for window 1509497692259"/>
+</workingSetManager>

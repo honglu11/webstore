@@ -1,0 +1,51 @@
+package ca.sait.dto;
+
+import java.util.Date;
+import java.util.UUID;
+
+//immutable object since very attribute is final
+public class Product {
+
+    private final UUID oid;
+
+    private final String name;
+    private final String description;
+    private final Double price;
+
+    public Product(UUID oid, String name, String description, 
+            Double price ) {
+        this.oid = oid;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+    }
+
+    /**
+     * @return the oid
+     */
+    public UUID getOid() {
+        return oid;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @return the price
+     */
+    public Double getPrice() {
+        return price;
+    }
+
+}

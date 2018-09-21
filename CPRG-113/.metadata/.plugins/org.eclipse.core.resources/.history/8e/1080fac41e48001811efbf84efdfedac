@@ -1,0 +1,92 @@
+/**
+ * 
+ */
+package ca.sait.myStore.rs.resources;
+
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import javax.ejb.EJB;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import ca.sait.dto.Person;
+import ca.sait.myStore.HasLogger;
+import ca.sait.services.PersonService;
+
+/**
+ * @author honglu
+ *
+ */
+@Path("/person")
+@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+public class PersonResource implements HasLogger {
+    
+    @EJB
+    private PersonService personService;
+
+    private Person person;
+    
+    @GET
+    public Person[] getAll() {
+        final List<Person> people = personService.findAll();
+        final Person[] results = new Person[people.size()];
+        return people.toArray(results); // by default list cannot conver to xml
+    }
+
+//    public PersonResource() {
+//        final UUID oid = UUID.randomUUID();
+//        final String firstName = "fred";
+//        final String lastName = "jones";
+//        final String email = "fjones@gmail.com";
+//        final Date birthdate = new Date();
+//        person = new Person(oid, firstName, lastName, email, birthdate);
+//    }
+
+    /**
+     * @return the person
+     */
+    // can produce mutiple content type. @Produces({MediaType.APPLICATION_XML,
+    // MediaType.APPLICATION_JSON})
+    @GET
+    // @Path("/xml")
+    @Path("{uuid}")
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    public Person getPerson(@PathParam("uuid") String uuid) {
+        logger().trace("ENTER getPerson()");
+        logger().debug("Submit UUID: {}", uuid);
+        try {
+            return person;
+        } finally {
+            logger().trace("EXIT getPerson()");
+        }
+    }
+    
+    @DELETE
+    // @Path("/xml")
+    @Path("{uuid}")
+    public String deletePerson(@PathParam("uuid") String uuid) {
+        logger().trace("ENTER deletePerson()");
+        logger().debug("Submit UUID: {}", uuid);
+        try {
+            return uuid;
+        } finally {
+            logger().trace("EXIT deletePerson()");
+        }
+    }
+
+    // @GET
+    // @Path("/json")
+    // @Produces({MediaType.APPLICATION_JSON})
+    // public Person getPersonJSON() {
+    // return person;
+    // }
+}

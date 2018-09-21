@@ -1,0 +1,82 @@
+package ca.sait.http.servlet;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.annotation.Resource;
+import javax.inject.Inject;
+import javax.jms.Destination;
+import javax.jms.JMSContext;
+import javax.jms.JMSProducer;
+import javax.jms.Queue;
+import javax.jms.TextMessage;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Servlet implementation class ProducerServlet
+ */
+@WebServlet("/producer") //http://localhost:8280/web/producer?topic&msg=nice%20one
+public class ProducerServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	 private final Logger logger = LoggerFactory.getLogger(getClass());
+	
+	@Inject private JMSContext jmsContext;
+	
+	@Resource(lookup="java:/jms/queue/HelloQueue") // inject this one in
+	private Queue queue;
+	
+	@Resource(lookup="java:/jms/queue/HelloTopic") // inject this one in
+	private Queue topic;
+	       
+       
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	    logger.trace("ENTER doGet(HttpServletRequest request, HttpServletResponse response)");
+	    response.setContentType("text/html");
+	    final PrintWriter out = response.getWriter();
+	    
+	    try {
+	        final boolean useTopic = request.getParameterMap().containsKey("topic");
+	        final Destination dest = useTopic ? topic : queue;
+	        
+	        final String paramMsg = request.getParameter("msg");
+	        final String test = request.getParameter("test");
+	        final String msg = "Sending :" + paramMsg;
+	        
+	        // thread safe method
+//	        for (int i= 0; i < 50; i++) {
+//	          jmsContext.createProducer().send(dest, msg);
+//	        }
+	        
+	        int i = 0;
+	                  jmsContext.createProducer().send(dest, msg + "(" + i + ")");
+	                  
+	                  final TextMessage textmsg = jmsContext.createTextMessage(msg);
+	                  
+	                  if (test != null && !test.trim().isEmpty()) {
+	                      textmsg.setStringProperty("test", test);
+	                  }
+	   
+	        
+//	        final JMSProducer producer = jmsContext.createProducer();
+//	        producer.send((dest,  msg);
+	        
+	        out.println("send message to ");
+	        out.println(useTopic ? "TOPIC" : "QUEUE");
+	        out.println("<br/> Message Sent ");
+	        out.println(msg);
+	    } finally {
+	        logger.trace("EXIT doGet(HttpServletRequest request, HttpServletResponse response)");
+	    }
+	    
+	    
+	}
+
+}

@@ -1,0 +1,18 @@
+package ca.sait.jms.server;
+import org.apache.http.conn.util.InetAddressUtils;
+
+public class IpaddressValidate {
+    /**
+     * @param ip the ip
+     * @return check if the ip is valid ipv4 or ipv6
+     */
+    private static boolean isValidIp(final String ip) {
+      return InetAddressUtils.isIPv4Address(ip) || InetAddressUtils.isIPv6Address(ip);
+    }
+
+    public static void main(String[] args) {
+
+
+    }
+
+}

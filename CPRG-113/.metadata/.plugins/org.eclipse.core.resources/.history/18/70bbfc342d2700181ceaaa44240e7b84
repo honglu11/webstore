@@ -1,0 +1,8 @@
+package ca.sait.business;
+
+public interface MyFirst {
+
+    public String sayHello();
+        
+    
+}

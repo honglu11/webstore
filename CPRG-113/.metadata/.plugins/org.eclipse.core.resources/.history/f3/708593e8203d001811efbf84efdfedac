@@ -1,0 +1,40 @@
+/**
+ * 
+ */
+package ca.sait.services;
+
+import java.util.List;
+import java.util.UUID;
+
+import ca.sait.dto.Person;
+
+/**
+ * @author Chris Elias
+ *
+ */
+public interface PersonService {
+
+    /**
+     * 
+     * @param person
+     */
+    public void create(Person person);
+    
+    /**
+     * 
+     * @param findByEmail
+     */
+    public void findByEmail(String findByEmail);
+    
+    /**
+     * 
+     * @param id
+     */
+    public void findById(UUID id);
+    
+    /**
+     * 
+     * @return
+     */
+    public List<Person> findAll();
+}

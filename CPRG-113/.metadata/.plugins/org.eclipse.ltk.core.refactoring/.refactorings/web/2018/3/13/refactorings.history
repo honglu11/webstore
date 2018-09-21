@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;BasicModel.java&apos; to &apos;web/src/main/java/ca.sait.mvc.model&apos;&#x0D;&#x0A;- Original project: &apos;web&apos;&#x0D;&#x0A;- Destination element: &apos;web/src/main/java/ca.sait.mvc.model&apos;&#x0D;&#x0A;- Original element: &apos;ca.sait.mvc.model.BasicModel.java&apos;" description="Copy compilation unit" destination="/src\/main\/java&lt;ca.sait.mvc.model" element1="/src\/main\/java&lt;ca.sait.mvc.model{BasicModel.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1522369783119" units="1" version="1.0"/>
+</session>

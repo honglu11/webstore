@@ -1,0 +1,31 @@
+/**
+ * 
+ */
+package ca.sait.ejb;
+
+import javax.ejb.Local;
+import javax.ejb.Remote;
+import javax.ejb.Stateless;
+
+import ca.sait.business.GenerateReport;
+import ca.sait.business.MyFirstLocal;
+import ca.sait.business.MyFirstRemote;
+
+/**
+ * @author honglu
+ *
+ */
+@Stateless
+@Local(GenerateReport.class)
+public class GenerateReportEJB implements GenerateReport, HasLogger {
+
+    /* (non-Javadoc)
+     * @see ca.sait.business.GenerateReport#generateReport(java.lang.String)
+     */
+    @Override
+    public String generateReport(String reportName) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+}

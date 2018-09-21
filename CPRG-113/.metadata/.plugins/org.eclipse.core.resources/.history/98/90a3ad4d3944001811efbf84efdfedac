@@ -1,0 +1,41 @@
+/**
+ * 
+ */
+package ca.sait.myStore.rs.resources;
+
+import java.util.Date;
+import java.util.UUID;
+
+import javax.ws.rs.Path;
+
+import ca.sait.dto.Person;
+
+/**
+ * @author honglu
+ *
+ */
+@Path("/person")
+public class PersonResource {
+
+    private Person person;
+
+    public PersonResource() {
+        final UUID oid = UUID.randomUUID();
+        final String firstName = "fred";
+        final String lastName = "jones";
+        final String email = "fjones@gmail.com";
+        final Date birthdate = new Date();
+        final Person person = new Person(oid, firstName, lastName, email, birthdate);
+    }
+    
+    /**
+     * @return the person
+     */
+    public Person getPersonXML() {
+        return person;
+    }
+
+    public Person getPersonJSON() {
+        return person;
+    }
+}

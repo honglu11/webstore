@@ -1,0 +1,121 @@
+package ca.sait.http.servlet;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.concurrent.atomic.AtomicLong;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Servlet implementation class HelloWorldServlet
+ */
+@WebServlet({ "/helloworld", "/hello", "/one/*" })
+public class HelloWorldServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+    private Logger logger = LoggerFactory.getLogger(getClass());
+    private AtomicLong hitCounter = new AtomicLong();
+
+    @Override
+    public void init() throws ServletException {
+        logger.trace("ENTER init()");
+        logger.trace("EXIT init()");
+    }
+
+    public HelloWorldServlet() {
+        logger.trace("ENTER default constructor");
+        logger.trace("EXIT default constructor");
+    }
+
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+     *      response)
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // TODO Auto-generated method stub
+        // serialize improve performance
+        logger.trace("ENTER doGet()");
+        final String name = request.getParameter("name");
+        final PrintWriter writer = response.getWriter();
+        final Long hitCount = hitCounter.incrementAndGet();
+        final HttpSession session = request.getSession();
+        Long sessionCounter = (Long)session.getAttribute("sessionCounter"); //must be string for the key
+        if (sessionCounter == null ) {
+            sessionCounter = 0l;
+        }
+        sessionCounter++;
+        session.setAttribute("sessionCounter", sessionCounter);
+        
+        Long lifeCounter = null;
+        if (request.getCookies() != null ) {
+        for (final Cookie reqCookie : request.getCookies()) {
+            if (reqCookie.getName().equals("lifeCounter")) {
+            final Cookie  cookie = reqCookie;
+            lifeCounter = Long.parseLong(cookie.getValue());
+            cookie.setMaxAge(0); // expired the cookie
+            }
+        }
+        }
+        
+        if (lifeCounter == null) {
+            lifeCounter = sessionCounter;
+        } else {
+            lifeCounter++;
+        }
+        
+       // if (cookie == null) {
+        final Cookie cookie = new Cookie("lifeCounter", lifeCounter.toString());
+       // }
+        
+        response.addCookie(cookie);
+        
+        writer.append("Served at:").append(request.getContextPath());
+        writer.append("name = ").append(name).append("\n");
+        writer.append("Hit Counter:").append(hitCount.toString()).append("\n");
+        writer.append("Session Counter:").append(sessionCounter.toString()).append("\n");
+        //notice: when browser is closed, restart, the session will new then session counter will restart, session with browser. hit counter still count with server.
+        
+//        final RequestDispatcher requestDispatcher = request.getRequestDispatcher("/hello.jsp");
+//        requestDispatcher.forward(request, response);
+        // response.getWriter().append("Served at: ").append(request.getContextPath());
+        logger.trace("EXIT doGet()");
+    }
+
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+     *      response)
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // TODO Auto-generated method stub
+        logger.trace("ENTER doPost()");
+        final String name = request.getParameter("name");
+
+        final PrintWriter writer = response.getWriter(); // not close here
+        writer.append("Served at: ").append(request.getContextPath());
+        writer.append("name = ").append(name).append("\n");
+        doGet(request, response);
+        logger.trace("EXIT doPost()");
+    }
+
+    @Override
+    public void destroy() {
+        logger.trace("ENTER destroy"); // restart can see it
+        // TODO Auto-generated method stub
+        // super.destroy();
+        logger.trace("EXIt destroy");
+    }
+
+}

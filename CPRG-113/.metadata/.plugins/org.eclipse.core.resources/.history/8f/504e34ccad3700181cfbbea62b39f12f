@@ -1,0 +1,31 @@
+/**
+ * 
+ */
+package ca.sait.jms.listener;
+
+import javax.jms.CompletionListener;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageListener;
+
+/**
+ * @author hongl
+ *
+ */
+public class MsgListener 
+implements MessageListener, HasLogger {
+
+    @Override
+    public void onMessage(Message message) {
+       logger().trace("ENTER onMessage");
+       
+       try {
+           logger().info("On Message - {}", message.getBody(String.class));
+       } catch (JMSException ex) {
+           logger().error(ex.getMessage(), ex);
+       }
+       
+        logger().trace("EXIT onMessage");
+        
+    }
+}

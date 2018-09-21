@@ -1,0 +1,40 @@
+package ca.sait.ejb;
+
+import ca.sait.business.GenerateReport;
+import javax.ejb.Local;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import org.slf4j.Logger;
+
+/**
+ * Session Bean implementation class GenerateReportEJB
+ */
+@Stateless
+@Local({GenerateReport.class, HasLogger.class})
+@LocalBean
+public class GenerateReportEJB implements GenerateReport, HasLogger {
+
+    /**
+     * Default constructor. 
+     */
+    public GenerateReportEJB() {
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+     * @see GenerateReport#generateReport(String)
+     */
+    public String generateReport(String reportName) {
+        // TODO Auto-generated method stub
+			return null;
+    }
+
+	/**
+     * @see HasLogger#logger()
+     */
+    public Logger logger() {
+        // TODO Auto-generated method stub
+			return null;
+    }
+
+}

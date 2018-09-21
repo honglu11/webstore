@@ -1,0 +1,22 @@
+/**
+ * 
+ */
+package ca.sait.mystore.dao;
+
+import java.util.UUID;
+
+import javax.persistence.EntityManager;
+
+import ca.sait.mystore.entity.PersonEntity;
+import ca.sait.mystore.entity.ProductEntity;
+
+/**
+ * @author celias
+ *
+ */
+public class ProductDAO extends AbstractDAO<ProductEntity> {
+
+    public ProductDAO(final EntityManager entityManager) {
+        super(entityManager, ProductEntity.class);
+    }
+}

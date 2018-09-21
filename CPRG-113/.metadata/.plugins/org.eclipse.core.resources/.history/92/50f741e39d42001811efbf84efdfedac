@@ -1,0 +1,60 @@
+/**
+ * 
+ */
+package ca.sait.mystore.ejb;
+
+import java.util.List;
+import java.util.UUID;
+
+import ca.sait.dto.Product;
+import ca.sait.mystore.entity.PersonEntity;
+import ca.sait.mystore.entity.ProductEntity;
+import ca.sait.services.ProductService;
+
+/**
+ * @author honglu
+ *
+ */
+public class ProductServiceImpl implements ProductService {
+
+    /* (non-Javadoc)
+     * @see ca.sait.services.ProductService#create(ca.sait.dto.Product)
+     */
+    @Override
+    public void create(Product product) {
+        ProductEntity productEntity = new ProductEntity();
+        productEntity.setOid(product.getOid());
+        productEntity.setName(product.getName());
+        productEntity.setDescription(product.getDescription());
+        productEntity.setPrice(product.getPrice());
+
+    }
+
+    /* (non-Javadoc)
+     * @see ca.sait.services.ProductService#findByName(java.lang.String)
+     */
+    @Override
+    public Product findByName(String name) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see ca.sait.services.ProductService#findById(java.util.UUID)
+     */
+    @Override
+    public Product findById(UUID id) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see ca.sait.services.ProductService#findAll()
+     */
+    @Override
+    public List<Product> findAll() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+}

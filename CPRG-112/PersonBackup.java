@@ -1,0 +1,198 @@
+package ca.sait.mystore.entity;
+
+import java.io.Serializable;
+import java.util.UUID;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+@Entity(name="Person")
+@Table(name = "PERSON")
+@NamedQueries( {
+    @NamedQuery(name=Person.FIND_ALL, query="SELECT p FROM Person p ORDER BY p.lastName"),
+    @NamedQuery(name=Person.FIND_BY_EMAIL, query="SELECT p FROM Person p WHERE p.email = :email")    
+})
+public class PersonBackup implements Serializable {
+    
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 5073791973085380081L;
+
+    public static final String FIND_ALL = "Person.FindAll";
+    public static final String FIND_BY_EMAIL = "Person.FindByEmail";
+
+    @Id
+    @Column(name="oid", insertable=true, updatable=false, nullable=false, columnDefinition="CHAR(16) FOR BIT DATA")
+    private UUID oid;
+
+    // length = 35; not nullable
+    @NotNull
+    @Size(max=35, message="Maximum 35 chars")
+    @Column(name = "first_name", length = 35, nullable = false)
+    private String firstName;
+    
+    // length = 35; not nullable
+    @NotNull
+    @Size(max=35, message="Maximum 35 chars")
+    @Column(name = "last_name", length = 35, nullable = false)
+    private String lastName;
+    
+    // length = 128; not nullable, unique
+    @NotNull
+    @Size(max=128, message="Maximum 128 chars")
+    @Column(name = "email", length = 128, nullable = false, unique = true, updatable=false)
+    private String email;
+    
+    // length = 16; not nullable
+    @NotNull
+    @Size(max=16, message="Maximum 16 chars")
+    @Column(name = "password", length = 16, nullable = false)
+    private String password;
+    
+    // length = 16; not nullable
+    @NotNull
+    @Size(max=16, message="Maximum 16 chars")
+    @Column(name = "role", length = 16, nullable = false)
+    private String role;    
+
+    /**
+     * @return the oid
+     */
+    public UUID getOid() {
+        return oid;
+    }
+
+    /**
+     * @param oid the oid to set
+     */
+    public void setOid(UUID oid) {
+        this.oid = oid;
+    }
+
+    /**
+     * @return the firstName
+     */
+    public String getFirstName() {
+        return firstName;
+    }
+
+    /**
+     * @param firstName the firstName to set
+     */
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    /**
+     * @return the lastName
+     */
+    public String getLastName() {
+        return lastName;
+    }
+
+    /**
+     * @param lastName the lastName to set
+     */
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    /**
+     * @return the email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * @param email the email to set
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * @return the password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password the password to set
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     * @return the role
+     */
+    public String getRole() {
+        return role;
+    }
+
+    /**
+     * @param role the role to set
+     */
+    public void setRole(String role) {
+        this.role = role;
+    }
+    
+    @PrePersist
+    private void prePersist() {
+        if (oid == null)
+            oid = UUID.randomUUID();
+    }    
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((email == null) ? 0 : email.hashCode());
+        result = prime * result + ((oid == null) ? 0 : oid.hashCode());
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Person other = (Person) obj;
+        if (email == null) {
+            if (other.email != null)
+                return false;
+        } else if (!email.equals(other.email))
+            return false;
+        if (oid == null) {
+            if (other.oid != null)
+                return false;
+        } else if (!oid.equals(other.oid))
+            return false;
+        return true;
+    }
+
+}
+
+
+
+
+

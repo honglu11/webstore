@@ -1,0 +1,219 @@
+/**
+ * 
+ */
+package ca.sait.mystore.mvc.model.admin;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.annotation.Resource;
+import javax.enterprise.inject.Model;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Status;
+import javax.transaction.SystemException;
+import javax.transaction.UserTransaction;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ca.sait.mystore.entity.Person;
+import ca.sait.mystore.entity.Product;
+import ca.sait.mystore.mvc.model.ViewModel;
+
+/**
+ *
+ */
+@Model
+public class AdminPersonModel extends ViewModel {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private String title;
+    private List<Person> persons;
+    private Person person;
+    private String actionMessage;
+    
+    private Map<String, String> inputErrors = new HashMap<>();   
+
+    @PersistenceContext
+    private EntityManager entityManager;
+   
+    @Resource
+    private UserTransaction transaction;
+    
+    @Inject
+    private Validator validator;
+    
+    @Override
+    public void handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        logger.trace("ENTER handle(request, response)");
+        
+        title = "Fancy Person List";
+        
+        try {
+            retrieveAllPersons();
+           
+            final String oid = request.getParameter("oid");
+            if (oid != null && !oid.trim().isEmpty()) {
+                final UUID uuid = UUID.fromString(oid);
+                person = entityManager.find(Person.class, uuid);
+            } else {
+                person = new Person();
+            }
+  
+
+            final String action = request.getParameter("action");
+            logger.debug("action: {}", action);
+
+            if (action != null) {
+                switch(action.toLowerCase()) {
+                case "update":
+                    update(request);
+                    break;
+                case "delete":
+                    break;
+                case "cancel":
+                    break;
+                default:
+                    logger.warn("Unknown action: {}", action);
+                }
+            }
+        } catch (final Exception ex) {
+            logger.error(ex.getMessage(), ex);
+            actionMessage = ex.getMessage();
+        } finally {
+            if (transaction.getStatus() == Status.STATUS_ACTIVE && !inputErrors.isEmpty())
+                transaction.setRollbackOnly();              
+           
+            logger.trace("EXIT handle(request, response)");
+        }
+    }
+    
+    private void retrieveAllPersons() {
+        logger.trace("ENTER retrieveAllPersons()");
+        
+        final TypedQuery<Person> query = entityManager.createNamedQuery(Person.FIND_ALL, Person.class);
+        persons = query.getResultList();
+        
+        logger.trace("EXIT retrieveAllPersons()");
+    }
+    
+    private TypedQuery<Person> retrieveExistingPersonByEmail() {
+        logger.trace("ENTER retrieveExistingPersonByEmail()");         
+        
+        final TypedQuery<Person> query = entityManager.createNamedQuery(Person.FIND_BY_EMAIL, Person.class);
+        query.setParameter("email", person.getEmail());        
+        logger.trace("EXIT retrieveExistingPersonByEmail()");
+        return query;
+    }
+    
+    private void update(HttpServletRequest request) throws IllegalStateException, SystemException {
+        logger.trace("ENTER update(request)");
+        
+        final String firstName = request.getParameter("firstName");
+        final String lastName = request.getParameter("lastName");
+        final String email = request.getParameter("email");
+        final String password = request.getParameter("password");
+        final String role = request.getParameter("role");
+        
+        person.setFirstName(firstName);
+        person.setLastName(lastName);
+        person.setEmail(email);
+        person.setPassword(password);
+        person.setRole(role);
+        
+        final Set<ConstraintViolation<Person>> issues = validator.validate(person);
+                
+        if (issues.isEmpty()) {
+
+            if (person.getOid() == null) {
+                actionMessage = "Created New Person";
+                //final TypedQuery<Person> query = retrieveExistingPersonByEmail();
+                final TypedQuery<Person> query = entityManager.createNamedQuery(Person.FIND_BY_EMAIL, Person.class);
+                query.setParameter("email", person.getEmail());
+                try {
+                    final Person p = query.getSingleResult();
+                    inputErrors.put("email", "Already Exists");
+                    actionMessage = "Unable to create new person";
+
+                } catch (final NoResultException ex) {
+
+                    entityManager.persist(person);
+                    persons.add(person);
+                    actionMessage = "Create New Person";
+                }
+            } else {
+                logger.debug("Updated OID: {}", person.getOid().toString());
+                actionMessage = "Updated Person";
+            }
+        } else {
+            issues.forEach(issue -> {
+                final String attributeName = issue.getPropertyPath().toString();
+                final String errorMsg = issue.getMessage();
+
+                logger.debug("Attribute Name: {})", attributeName);
+                logger.debug("Error Message: {})", errorMsg);
+
+                inputErrors.put(attributeName, errorMsg);
+
+            });
+
+        }
+        logger.trace("EXIT update(request)");     
+    }
+    
+    public String getActionMessage() {
+        return actionMessage;
+    }
+    
+    public Person getPerson() {
+        return person;
+    }
+    
+    public List<Person> getPersons() {
+        return persons;
+    }
+
+    /**
+     * @return the title
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * @param title the title to set
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    
+    /**
+     * @return the inputErrors
+     */
+    public Map<String, String> getInputErrors() {
+        return inputErrors;
+    }
+
+    /**
+     * @param inputErrors the inputErrors to set
+     */
+    public void setInputErrors(Map<String, String> inputErrors) {
+        this.inputErrors = inputErrors;
+    }
+}
+
+
+
+

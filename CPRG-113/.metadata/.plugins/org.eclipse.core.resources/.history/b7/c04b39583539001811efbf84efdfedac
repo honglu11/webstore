@@ -1,0 +1,12 @@
+/**
+ * 
+ */
+package ca.sait.mvc.model;
+
+/**
+ * @author honglu
+ *
+ */
+public class ReportModel {
+
+}

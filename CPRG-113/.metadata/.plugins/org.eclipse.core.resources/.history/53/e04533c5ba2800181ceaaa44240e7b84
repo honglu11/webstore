@@ -1,0 +1,18 @@
+package ca.sait.ejb;
+
+import javax.ejb.Singleton;
+
+/**
+ * Session Bean implementation class SingletonEJB
+ */
+@Singleton
+public class SingletonEJB implements SingletonEJBLocal {
+
+    /**
+     * Default constructor. 
+     */
+    public SingletonEJB() {
+        // TODO Auto-generated constructor stub
+    }
+
+}

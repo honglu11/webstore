@@ -1,0 +1,57 @@
+/**
+ * 
+ */
+package ca.sait.mystore.dao;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+/**
+ * @author Chris Elias
+ *
+ */
+public abstract class AbstractDAO<TYPE, ID> {
+
+    private final Class<TYPE> entityClass;
+    
+    //@PersistenceContext cannot use @Inject not work application server
+    private final EntityManager entityManager;
+
+    /**
+     * 
+     * @param entityClass
+     */
+    protected AbstractDAO(EntityManager entityManager, final Class<TYPE> entityClass) {
+        this.entityClass = entityClass;
+        this.entityManager = entityManager;
+    }
+    
+    /**
+     * @return the entityManager
+     */
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
+    
+    /**
+     * 
+     * @param id
+     * @return
+     */
+    public TYPE find(ID id) {
+        return entityManager.find(entityClass, id);
+    }
+    
+    /**
+     * 
+     * @param entity
+     */
+    public void persist(TYPE entity) {
+        entityManager.persist(entity);
+    }
+    
+    public void delete(TYPE entity) {
+        entityManager.remove(entity);
+    }
+    
+}

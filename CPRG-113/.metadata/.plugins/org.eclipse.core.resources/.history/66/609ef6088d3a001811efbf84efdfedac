@@ -1,0 +1,87 @@
+**
+ * 
+ */
+package ca.sait.jms.listener;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
+import javax.jms.JMSContext;
+
+import org.hornetq.api.core.TransportConfiguration;
+import org.hornetq.api.jms.HornetQJMSClient;
+import org.hornetq.api.jms.JMSFactoryType;
+import org.hornetq.core.remoting.impl.netty.NettyConnectorFactory;
+import org.hornetq.core.remoting.impl.netty.TransportConstants;
+import org.hornetq.jms.client.HornetQConnectionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * @author Chris Elias
+ *
+ */
+public class MQConnectionFactory {
+    private static final Logger LOG = LoggerFactory.getLogger(MQConnectionFactory.class);
+    
+    private enum MQ { 
+        HornetQ {
+            
+            @Override
+            public JMSContext create(Properties props) {
+                final int port = Integer.valueOf(props.getProperty("mq.port"));
+                final String host = props.getProperty("mq.host");
+                
+                LOG.info("MQ Host: {}", host);
+                LOG.info("MQ Port: {}", port);
+                
+                final Map<String, Object> connectionParams = new HashMap<String, Object>();
+                connectionParams.put(TransportConstants.PORT_PROP_NAME, port);
+                connectionParams.put(TransportConstants.HOST_PROP_NAME, host);
+        
+                final TransportConfiguration transportConfiguration = 
+                        new TransportConfiguration(NettyConnectorFactory.class.getName(), connectionParams);
+        
+                // Directly instantiate the JMS ConnectionFactory object using that TransportConfiguration
+                final HornetQConnectionFactory connectionFactory = HornetQJMSClient.createConnectionFactoryWithoutHA(JMSFactoryType.CF, transportConfiguration);
+                return connectionFactory.createContext();
+            }
+        }, 
+        
+        ActiveMQ {
+            @Override
+            public JMSContext create(Properties props) {
+                return null;
+            }
+        }
+        
+        ;
+        
+        public abstract JMSContext create(Properties props);
+    };
+    
+    /**
+     * Hide the constructor
+     */
+    private MQConnectionFactory() {
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public static JMSContext newContext() {
+        final Properties props = new Properties();
+        try {
+            props.load(JMSContext.class.getResourceAsStream("/jmsConnectionFactory.properties"));
+            final String mqType = props.getProperty("mq.name");
+            return MQ.valueOf(mqType).create(props);
+            
+        } catch (final IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+}

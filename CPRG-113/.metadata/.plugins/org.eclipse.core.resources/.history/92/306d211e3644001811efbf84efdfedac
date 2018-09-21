@@ -1,0 +1,21 @@
+/**
+ * 
+ */
+package ca.sait.myStore.rs.resources;
+
+import javax.ws.rs.Path;
+
+import ca.sait.dto.Person;
+
+/**
+ * @author honglu
+ *
+ */
+@Path("/person")
+public class PersonResource {
+
+    private Person person;
+    public PersonResource() {
+        
+    }
+}

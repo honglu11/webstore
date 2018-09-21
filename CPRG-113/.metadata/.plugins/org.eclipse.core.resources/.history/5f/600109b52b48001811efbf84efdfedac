@@ -1,0 +1,88 @@
+/**
+ * 
+ */
+package ca.sait.myStore.rs.resources;
+
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import javax.ejb.EJB;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import ca.sait.dto.Person;
+import ca.sait.dto.Product;
+import ca.sait.myStore.HasLogger;
+import ca.sait.services.ProductService;
+
+/**
+ * @author honglu
+ *
+ */
+@Path("/product")
+@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+public class ProductResource implements HasLogger {
+    
+    @EJB
+    private ProductService productService;
+    
+    @GET
+    public Product[] getAll() {
+        final List<Product> products = productService.findAll();
+        final Product[] results = new Product[products.size()];
+        return products.toArray(results); 
+    }
+
+ 
+    @GET
+    @Path("{uuid}")
+    public Product getProduct(@PathParam("uuid") String uuid) {
+        logger().trace("ENTER getProduct()");
+        logger().debug("Submit UUID: {}", uuid);
+        try {
+            final Product product = productService.findById(UUID.fromString(uuid));
+            return product;
+        } finally {
+            logger().trace("EXIT getProduct()");
+        }
+    }
+    
+    @GET
+    @Path("name/{name}")
+    public Product getProductByName(@PathParam("name") String name) {
+        logger().trace("ENTER getProduct()");
+        logger().debug("Submit name: {}", name);
+        try {
+            final Product product = productService.findByName(name);
+            return product;
+        } finally {
+            logger().trace("EXIT getProduct()");
+        }
+    }
+    
+    @DELETE
+    @Path("{uuid}")
+    public String deleteProduct(@PathParam("uuid") String uuid) {
+        logger().trace("ENTER deleteProduct()");
+        logger().debug("Submit UUID: {}", uuid);
+        try {
+            return uuid;
+        } finally {
+            logger().trace("EXIT deleteProduct()");
+        }
+    }
+
+    // @GET
+    // @Path("/json")
+    // @Produces({MediaType.APPLICATION_JSON})
+    // public Person getPersonJSON() {
+    // return person;
+    // }
+}

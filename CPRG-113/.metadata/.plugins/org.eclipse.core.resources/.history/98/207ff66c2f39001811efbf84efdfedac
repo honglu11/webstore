@@ -1,0 +1,23 @@
+/**
+ * 
+ */
+package ca.sait.ejb;
+
+import ca.sait.business.GenerateReport;
+
+/**
+ * @author honglu
+ *
+ */
+public class GenerateReportEJB implements GenerateReport, HasLogger {
+
+    /* (non-Javadoc)
+     * @see ca.sait.business.GenerateReport#generateReport(java.lang.String)
+     */
+    @Override
+    public String generateReport(String reportName) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+}

@@ -1,0 +1,49 @@
+package ca.sait.ejb;
+
+import ca.sait.business.GenerateReport;
+
+import javax.annotation.Resource;
+import javax.ejb.Local;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.ejb.Timeout;
+import javax.ejb.Timer;
+import javax.ejb.TimerService;
+
+import org.slf4j.Logger;
+
+/**
+ * Session Bean implementation class GenerateReportEJB
+ */
+@Stateless
+@Local({GenerateReport.class, HasLogger.class})
+@LocalBean
+public class GenerateReportEJB implements GenerateReport, HasLogger {
+
+  @Resource
+  private TimerService timerService;
+    
+	/**
+     * @see GenerateReport#generateReport(String)
+     */
+    public String generateReport(String reportName) {
+        logger().trace("ENTER generateRepor");
+	try {
+	    timerService.createTimer(1000*20,  "Special Report - ".concat(reportName));
+	    return "Special Report - ".concat(reportName);
+	} finally {
+	    logger().trace("EXIT generateRepor");
+	}
+	
+    }
+
+    @Timeout
+    public void doReport(Timer timer) {
+        logger().trace("ENTER doReport(Timer timer)");
+        logger().info("Report Name(): {}", timer.getInfo());
+        // the rest of code below would generate the report
+        logger().trace("EXIT doReport(Timer timer)");
+    }
+    
+
+}

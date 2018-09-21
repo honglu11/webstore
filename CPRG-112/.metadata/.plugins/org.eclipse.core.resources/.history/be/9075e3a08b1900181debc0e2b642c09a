@@ -1,0 +1,56 @@
+package ca.sait.mystore.mvc.controller.shopping;
+
+import java.io.IOException;
+
+import javax.inject.Inject;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ca.sait.mystore.mvc.model.admin.AdminPersonModel;
+import ca.sait.mystore.mvc.model.admin.AdminProductModel;
+
+/**
+ * Servlet implementation class HomePageController
+ */
+@WebServlet("/adminperson")
+public class ShoppingCartController extends HttpServlet {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 5508437708531489289L;
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    @Inject private AdminPersonModel model;
+    
+    /**
+     * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse
+     *      response)
+     */
+    @Override
+    protected void service(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        logger.trace("ENTER service(request,response)");
+        
+        model.setActive("active");
+        model.setPageName("Create/Edit/Delete Persons");        
+        try {
+            model.handle(request, response);
+        } catch (final Exception ex) {
+           throw new ServletException(ex); 
+        }
+        
+        final RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin/person.jsp");
+        requestDispatcher.forward(request, response);
+        
+        logger.trace("EXIT service(request,response)");
+    }
+}

@@ -1,0 +1,54 @@
+/**
+ *
+ */
+package ca.sait.model;
+
+import javax.enterprise.inject.Model;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ca.sait.entity.Person;
+
+/**
+ * @author honglu
+ *
+ */
+// Modle cannot be final class, cannot be abstract
+@Model
+public class PersonDetailsFrom
+implments MVCModel
+{
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
+    private Person person;
+    private final StringBuilder errorMessage = new StringBuilder();
+
+    public StringBuilder getErrorMessage() {
+        return errorMessage.toString();
+    }
+
+    public PersonDetailsFrom() {
+        logger.trace("ENTER Constructor of Person");
+        logger.trace("EXIT Constructor of Person");
+    }
+
+    @Override
+    public String toString() {
+        return "";
+    }
+
+    // deal with the business logic
+    public boolean isValid() {
+        if (firstName == null || firstName.trim().isEmpty()) {
+            errorMessage.append("Required First Name");
+        }
+
+        if (lastName == null || lastName.trim().isEmpty()) {
+            errorMessage.append(" Required Last Name");
+        }
+
+        return errorMessage.toString().isEmpty();
+    }
+
+}

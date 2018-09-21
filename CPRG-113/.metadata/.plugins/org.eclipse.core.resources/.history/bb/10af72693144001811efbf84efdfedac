@@ -1,0 +1,17 @@
+/**
+ * 
+ */
+package ca.sait.xml;
+
+/**
+ * @author honglu
+ *
+ */
+public class PersonXMSTest {
+    
+    @Test
+    public void testPerson() {
+        
+    }
+
+}

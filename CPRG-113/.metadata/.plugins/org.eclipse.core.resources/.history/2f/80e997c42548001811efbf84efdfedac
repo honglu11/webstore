@@ -1,0 +1,131 @@
+/**
+ * 
+ */
+package ca.sait.myStore.rs.resources;
+
+import java.net.URI;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import javax.ejb.EJB;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
+
+import ca.sait.dto.Person;
+import ca.sait.myStore.HasLogger;
+import ca.sait.services.PersonService;
+
+/**
+ * @author honglu
+ *
+ */
+@Path("/person")
+@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+public class PersonResource implements HasLogger {
+    
+    @EJB
+    private PersonService personService;
+    
+    @GET
+    public Person[] getAll() {
+        final List<Person> people = personService.findAll();
+        final Person[] results = new Person[people.size()];
+        return people.toArray(results); // by default list cannot conver to xml
+    }
+
+//    public PersonResource() {
+//        final UUID oid = UUID.randomUUID();
+//        final String firstName = "fred";
+//        final String lastName = "jones";
+//        final String email = "fjones@gmail.com";
+//        final Date birthdate = new Date();
+//        person = new Person(oid, firstName, lastName, email, birthdate);
+//    }
+
+    /**
+     * @return the person
+     */
+    // can produce mutiple content type. @Produces({MediaType.APPLICATION_XML,
+    // MediaType.APPLICATION_JSON})
+    @GET
+    // @Path("/xml")
+    @Path("{uuid}")
+    public Person getPerson(@PathParam("uuid") String uuid) {
+        logger().trace("ENTER getPerson()");
+        logger().debug("Submit UUID: {}", uuid);
+        try {
+            final Person person = personService.findById(UUID.fromString(uuid));
+            return person;
+        } finally {
+            logger().trace("EXIT getPerson()");
+        }
+    }
+    
+    @GET
+    // @Path("/xml")
+    @Path("{email}")
+    public Person getPersonByEmail(@PathParam("email") String email) {
+        logger().trace("ENTER getPerson()");
+        logger().debug("Submit email: {}", email);
+        try {
+            final Person person = personService.findByEmail(email);
+            return person;
+        } finally {
+            logger().trace("EXIT getPerson()");
+        }
+    }
+    
+    @DELETE
+    @Path("{uuid}")
+    public Response deletePerson(@PathParam("uuid") String uuid, @Context UriInfo uriInfo) {
+        logger().trace("ENTER deletePerson()");
+        logger().debug("Submit UUID: {}", uuid);
+        try {
+            final UriBuilder builder = uriInfo.getAbsolutePathBuilder();
+            final URI uri = builder.build();
+            
+            personService.removePerson(UUID.fromString(uuid));
+            
+            return Response.status(HttpServletResponse.SC_NO_CONTENT).location(uri).build();
+        } finally {
+            logger().trace("EXIT deletePerson()");
+        }
+    }
+    
+    @PUT
+    public Response createPerson(Person person, @Context UriInfo uriInfo) {
+        logger().trace("ENTER createPerson()");
+
+        try {
+        final UriBuilder builder = uriInfo.getAbsolutePathBuilder();
+         
+        final UUID uuid = personService.create(person);
+        final URI uri = builder.path(uuid.toString()).build();
+        
+        return Response.created(uri).build();
+        } finally {
+            logger().trace("EXIT createPerson()");
+        }
+        
+    }
+
+    // @GET
+    // @Path("/json")
+    // @Produces({MediaType.APPLICATION_JSON})
+    // public Person getPersonJSON() {
+    // return person;
+    // }
+}

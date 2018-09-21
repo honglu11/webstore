@@ -1,0 +1,44 @@
+package ca.sait.http.servlet;
+
+import java.io.IOException;
+
+import javax.ejb.EJB;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import ca.sait.HasLogger;
+import ca.sait.business.GenerateReport;
+
+/**
+ * Servlet implementation class ReportServlet
+ */
+@WebServlet("/report")
+public class ReportServlet extends HttpServlet implements HasLogger {
+	private static final long serialVersionUID = 1L;
+       
+        @EJB
+        private GenerateReport generateReport;
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+        
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	    logger().trace("ENTER doGet");
+	    final String reportName = request.getParameterMap().computeIfAbsent("name",  k ->  f("default"))[0];
+	    final String msg = generateReport.generateReport(reportName);
+	    response.getWriter().append("Message: ").append(msg);
+		
+	    logger().trace("Exit doGet");
+	}
+	
+	private String [] f(String defaultValue) {
+	    final String[] a = {defaultValue};
+	    return a;
+	}
+
+	
+
+}

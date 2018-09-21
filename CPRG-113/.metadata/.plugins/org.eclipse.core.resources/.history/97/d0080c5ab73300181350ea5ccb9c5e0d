@@ -1,0 +1,45 @@
+/**
+ * 
+ */
+package ca.sait.ejb;
+
+import javax.annotation.Resource;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.jms.JMSContext;
+import javax.jms.Queue;
+import javax.jms.TextMessage;
+
+import ca.sait.HasLogger;
+
+/**
+ * @author honglu
+ *
+ */
+@Stateless
+@LocalBean
+public class RequestReponseEJB implements HasLogger {
+    
+    @Inject
+    private JMSContext jmsContext;
+
+    @Resource(lookup = "java:/jms/queue/ResponseQueue") // inject this one in
+    private Queue responseQueue;
+
+    @Resource(lookup = "java:/jms/topic/RequestTopic") // inject this one in
+    private Topic requestTopic;
+    
+    public String sendMessage(String message) {
+        logger().trace("ENTER sendMessage(String message)");
+        try {
+            final TextMessage textMessage = jmsContext.createTextMessage(message);
+            jmsContext.createProducer().send(requestTopic, textMessage);
+            return "";
+        } finally {
+            logger().trace("EXIT sendMessage(String message)");
+        }
+        
+    }
+
+}

@@ -1,0 +1,24 @@
+/**
+ * 
+ */
+package ca.sait.mystore.dao;
+
+import java.util.UUID;
+
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+
+import ca.sait.mystore.entity.PersonEntity;
+
+/**
+ * @author celias
+ *
+ */
+@Stateless
+@LocalBean
+public class PersonDAO extends AbstractDAO<PersonEntity, UUID> {
+
+    public PersonDAO() {
+        super(PersonEntity.class);
+    }
+}

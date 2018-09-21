@@ -1,0 +1,48 @@
+/**
+ * 
+ */
+package ca.sait.jms.producer;
+
+import javax.jms.Destination;
+import javax.jms.JMSContext;
+import javax.jms.JMSProducer;
+
+import ca.sait.jms.AsyncListener;
+import ca.sait.jms.HasLogger;
+import ca.sait.jms.MQConnectionFactory;
+
+/**
+ * @author Chris Elias
+ *
+ */
+public class SendMessageQueue implements HasLogger {
+
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
+        new SendMessageQueue().run();
+    }
+    
+    private void run() {
+        logger().trace("ENTER run()");
+        
+        try (final JMSContext jmsContext = MQConnectionFactory.newContext();) {
+            
+            final Destination destQueue = jmsContext.createQueue("sait.THREE");
+            final JMSProducer producer = jmsContext.createProducer();
+            
+            //producer.setAsync(new AsyncListener());
+            
+            for (int i = 0; i < 10; i++) {
+                final String msg = "hello-queue-" + i;
+                logger().info("Sending Message: {}", msg);
+                producer.send(destQueue, msg);
+            }
+
+            logger().trace("EXIT run()");
+        } catch (final Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+}
