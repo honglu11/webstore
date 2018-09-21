@@ -1,0 +1,16 @@
+     LB (browser)
+A1           A2
+1request <->(closter)   2nd request
+   
+     B(clouster need to work perfectly)
+
+two types of LB
+sticky ( hit -> stay on this server first browser like firefox, clome in the second one ), if A1 down, all redirect to A2. get new session, A1 copy to A2, then A2 has A1 session ( serialization )
+clouster, A1 can communicate to A2, 
+round robin
+
+Browser  request    server session created
+         response
+
+browser send request to server, server create session with session id then send the resonse back to the browser, browser cookies get session id and store it when session is not expired and browser is not closed.
+

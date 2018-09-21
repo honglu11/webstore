@@ -1,0 +1,156 @@
+"href": "http://localhost:8011/alternatepayments/v1/accounts/77777777/settlements?merchantRefNum=REF1463162913785&limit=10&offset=0{&startDate,endDate}"
+
+
+{
+    "meta": {
+        "numberOfRecords": 13,
+        "limit": 10,
+        "page": 2
+    },
+    "settlements": [
+        {
+            "id": "6f070dab-dfbb-486d-a16c-1c7db6296891",
+            "gatewayReconciliationId": "AAAAAAAAAM",
+            "merchantRefNum": "REF1463162913785",
+            "amount": 120,
+            "currencyCode": "EUR",
+            "paymentType": "RAPIDTRANSFER",
+            "txnTime": "2018-01-14T17:28:58Z",
+            "availableToRefund": 0,
+            "status": "RECEIVED",
+            "links": [
+                {
+                    "rel": "self",
+                    "href": "http://localhost:8011/alternatepayments/v1/accounts/77777777/settlements/6f070dab-dfbb-486d-a16c-1c7db6296891"
+                },
+                {
+                    "rel": "payment",
+                    "href": "http://localhost:8011/alternatepayments/v1/accounts/77777777/payments/6f070dab-dfbb-486d-a16c-1c7db6296891"
+                }
+            ]
+        },
+        {
+            "id": "dd6db5c9-7524-499a-8405-6a7fe3830dd7",
+            "gatewayReconciliationId": "AAAAAAAAAI",
+            "merchantRefNum": "REF1463162913785",
+            "amount": 120,
+            "currencyCode": "EUR",
+            "paymentType": "RAPIDTRANSFER",
+            "txnTime": "2018-01-14T17:18:19Z",
+            "availableToRefund": 120,
+            "status": "COMPLETED",
+            "links": [
+                {
+                    "rel": "self",
+                    "href": "http://localhost:8011/alternatepayments/v1/accounts/77777777/settlements/dd6db5c9-7524-499a-8405-6a7fe3830dd7"
+                },
+                {
+                    "rel": "payment",
+                    "href": "http://localhost:8011/alternatepayments/v1/accounts/77777777/payments/dd6db5c9-7524-499a-8405-6a7fe3830dd7"
+                }
+            ]
+        },
+        {
+            "id": "e3580125-8105-4319-96fa-99d9b7b1af73",
+            "gatewayReconciliationId": "AAAAAAAAAE",
+            "merchantRefNum": "REF1463162913785",
+            "amount": 120,
+            "currencyCode": "EUR",
+            "paymentType": "RAPIDTRANSFER",
+            "txnTime": "2018-01-14T17:13:13Z",
+            "availableToRefund": 0,
+            "status": "ERROR",
+            "error": {
+                "code": "1007",
+                "message": "Gateway Error",
+                "details": [
+                    "Error communicating with downstream provider."
+                ]
+            },
+            "links": [
+                {
+                    "rel": "self",
+                    "href": "http://localhost:8011/alternatepayments/v1/accounts/77777777/settlements/e3580125-8105-4319-96fa-99d9b7b1af73"
+                },
+                {
+                    "rel": "payment",
+                    "href": "http://localhost:8011/alternatepayments/v1/accounts/77777777/payments/e3580125-8105-4319-96fa-99d9b7b1af73"
+                }
+            ]
+        }
+    ],
+    "links": [
+        {
+            "rel": "prev",
+            "href": "http://localhost:8011/alternatepayments/v1/accounts/77777777/settlements?merchantRefNum=REF1463162913785&limit=10&offset=0{&startDate,endDate}"
+        },
+        {
+            "rel": "self",
+            "href": "http://localhost:8011/alternatepayments/v1/accounts/77777777/settlements?merchantRefNum=REF1463162913785&limit=10&offset=10"
+        }
+    ]
+}
+
+
+=========
+{"@timestamp":"2018-01-14T17:39:00.978+00:00","correlationId":"17de4922-9edc-4a23-b336-3cecb24703e0","guid":"17de4922-9edc-4a23-b336-3cecb24703e0","thread":"qtp1613092752-24","severity":"INFO","class":"com.paysafe.ss.logging.LoggerFilter","lineNum":"151","message":"(Unknown content type: null - the size in bytes=0)","json_message":"#asJson{(Unknown content type: null - the size in bytes=0)}","entryType":"request","Accept":"*/*","Connection":"keep-alive","User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36","Host":"localhost:8011","Accept-Encoding":"gzip, deflate, sdch, br","httpMethod":"GET","URI":"/alternatepayments/v1/accounts/77777777/payments?merchantRefNum=REF1463162913785&limit=10&offset=10&startDate=2017-12-15T17:35:38Z&endDate=2018-01-14T17:35:39Z","Cache-Control":"no-cache","Postman-Token":"29e6fb8f-2ed4-b8bf-0581-6d002a7050da","Accept-Language":"en-US,en;q=0.8","Content-Length":"-1","Content-Type":null}
+{"@timestamp":"2018-01-14T17:39:01.018+00:00","correlationId":"17de4922-9edc-4a23-b336-3cecb24703e0","guid":"17de4922-9edc-4a23-b336-3cecb24703e0","thread":"qtp1613092752-24","severity":"WARN","class":"o.s.orm.jpa.vendor.HibernateJpaDialect","lineNum":"366","message":"JDBC Connection to reset not identical to originally prepared Connection - please make sure to use connection release mode ON_CLOSE (the default) and to run against Hibernate 4.2+ (or switch HibernateJpaDialect's prepareConnection flag to false","json_message":"#asJson{JDBC Connection to reset not identical to originally prepared Connection - please make sure to use connection release mode ON_CLOSE (the default) and to run against Hibernate 4.2+ (or switch HibernateJpaDialect's prepareConnection flag to false}"}
+{"@timestamp":"2018-01-14T17:39:01.093+00:00","correlationId":"17de4922-9edc-4a23-b336-3cecb24703e0","guid":"17de4922-9edc-4a23-b336-3cecb24703e0","thread":"qtp1613092752-24","severity":"INFO","class":"c.p.p.a.c.g.s.GatewayServiceCallTemplate","lineNum":"131","message":"Completed the request to the gateway microservice","json_message":"#asJson{Completed the request to the gateway microservice}"}
+{"@timestamp":"2018-01-14T17:39:01.106+00:00","correlationId":"17de4922-9edc-4a23-b336-3cecb24703e0","guid":"17de4922-9edc-4a23-b336-3cecb24703e0","thread":"qtp1613092752-24","severity":"INFO","class":"c.p.p.a.c.s.MerchantTransactionRequestService","lineNum":"279","message":"The transaction status does not get updated to INITIATED as it is same as INITIATED.","json_message":"#asJson{The transaction status does not get updated to INITIATED as it is same as INITIATED.}"}
+{"@timestamp":"2018-01-14T17:39:01.117+00:00","correlationId":"17de4922-9edc-4a23-b336-3cecb24703e0","guid":"17de4922-9edc-4a23-b336-3cecb24703e0","thread":"qtp1613092752-24","severity":"WARN","class":"o.s.orm.jpa.vendor.HibernateJpaDialect","lineNum":"366","message":"JDBC Connection to reset not identical to originally prepared Connection - please make sure to use connection release mode ON_CLOSE (the default) and to run against Hibernate 4.2+ (or switch HibernateJpaDialect's prepareConnection flag to false","json_message":"#asJson{JDBC Connection to reset not identical to originally prepared Connection - please make sure to use connection release mode ON_CLOSE (the default) and to run against Hibernate 4.2+ (or switch HibernateJpaDialect's prepareConnection flag to false}"}
+{"@timestamp":"2018-01-14T17:39:01.166+00:00","correlationId":"17de4922-9edc-4a23-b336-3cecb24703e0","guid":"17de4922-9edc-4a23-b336-3cecb24703e0","thread":"qtp1613092752-24","severity":"INFO","class":"c.p.p.a.c.g.s.GatewayServiceCallTemplate","lineNum":"131","message":"Completed the request to the gateway microservice","json_message":"#asJson{Completed the request to the gateway microservice}"}
+{"@timestamp":"2018-01-14T17:39:01.177+00:00","correlationId":"17de4922-9edc-4a23-b336-3cecb24703e0","guid":"17de4922-9edc-4a23-b336-3cecb24703e0","thread":"qtp1613092752-24","severity":"INFO","class":"c.p.p.a.c.s.MerchantTransactionRequestService","lineNum":"279","message":"The transaction status does not get updated to COMPLETED as it is same as COMPLETED.","json_message":"#asJson{The transaction status does not get updated to COMPLETED as it is same as COMPLETED.}"}
+{"@timestamp":"2018-01-14T17:39:01.207+00:00","correlationId":"17de4922-9edc-4a23-b336-3cecb24703e0","guid":"17de4922-9edc-4a23-b336-3cecb24703e0","thread":"qtp1613092752-24","severity":"WARN","class":"o.s.orm.jpa.vendor.HibernateJpaDialect","lineNum":"366","message":"JDBC Connection to reset not identical to originally prepared Connection - please make sure to use connection release mode ON_CLOSE (the default) and to run against Hibernate 4.2+ (or switch HibernateJpaDialect's prepareConnection flag to false","json_message":"#asJson{JDBC Connection to reset not identical to originally prepared Connection - please make sure to use connection release mode ON_CLOSE (the default) and to run against Hibernate 4.2+ (or switch HibernateJpaDialect's prepareConnection flag to false}"}
+{"@timestamp":"2018-01-14T17:39:01.251+00:00","correlationId":"17de4922-9edc-4a23-b336-3cecb24703e0","guid":"17de4922-9edc-4a23-b336-3cecb24703e0","thread":"qtp1613092752-24","severity":"INFO","class":"c.p.p.a.c.g.s.GatewayServiceCallTemplate","lineNum":"131","message":"Completed the request to the gateway microservice","json_message":"#asJson{Completed the request to the gateway microservice}"}
+{"@timestamp":"2018-01-14T17:39:01.265+00:00","correlationId":"17de4922-9edc-4a23-b336-3cecb24703e0","guid":"17de4922-9edc-4a23-b336-3cecb24703e0","thread":"qtp1613092752-24","severity":"INFO","class":"c.p.p.a.c.util.CommonErrorHandlingUtil","lineNum":"137","message":"Microservice paysafe-psp-alternatepayments-rapid-transfer call, threw an exception with following error description: Internal Error. Please check exception for more details","json_message":"#asJson{Microservice paysafe-psp-alternatepayments-rapid-transfer call, threw an exception with following error description: Internal Error. Please check exception for more details}","stack_trace":"o.s.web.client.HttpServerErrorException: 500 Server Error\n\tat o.s.w.client.DefaultResponseErrorHandler.handleError(DefaultResponseErrorHandler.java:66)\n\tat o.s.web.client.RestTemplate.handleResponse(RestTemplate.java:700)\n\tat o.s.web.client.RestTemplate.doExecute(RestTemplate.java:653)\n\tat o.s.web.client.RestTemplate.execute(RestTemplate.java:613)\n\tat o.s.web.client.RestTemplate.exchange(RestTemplate.java:559)\n\tat c.p.p.a.c.s.RestTemplateRetryService.exchange(RestTemplateRetryService.java:50)\n\tat c.p.p.a.c.s.RestTemplateRetryService$$FastClassBySpringCGLIB$$2a1684d5.invoke(<generated>)\n\tat o.s.cglib.proxy.MethodProxy.invoke(MethodProxy.java:204)\n\tat o.s.a.f.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:738)\n\tat o.s.a.f.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)\n\tat o.s.r.i.RetryOperationsInterceptor$1.doWithRetry(RetryOperationsInterceptor.java:91)\n\tat o.s.retry.support.RetryTemplate.doExecute(RetryTemplate.java:286)\n\tat o.s.retry.support.RetryTemplate.execute(RetryTemplate.java:163)\n\tat o.s.r.i.RetryOperationsInterceptor.invoke(RetryOperationsInterceptor.java:118)\n\tat o.s.r.a.AnnotationAwareRetryOperationsInterceptor.invoke(AnnotationAwareRetryOperationsInterceptor.java:152)\n\tat o.s.a.f.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)\n\tat o.s.a.f.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:673)\n\tat c.p.p.a.c.s.RestTemplateRetryService$$EnhancerBySpringCGLIB$$dbe018e8.exchange(<generated>)\n\tat c.p.p.a.c.s.RestTemplateHystrixService.exchange(RestTemplateHystrixService.java:38)\n\tat c.p.p.a.c.g.service.RapidTransferService.exchange(RapidTransferService.java:33)\n\tat sun.reflect.GeneratedMethodAccessor299.invoke(Unknown Source)\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.lang.reflect.Method.invoke(Method.java:498)\n\tat c.n.h.c.j.command.MethodExecutionAction.execute(MethodExecutionAction.java:116)\n\tat c.n.h.c.j.command.MethodExecutionAction.executeWithArgs(MethodExecutionAction.java:93)\n\tat c.n.h.c.j.command.MethodExecutionAction.execute(MethodExecutionAction.java:78)\n\tat c.n.h.c.j.command.GenericCommand$1.execute(GenericCommand.java:48)\n\tat c.n.h.c.j.command.AbstractHystrixCommand.process(AbstractHystrixCommand.java:145)\n\tat c.n.h.c.javanica.command.GenericCommand.run(GenericCommand.java:45)\n\tat com.netflix.hystrix.HystrixCommand$2.call(HystrixCommand.java:302)\n\tat com.netflix.hystrix.HystrixCommand$2.call(HystrixCommand.java:298)\n\tat rx.internal.operators.OnSubscribeDefer.call(OnSubscribeDefer.java:46)\n\tat rx.internal.operators.OnSubscribeDefer.call(OnSubscribeDefer.java:35)\n\tat rx.internal.operators.OnSubscribeLift.call(OnSubscribeLift.java:48)\n\tat rx.internal.operators.OnSubscribeLift.call(OnSubscribeLift.java:30)\n\tat rx.internal.operators.OnSubscribeLift.call(OnSubscribeLift.java:48)\n\tat rx.internal.operators.OnSubscribeLift.call(OnSubscribeLift.java:30)\n\tat rx.internal.operators.OnSubscribeLift.call(OnSubscribeLift.java:48)\n\tat rx.internal.operators.OnSubscribeLift.call(OnSubscribeLift.java:30)\n\tat rx.Observable.unsafeSubscribe(Observable.java:10211)\n\tat rx.internal.operators.OnSubscribeDefer.call(OnSubscribeDefer.java:51)\n\tat rx.internal.operators.OnSubscribeDefer.call(OnSubscribeDefer.java:35)\n\tat rx.Observable.unsafeSubscribe(Observable.java:10211)\n\tat r.internal.operators.OnSubscribeDoOnEach.call(OnSubscribeDoOnEach.java:41)\n\tat r.internal.operators.OnSubscribeDoOnEach.call(OnSubscribeDoOnEach.java:30)\n\tat rx.internal.operators.OnSubscribeLift.call(OnSubscribeLift.java:48)\n\tat rx.internal.operators.OnSubscribeLift.call(OnSubscribeLift.java:30)\n\tat rx.Observable.unsafeSubscribe(Observable.java:10211)\n\tat r.i.operators.OperatorSubscribeOn$1.call(OperatorSubscribeOn.java:94)\n\tat c.n.h.s.c.HystrixContexSchedulerAction$1.call(HystrixContexSchedulerAction.java:56)\n\tat c.n.h.s.c.HystrixContexSchedulerAction$1.call(HystrixContexSchedulerAction.java:47)\n\tat c.n.h.s.c.HystrixContexSchedulerAction.call(HystrixContexSchedulerAction.java:69)\n\tat rx.internal.schedulers.ScheduledAction.run(ScheduledAction.java:55)\n\tat j.u.concurrent.Executors$RunnableAdapter.call(Executors.java:511)\n\tat java.util.concurrent.FutureTask.run(FutureTask.java:266)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)\n\tat j.u.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)\n\tat java.lang.Thread.run(Thread.java:748)\n"}
+
+
+ public void getSuccessDeclineSummaryByStatus(ReportSummary summary, ActivityRequest request)
+    throws Exception
+  {
+    TransactionStatusTotalResource list = requestTransactionStatusTotals(request);
+    List<Summary> sList = new ArrayList<>();
+    List<Summary> dList = new ArrayList<>();
+    for (TransactionStatusTotal t : list.transactionStatusTotals) {
+      if (errorCodes.contains(t.status)) {
+        dList.addAll(toSummaryDeclinedList(t));
+      } else {
+        if (!t.status.equals("RECEIVE"))
+          sList.add(toSummarySuccess(t));
+      }
+    }
+    summary.setSuccess(sList);
+    summary.setDeclines(dList);
+  }
+
+
+ private AltpTxnListItem toTxnListItem(TransactionResource t) throws ParseException
+  {
+    if (t.payment != null) {
+      return paymentToTxnListItem(t.payment);
+    } else if (t.refund != null) {
+      return transactionToTxnListItem(t.refund);
+    } else if (t.returnType != null) {
+      return transactionToTxnListItem(t.returnType);
+    } else if (t.returnReversal != null) {
+      return transactionToTxnListItem(t.returnReversal);
+    } else if (t.settlement != null && !t.settlement.status.equals("RECEIVE")) {
+      return transactionToTxnListItem(t.settlement);
+    } else if (t.voidAuth != null) {
+      return transactionToTxnListItem(t.voidAuth);
+    } else {
+      return null;
+    }
+  }
+
+
+<caches defaultCacheDir="${user.home}/.ivy2/artfact_cache">
+       <cache
+          name="artfact_cache"
+          basedir="${user.home}/.ivy2/artfact_cache"
+          artifactPattern="[organization]/[module]/[revision]/[module]-[revision](-[classifier]).[ext]"
+          ivyPattern="[organization]/[module]/[revision]/[module]-[revision](-[classifier]).pom"
+       />
+    </caches>
+
+ feature/NBX-5324-transaction-status-totals-report

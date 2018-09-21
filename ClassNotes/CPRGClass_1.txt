@@ -1,0 +1,58 @@
+Package - Structure the class
+final class cannot extend
+
+long creditCradNumber = 123_5679_123L; ( underscore make more easy to read );
+Long number = 123_123L;
+
+byte aByte = ob1000_0100;
+
+short ashort = (short)123_12;
+
+Integer can be null, cannot be null of primitive. Integer can be use to compare.
+
+instanceof Compares an object to a specified type
+
+Java bean: fields, setter, getter.
+
+domain: for GroupId
+
+any J2SE version change should be in pom.xml, don't do in class path
+
+slf.logging is API, log4j is implement. logback
+
+Data Accept Object: DAO
+
+Object to read all from DAO. read write, query from database.
+
+Test case is small
+
+Design from back end first, then to front end
+
+console or file: byte, charactor two type
+
+if use manipulate the images, use byte, input stream, output stream
+if use manipulate the text string, use char, reader write
+
+https:// secure default port is 443
+
+producer -> read a file -> submit into the queue
+conumer -> get something from queue, do the work
+queue is the shared resource of the 
+
+consumer producer pattern
+
+java message service - 
+
+SQL 92
+
+1. mutiple thread?
+2. mamimum connection?
+
+final String header = in.redLine();
+
+if ( header != null ) {
+final string [] uri = header.split("\\ ");
+
+if uri[1].equals(/shutdown)
+
+

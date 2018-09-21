@@ -1,0 +1,7 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Employee Home</title>
+</head>
+<body>"Welcome to Employee Home"</body>
+</html>

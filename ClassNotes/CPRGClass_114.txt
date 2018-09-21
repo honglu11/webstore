@@ -1,0 +1,128 @@
+CPRG-114 class notes
+
+down load wildFly12 
+eplise - help - update
+
+server->create server->select folder->
+window preference-> Text Editors -> insert space replace tabs
+workspace->localhistory remove limit
+Java-codestyle clean up - edit Eclipse[build-in]-select every thing rather sort member
+missing code -> add serial version Generated Add umimplmented method
+
+Java-codestyle formatter edit - indentation space only - 4, 4
+
+Java - execute ENV select 1.8.0
+
+xml editor use space 8, ufu 8
+web - css, html use utf 8
+
+database - remove DB - new -> new Derby-> change name to MyStore-> add driver, select one delete list .jar, add new derbyClient from the derby bin.-> mystore app/app check derby bin and see see mystore there. test connection. ping success, done.
+
+right click-> properties ->JPA->EclipseLink 2.5 x
+ download lib Userlib-> uncheck include lib with this app. select Annotated classes must be listed 
+Source folder src/main/java
+
+Preference - Run/Debug->console-> uncheck limit console
+
+setup java class dynamic
+
+ear - combine everything project together and deploy. widfly -> standalone -> deployments
+
+.jar, .ear, .war
+
+jstl standarder of web servlet.
+
+different folders have different pom.xml, but version number only in parent's pom.xml.
+
+shopping cart has relationship with 
+
+person and role are many to many relationship
+
+if pageContext.request.userPrincipal is empty not log in, register
+
+if pageContext.request.userPrincipal is not null/not empty, means has been log in.
+
+
+cartlist->items->can update status to complete or cancel, if cancel the quantity will return put back into inventory
+if complete, set to shipped ?
+
+
+@Entity(name="ShoppingCart")
+@Table(name="shopping_cart") //Entity cannot be final
+@NamedQueries({
+    @NamedQuery(name=ShoppingCartEntity.QUERY_DTO_FIND_BY_OID, query="SELECT " + ShoppingCartEntity.CONSTRUCT_PARAM + " FROM ShoppingCart s WHERE s.oid = :oid"),
+    @NamedQuery(name=ShoppingCartEntity.QUERY_DTO_FIND_ALL, query="SELECT " + ShoppingCartEntity.CONSTRUCT_PARAM + " FROM ShoppingCart s"),
+    
+    @NamedQuery(name=ShoppingCartEntity.QUERY_FIND_BY_OID, query="SELECT s FROM ShoppingCart s WHERE s.oid = :oid"),
+    @NamedQuery(name=ShoppingCartEntity.QUERY_FIND_ALL, query="SELECT s FROM ShoppingCart s"),
+})
+public class ShoppingCartEntity extends AbstractEntity {
+    
+    public static final String QUERY_DTO_FIND_BY_OID = "ShoppingCartDTO.findByOid";
+    public static final String QUERY_DTO_FIND_ALL = "ShoppingCartDTO.findAll";
+
+    public static final String QUERY_FIND_BY_OID = "ShoppingCartEntity.findByOid";
+    public static final String QUERY_FIND_ALL = "ShoppingCartEntity.findAll";
+
+    protected static final String CONSTRUCT_PARAM =
+            "new ca.sait.dto.ShoppingCart( " +
+            "   s.customer.firstName," +
+            "   s.customer.lastName," +
+            "   s.shippedDate," +        
+            "   s.status " +
+            ")";
+
+
+public final class ShoppingCart implements Serializable {
+    
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -908418532439517217L;
+ 
+    private UUID oid;
+
+    private String firstName;
+
+    private String lastName;
+
+    private Date shoppingDate;
+
+    private Date shippedDate;
+
+    private Date recievedDate;
+ 
+    private CartStatus status;    
+   
+    private List<CartItem> items; // when get items attribute reference then query the items
+    
+    public ShoppingCart() {
+        this(null, null, null, null);
+    }
+    
+    public ShoppingCart(UUID oid, String firstName, String lastName, Date shippedDate, 
+            CartStatus status ) {
+        this.oid = oid;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.shippedDate = shippedDate;
+        this.status = status;
+    }
+
+
+http://localhost:8180/mystore-admin/ui/#/admin/persons  # hash is anchor.
+
+index jsp
+
+index.jsp/
+
+send patch attributes
+
+javascript rounter() is java's controller
+
+rountes[uri] = {id:id} javascript hash
+
+web service: everytime need to submit all information through network, populate table. slow.
+javascript: save time for single page, not submit all the fields. flexity. single page never change a lot after load the data.
+
+jdk 10, wirefly12/13.

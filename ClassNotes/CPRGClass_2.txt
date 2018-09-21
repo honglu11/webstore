@@ -1,0 +1,196 @@
+Class 2: Chris.Elias@sait.ca
+Paackage name: use period, always lower case, can make long as you want, in file system it required limited path length so be careful. if has 255 chars directory combination, won't be able to deleted it. unless you connect to network and combine to your file, then can delete it.canot put number in the package.
+
+Class name: start with Capital follow with lower case. The second word will capital then lower cases. Cannot use Underscore.The file name should be the same as the java class.
+
+default: private only own class can see it.
+protected: children can see it.
+public: every one can see it.
+
+public class Shirt -> Modifier class class name
+Declare the field on the top of the class.
+
+public String description = "This is a description."; - modifier type variable name, won't use public in real life, since don't want to be munipulate.
+Java does not know String since String is not a primitive type. 
+
+primitive type: char, short, int, long, double, float, boolean.
+
+variable: cannot start with number.
+
+public char colourCode = 'U'; ( char is single character: can not colourCode = 'UA')
+har colourCode = 24; 
+
+java consisten field with angular, or other system. 
+Method name: cannot have underscore, cannot Capital of the first word. ( experience developer will let you fix it ), when change a method to a private, a waring will comes out if nobody use this method. if no use, just delete it. 
+
+a sentence always end with semicoloumn. code format is very important for the functionality.
+
+what is the impact of performance of the code?
+
+inbetween * is not importance but easy for developer to know it is comments. Documentation the java automatically.
+/**
+  This is a comment.
+*/
+
+documentation: http://docs.oracle.com/javase/8/docs/api/index.html
+
+	// Methods ( never show in Documentation )
+	
+the following will show in Documentation
+	/**
+	 * Displays information about our shirt
+	 */
+
+static main is the start point of the application
+
+final Shirt shirt = new Shirt();
+Shirt shirt = new Shirt(); will get error
+
+Shirt shirt;
+shirt = new Shirt();
+shirt = new Shirt(); will be ok since Shirt is not final. but if not final, if reassign has something wrong cannot debug.
+
+Shirt Shirt = new Shirt(); confusing don't know which one is variable, which one is class. vaiable start with lower character.
+
+Class 3:
+Stack           Heap
+10              Shirt
+memory 
+location
+1234
+
+int i = 10;
+infal Shirt shirt = new Shirt();
+=======================================
+
+Maven Project: publish to internet if use company group id, artifact id, if use fake one, will not publish if nobody get access.
+package: jar - standalone app(web application), pom - , war - 
+
+.m2 
+C:\Users\honglu\.m2\repository\log4j\log4j\1.2.12
+has checksum file: log4j-1.2.12.jar.sha1
+
+continue integration - make change version control, env make a build, not use maven, download the build, build the code automatically. 
+
+objects: can only extend one class
+Beverage: coffee, icetea, ( attributese: size, price, name )
+
+Books books, name, author, isbn, price, format
+Product lego,  name, price
+
+by default, all class come from Object
+
+if there is no extends, by default it extends from Object like
+
+public class Item extends Object {
+}
+
+ head ( problem use sequnce number as primary key to merge data to head office, use uuid as primary key instead.
+store1(sequence 1,2,3) store2( sequence 1,2,3, .. )
+
+Item
+
+Beverage
+
+ItemImpl      product
+
+BeverageAbastract
+
+BeverageHot/cold
+
+Harvest - get into inventory -> take raw stuff -> turn to material -> become product -> go to inventory
+
+we only process havest, we won't process product.
+
+// command
+Microsoft Windows [Version 10.0.14393]
+(c) 2016 Microsoft Corporation. All rights reserved.
+
+C:\Users\honglu>cd ..
+
+C:\Users>cd ..
+
+C:\>cd Assignment
+
+C:\Assignment>cd inventory
+
+C:\Assignment\inventory>dir
+ Volume in drive C has no label.
+ Volume Serial Number is 0636-E1C0
+
+ Directory of C:\Assignment\inventory
+
+10/05/2017  08:33 PM    <DIR>          .
+10/05/2017  08:33 PM    <DIR>          ..
+10/05/2017  05:37 PM    <DIR>          inventory
+               0 File(s)              0 bytes
+               3 Dir(s)  264,458,219,520 bytes free
+
+C:\Assignment\inventory>cd inventory
+
+C:\Assignment\inventory\inventory>java -jar inventory-completed-0.0.1.jar
+Enter Command:HF
+Fruit List
+--------------------
+        Apples
+        Apricots
+        Grapes
+        Cactus Pears
+--------------------
+Enter Commodity: Apples
+
+Variety List
+--------------------
+        McIntosh
+        Empire
+        Cortland
+        Gala
+        Artlet
+        Golden
+--------------------
+Enter Variety: Empire
+Quantity: 15
+harvest Date: 2017-01-01
+Created Apples-Empire
+Enter Command:Lhelp
+Invalid Command: Lhelp
+Enter Command:help
+HF - Harvest Fruit
+HV - Harvest Vegetable
+CR - Create Raw Material
+CP - Create Finished Product
+LIST - LIST - List all Inventory
+REMOVE - REMOVE - Remove Item from Inventory
+HELP - HELP - List all Commands
+EXIT - Exit out of application
+
+Enter Command:LIST
+
+Produce List
+--------------------
+        item id: 10100000 - Apples-Empire Harvest Date: 2017-01-01 Quantity: 15
+
+Raw Material List
+--------------------
+No Raw Materials in Inventory
+
+Finished Product List
+--------------------
+No Finished Product in Inventory
+
+Enter Command:
+
+Throwable -> Exception -> NumberFormatException 
+          -> NullPointerException
+
+
+      Collection
+
+Set                         List
+
+
+HashSet LinkListHashSet   ArrayList, LinkedList
+
+
+
+

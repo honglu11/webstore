@@ -1,0 +1,90 @@
+private static class ShutDownServer implements Runnable {
+		public void run() {
+			LOGGER.trace("ENTER ShutDown run()");
+			//ExecutorService service = Executors.newCachedThreadPool();
+            boolean isRun = true;
+			try (final ServerSocket server = new ServerSocket(SHUTDOWN_PORT);) {
+				while (isRun) {
+					LOGGER.debug("Shut Down Server get Shut Down value {}", DO_SHUTDOWN.get());
+					LOGGER.debug("Shut Down Server Waiting...");
+					try (Socket socket = server.accept();
+							final BufferedReader in = new BufferedReader(
+									new InputStreamReader(socket.getInputStream()));
+							final BufferedWriter out = new BufferedWriter(
+									new OutputStreamWriter(socket.getOutputStream()));) {
+						
+						final String tmpFirstLine = in.readLine();
+												
+						if (tmpFirstLine == null) {
+							continue;
+						}
+			
+						
+						final String[] resource = tmpFirstLine.split("\\ ");
+						final String method = resource[0];
+						final String[] uri = resource[1].split("\\?");
+
+						String s;
+						while ((s = in.readLine()) != null) {
+							LOGGER.info(s);
+							if (s.isEmpty()) {
+								break;
+							}
+						}
+						StringBuilder html = new StringBuilder();
+
+						html.append("<html>");
+						html.append("<head>");
+						html.append("<title>Server Manager</title>");
+						html.append("</head>");
+
+						html.append("<body>");
+						html.append("Shut Down Server Now? <br>").append("<br>");
+
+						if (resource[1].contains("/shutdown")) {
+							final String[] parameters = uri[1].split("\\&");
+							for (final String parameter : parameters) {
+								final String[] value = parameter.split("\\=");
+								html.append("<br >").append("Submit = ").append(value[0]).append("&nbsp;&nbsp;");
+								html.append("Value = ").append(value[1]).append("<br >");
+								LOGGER.debug("Value[1]) { } " + value[1]);
+								if (value[1].toString().equals("Yes")) {									
+									DO_SHUTDOWN.compareAndSet(false, true);						
+								}															 
+							}
+
+						} else {
+							html.append("</ br><form method='GET' action='/shutdown'>");
+							html.append("<input type='submit' name='submitbutton' value='Yes' />").append("&nbsp;&nbsp;");
+							html.append("<input type='submit' name='submitbutton' value='No' />");
+							html.append("</form>");
+						}
+
+						html.append("</body></html>");
+
+						final int size = html.length();
+
+						out.write("HTTP/1.1 200 OK\r\n");
+						out.write("Date: Tue, 28 Nov 2017 18:00:00 GMT\r\n");
+						out.write("Server: Special/1.0.0\r\n");
+						out.write("Content-Type: text/html\r\n");
+						out.write("Content-Length: " + size + "\r\n");
+						out.write("Expires: Thu, 19 Dec 2017 00:59:59 GMT\r\n");
+						out.write("Last-modified: Tue, 28 Nov 2017 18:00:00 GMT\r\n");
+						out.write("\r\n");
+
+						out.write(html.toString());
+
+						LOGGER.info("Do Shutdown");
+					}
+					
+					isRun = false;
+					//service.shutdown();
+				}
+			} catch (final IOException ex) {
+				LOGGER.error(ex.getMessage(), ex);
+			} finally {
+				LOGGER.trace("EXIT run()");
+			}
+		}
+	}

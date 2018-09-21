@@ -1,0 +1,242 @@
+Classnotes 113
+
+
+JMS - consumer producer pattern communication queue, one message, mutiple listener. one message one listener.
+pattern - JMS server
+
+ejb - java class - sit in the project by itself
+
+ear??
+
+common - sit between ejb and web project. ejb and web does not aware each other.
+
+DTO - Data Transfer Object
+
+One front end in this project, real thing has many front end.
+
+ear - just the project enterprise Archiar
+jar - java Archiar
+
+add new server -> new Server add wirefly11 default, select the exact folder and select full configuration file standaone-full
+
+wirefly - add ear.
+
+right click run as maven clean, maven install
+
+EJB Session Bean
+Stateless request
+Stateful exception
+Singleton only once
+
+Transaction - Container - application will take care the transaction for you
+              Bean - you have to take care by ur self
+
+real case: 99% use Container.
+
+
+how singleton deal with 
+
+EJB - enterprice bean
+
+@LocalBean
+communicate two Sevelets.
+
+@Local(MyFirst.class) local to the MyFirst interface
+@Remote won't use a lot any more. performance concern.
+
+Rest Web Service Client
+
+web service on the top of web service is web application
+
+@Transactional
+persistence.xml won't use in product ENV since only one connection, embed derby, 
+
+EJB, keep away from static method. when undeploy cannot undeploy properly, need to remove the 
+
+public SingletonEJB() {
+   COUNTER = new Atomiclong();
+}
+
+dont use constuctor if has postConstruct, since postCtonstruct has initialization, but constructor does not have access.
+
+Browser -> Servlet -> EJB
+
+State -> save in session
+cannot do everything in Servlet
+Stateful EJB, session need to add, not in servelt. if everything goes to 
+
+Serlvet client -> EJB -> Servlet request create stateful model object every time. -> model create for the request.
+
+singleton don't use in big data read write, use in cached data control access, really good.
+
+Service: Browser          Sevlet ( request in , response out request and response in the same thread )
+
+@Asychronize ( request and response in different thread ).
+
+whey one thread, @Inject model or sessionMode, work withing request scoped
+when use Asyn, not one thread any more, so we have to create our own new instance of model.
+
+Producer 1        Queue           Consumer 1 ( in server 1 )
+Producer 2                        Consumer 2 ( in server 2 )
+                   Message1 -> C1
+                   Message2 -> C2
+                   Message3 -> C3
+Message only consum once, if there is no consumer, message will be queued.
+
+JMS deliver gurrantee deliver, build in JMS, load balancing. One message to one consumer. producers does not know consumer.
+
+JMS topic: publish. consumers subscribe the topic, then all consumers get the same topic. 
+
+Producer 1 Topic   Consumer c1
+proudcer 2         consumer c2 ( listen to the same message topic ) one message can send to lots of consumer.
+derable subscription: like C2 disappear for a while, then come back, then it get all message when it disappear. consumer control it derable or not.
+
+JMS 1.2 add shareble consumer. Sharable c2, c3, message go to c1, go to c2, won't go c3, since c2 and c3 shared. c4 shared with c1, M1 go c1, c4 shared it, M2 go c2, c3 shared it. consumer has sharable ID.
+
+<jms-queue name="DLQ" entries="java:/jms/queue/DLQ"/> Dead Letter Queue, and message cannot deliver , go to this queue.
+
+activationConfig = { @ActivationConfigProperty(
+				propertyName = "destination", propertyValue = "java:/jms/queue/HelloQueue"), // what they will lisen to @ActivationConfigProperty(
+				propertyName = "destinationType", propertyValue = "javax.jms.Queue")
+
+TextMessage
+Object Message ( is seriazable ) -> go to network so need serilizable.
+Map Message key-value
+Byte Message
+
+performance: like to use TextMessage, ByteMessage. Use TextMessage, anything can use text message. different between queue and topic only done in activationConfig. consumer side no difference.
+
+EIP - pattern search
+Camel - tool.
+
+Diagnostic Command Reference Command Refeence.
+
+Why in module 8 consumer need to start up connection but production does not need to start up connection?
+
+durable - message save and if consumer off for a while when it up, it still receive the message when it sent out in off time.
+
+Producer        Queue/Topic       Consumer ( send the message back to producer? )  Producing Security
+
+                                  Consumer                                         Storing produce
+                                                                                   Auditing Transaction
+
+EJB in the web application???
+
+ejb send message and get response almost at the same time. so need to do commit to end message, then message permenatly in the Queue. then consumer can read it. ( apply TransactionManagement )
+
+if use container, finally when the message is end, the cosumer will get message ( when??? )
+
+@Stateless
+@LocalBean
+@TransactionManagement(TransactionManagementType.BEAN) // use transactionmanagement to control transaction
+
+if don't use these ejb, just use @RequestScope
+ don't need TrnasactionManagement, don't need commit, since auto commit. but lose ejb benefit.
+
+Standalone does not need to do begin transaction, since all auto begin, auto close, auto commit.
+
+if message send out, queue wait consumer to consume, but topic message will disappear if no consumer.
+
+
+consumer1.setMessageListener(new MessageListener() {
+                    
+                    @Override
+                    public void onMessage(Message message) {
+                        try {
+                            logger().info("Topic Shared Durable1 - {}", message.getBody(String.class));
+                        } catch (JMSException ex) {
+                            logger().error(ex.getMessage(), ex);
+                        }
+                    }
+                });
+    
+                // two consumer won't share listener
+                consumer2.setMessageListener(new MessageListener() {
+                    
+                    @Override
+                    public void onMessage(Message message) {
+                        try {
+                            logger().info("Topic Shared Durable2 - {}", message.getBody(String.class));
+                        } catch (JMSException ex) {
+                            logger().error(ex.getMessage(), ex);
+                        }
+                    }
+                });
+
+
+final MessageListener listener = new MessageListener() {
+                    
+                    @Override
+                    public void onMessage(Message message) {
+                        try {
+                            logger().info("Topic Shared Durable1 - {}", message.getBody(String.class));
+                        } catch (JMSException ex) {
+                            logger().error(ex.getMessage(), ex);
+                        }
+                    }
+                });
+    
+                consumer1.setMessageListener(listener);
+                consumer2.setMessageListener(listener); 
+
+netstat -antp | grep 23.47.6.135
+
+comments - connetions between project and outside world.
+ejb - business rule here. interface exposing the ejb, session forsard? 
+web - jsp, web service, sevelet, everything expose to the application.
+
+two object - entity and transaction, 40% faster than create entity. look up entity, read only get data transfer object. or modify/update, application use DTO to transfer object.
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?> 
+<collection> 
+    <person oid="bfc42ecf-ee7a-4058-ba20-19776077355b"> 
+        <firstName>Hong837039324</firstName> 
+        <lastName>Lu837039324</lastName> 
+        <email>honglu@hotmail.com837039324</email> 
+        <birthdate>2018-04-19T00:00:00-06:00</birthdate> 
+    </person> 
+    <person oid="7b1d5f5c-23eb-4446-b726-a3b615359c06"> 
+        <firstName>Hong-1368142509</firstName> 
+        <lastName>Lu-1368142509</lastName> 
+        <email>honglu@hotmail.com-1368142509</email> 
+        <birthdate>2018-04-19T00:00:00-06:00</birthdate> 
+    </person> 
+    <person oid="09006159-f7ff-41f9-acb5-953f16e7ec7e"> 
+        <firstName>Hong-2078286264</firstName> 
+        <lastName>Lu-2078286264</lastName> 
+        <email>honglu@hotmail.com-2078286264</email> 
+        <birthdate>2018-04-19T00:00:00-06:00</birthdate> 
+    </person> 
+    <person oid="d618ee3f-381c-4a2f-9d1b-f8937cf3eff5"> 
+        <firstName>Hong-1211654635</firstName> 
+        <lastName>Lu-1211654635</lastName> 
+        <email>honglu@hotmail.com-1211654635</email> 
+        <birthdate>2018-04-19T00:00:00-06:00</birthdate> 
+    </person> 
+    <person oid="8cf8b9ca-b0c2-4ecc-a68a-f15fade9177c"> 
+        <firstName>Hong-108688323</firstName> 
+        <lastName>Lu-108688323</lastName> 
+        <email>honglu@hotmail.com-108688323</email> 
+        <birthdate>2018-04-19T00:00:00-06:00</birthdate> 
+    </person> 
+    <person oid="81a234c7-80b5-4fde-a81b-825e619a774e"> 
+        <firstName>Hong</firstName> 
+        <lastName>Lu</lastName> 
+        <email>honglu@hotmail.com</email> 
+        <birthdate>2018-04-19T00:00:00-06:00</birthdate> 
+    </person> 
+</collection> 
+
+
+{
+   "lastName": "Lu1112",
+   "email": "honglu@hotmail.com1112",
+   "birthdate": "2018-04-19",
+   "firstName": "Hong1112"
+}
+
+<product>
+    <name>computer14725731</name>
+    <description>workstation14725731</description>
+    <price>100.11</price>
+</product>

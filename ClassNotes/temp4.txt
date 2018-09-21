@@ -1,0 +1,365 @@
+mutiple request
+
+html, then image, css, 
+no exception 
+
+request listener - protect server, since lots of thing can do in request listener first. if IP handle here, illegal IP will be blocked. better doing at firewall outside the applicaton.
+
+Generic
+   ServletRequest
+      HttpServletRequest
+
+filter seperate the request, wrap and group the resource
+request listen do everything, but filter can target endpoint.
+if you do anything, don't do transaction.
+90% read, 10% write. 
+use filter to target specific resource in application.
+
+the lifecycle of filter is per application, when application is deploy, it is there. till undeploy, very specific to forward security.
+
+
+SeveletController only init only one time after deploy. after application restart, request listen reinit, filter reinit, but Sevelet Server controller not reinit.
+
+when update, change serialVersionUID, when you add any fields in controller.
+
+not recommend for the url pattern for security case, use sevelet Name instead.
+
+<script type="text/javascript" src="http://localhost:8280/introServlet/js/test.js?<%=java.util.UUID.randomUUID().toString()%>"></script>
+
+then javascript always load by passing the parameter into the endPoint.
+
+listener - 
+lifeCycle
+flter - type to resource, generically, working at reqest and response, lifecycle of application.
+requst listener, request lifecycle.
+
+controller, listener have to deal with concurrency since only one is initialize.
+
+don't use global variable, handle the variable in each single method.
+
+sql show around:
+
+xml transfermation, powerful custom tag
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+download lib from this link. prefix is for java code? java code has package to include different catelog
+JSP use prefix to distiguish different catelog
+
+html:
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+Person Details: <br />
+
+First Name: ${ personDetailsFrom.person.firstName}  Last Name: ${ personDetailsFrom.person.lastName } <br />
+Full Name: ${ personDetailsFrom.person } 
+
+<%
+java.util.List<Person> people = (java.util.List<Person>)request.getSession().getAttribute("people");
+for (final Person p: people) {
+    out.append(p.toString()).append("<br />");
+}
+%>
+</body>
+
+look at the scopes for attribute of people ( request, session and application );
+<c:forEach items="${people}">
+
+<c:forEach items="${people}" var="per">
+<tr>
+    <td>${per.firstName}</td><td>${per.lastName}</td> // a person's getter method like here ${ personDetailsFrom.person.firstName}
+</tr>
+</c:forEach>
+</c:forEach>
+</html>
+
+replace this one:
+<%
+java.util.List<Person> people = (java.util.List<Person>)request.getSession().getAttribute("people");
+for (final Person p: people) {
+    out.append(p.toString()).append("<br />");
+}
+%>
+
+<th> header of table
+<a href="./person"> reletive path if add ./person here is work, but if we have complicated application, the path is comlicated, not recommend it.
+<a href="/introServlet/person">Create a new Person</a> hardcode not good either
+
+view-source:localhost:8280//introServlet/person
+
+<script type="text/javascript" src="http://localhost:8280/introServlet/js/test.js"></script>
+<script type="text/javascript" src="<c:url value="/js/test.js" />"></script>
+
+if a browser does not allow cookies, disable cookie, url will insert sessoin id not parameter since not ? mark.
+with prefix url it maintain the url in this way,
+if don't use prefix url, everytime get new session.
+
+<li class="nav-item ${adminProductModel.active}">
+            <a class="nav-link" href="<c:url value="/adminproduct"/>">Admin Products</a>
+          </li>
+declare - dynamic way use fragment and attribute
+<%@ attribute name="title" fragment="true" %>
+<%@ attribute name="extraJavascript" fragment="true" %>
+
+Here is hard code, need dynamic
+ <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item ${homeModel.active}">
+            <a class="nav-link" href="<c:url value="/home"/>">Home</a>
+          </li>
+          <li class="nav-item ${productListModel.active}">
+            <a class="nav-link" href='<c:url value="/productlist"/>' >Product List</a>
+          </li>
+          <li class="nav-item ${shoppingCartModel.active}" >
+            <a class="nav-link" href='<c:url value="/shoppingcart"/>' >Shopping Cart</a>
+          </li>
+          <li class="nav-item ${adminProductModel.active}">
+            <a class="nav-link" href="<c:url value="/adminproduct"/>">Admin Products</a>
+          </li>
+        </ul>
+      </div>
+
+different browser deal with javascript differently
+C:\Users\honglu\opt\db-derby-10.14.1.0-bin\db-derby-10.14.1.0-bin\bin>echo %JAVA_HOME%
+C:\opt\jdk1.7.0_80
+
+http://db.apache.org/derby/releases/release-10.14.1.0.cgi
+
+download appache latest java 1.8 version
+extract derby, then cmd set JAVA_HOME 
+C:\Users\honglu\opt\db-derby-10.14.1.0-bin\db-derby-10.14.1.0-bin\bin>set JAVA_HOME=C:\Program Files\Java\jdk1.8.0_161
+
+C:\Users\honglu\opt\db-derby-10.14.1.0-bin\db-derby-10.14.1.0-bin\bin>startNetworkServer.bat
+
+database connection: add driver. remove old jar, add new dbery client from dby libs. update username password, then test connection.
+
+properties -> JPA
+EclipseLink 2.5.2
+user libs:
+download lib
+
+Coonection: myStoreDS
+Annotated class
+
+Sync class list get the class list
+generate table from Jpa tools
+
+- add json add lots of overhead,javascript notation handle through html, JDK 9. 
+<Node> 
+  Node /node
+</Node>
+
+<person oid="">
+ <firstName></firstname>
+</person>
+
+everytime start need this one
+go to bin copy 
+C:\Users\honglu\opt\wildfly-11.0.0.Final\wildfly-11.0.0.Final\standalone\deployments
+
+database development, delete default one
+set up database
+
+change mystore property
+set source folder as src/main/java
+JPA critieria
+don't need to worries about security
+database all uppercase table name, database case sensitive.
+JPA must have primary key. if add price and select as key, make two keys as complex key.
+why we use none optive type? if has price, double will has 0, tax issue. null Double value won't have problem
+
+single transaction will cross the multiple database table
+
+why first time action is null?
+
+make transaction: start transaction, very important, commit
+
+view-source:http://localhost:8280/mystore/adminproducts
+
+option: what we want is value, if value is not provided, it will take the option name as value
+if won't add Column, then every field take default 256 char, we want to control database size.
+@Column(name="oid", insertable=true, updatable=false) database can insert, cannot update
+
+@Column(name="oid", insertable=true, updatable=false, nullable=false, columnDefinition="CHAR(16) FOR BIT DATA") save as bynary data
+
+for oracle
+@Column(name="oid", insertable=true, updatable=false, nullable=false, columnDefinition="RAW(16) FOR BIT DATA") save as bynary data
+
+for sqlserver
+@Column(name="oid", insertable=true, updatable=false, nullable=false, columnDefinition="IDENTITY(16) FOR BIT DATA") save as bynary data
+
+
+@Column(name="oid", insertable=true, updatable=false, nullable=false, columnDefinition="VARCHAR(16) FOR BIT DATA") save as bynary data
+
+hibernate support more.
+
+copy 
+                <datasource jndi-name="java:jboss/datasources/MyStoreDS" pool-name="MyStoreDS" enabled="true" use-java-context="true">
+                    <connection-url>jdbc:derby://localhost:1527/mystore</connection-url>
+                    <driver-class>org.apache.derby.jdbc.ClientDriver</driver-class>
+                    <driver>derbyclient.jar</driver>
+                    <security>
+                        <user-name>app</user-name>
+                        <password>app</password>
+                    </security>
+                </datasource>
+
+paste to WildFly Filsets/configuration->standalone.xml
+
+<connection-url>jdbc:derby://localhost:1527/mystore</connection-url> ->oracle and sqlserver don't need to put it in.
+
+all manual change in production
+
+add this one in persistence.xml
+<non-jta-data-source>java:jboss/datasource/MyStoreDS</non-jta-data-source>
+
+<datasource jndi-name="java:jboss/datasources/MyStoreDS" pool-name="MyStoreDS" enabled="true" use-java-context="true">
+                    <connection-url>jdbc:derby://localhost:1527/mystore</connection-url>
+                    <driver-class>org.apache.derby.jdbc.ClientDriver</driver-class>
+                    <driver>derbyclient.jar</driver>
+                    <security>
+                        <user-name>app</user-name>
+                        <password>app</password>
+                    </security>
+                </datasource>
+
+in JPA content: persistence.xml is project configuration need database name: <non-jta-data-source>java:jboss/datasources/MyStoreDS</non-jta-data-source>
+WildFly is appServer, which need the database connection in standalone.xml file let appServer to communicate with database.
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<OBT version="1.00.000">
+ <UniqueID>82b3c04c54d1f6dd33e7a1e1b5e437fa </UniqueID>
+ <Status>ACK</Status>
+ <BankCode>72343461</BankCode>
+ <AccNum>7890</AccNum>
+ <AccNumHash>01b307acba4f54f55aafc33bb06bbbf6ca803e9a</AccNumHash>
+ <AccountNumber>1234567890</AccountNumber>
+ <Iban>DE1234567890</Iban>
+ <BicSwift>BNKSEXXX</BicSwift>
+ <Amount>10.50</Amount>
+ <Currency>EUR</Currency>
+ <Hash>Kq5sNclPz7QV2+lfQIuc6R7oRu0=</Hash>
+ <BankCountryCode>DEU</BankCountryCode>
+</OBT>
+
+jboss-cli.bat --connect --file=configure-security-domain.cli
+
+C:\Users\honglu\opt\wildfly-11.0.0.Final\wildfly-11.0.0.Final\bin>java -version
+java version "1.8.0_161"
+Java(TM) SE Runtime Environment (build 1.8.0_161-b12)
+Java HotSpot(TM) Client VM (build 25.161-b12, mixed mode, sharing)
+
+C:\Users\honglu\opt\wildfly-11.0.0.Final\wildfly-11.0.0.Final\bin>echo $JAVA_HOME
+$JAVA_HOME
+
+C:\Users\honglu\opt\wildfly-11.0.0.Final\wildfly-11.0.0.Final\bin>echo %JAVA_HOME%
+C:\opt\jdk1.7.0_80
+
+C:\Users\honglu\opt\wildfly-11.0.0.Final\wildfly-11.0.0.Final\bin>set JAVA_HOME="c:\Program Files\Java\jdk1.8.0_144"
+
+C:\Users\honglu\opt\wildfly-11.0.0.Final\wildfly-11.0.0.Final\bin>jboss-cli.bat --connect --file=configure-security-domain.cli
+Files\Java\jdk1.8.0_144"" was unexpected at this time.
+
+C:\Users\honglu\opt\wildfly-11.0.0.Final\wildfly-11.0.0.Final\bin>set JAVA_HOME=c:\Program Files\Java\jdk1.8.0_144
+
+C:\Users\honglu\opt\wildfly-11.0.0.Final\wildfly-11.0.0.Final\bin>jboss-cli.bat --connect --file=configure-security-domain.cli
+The batch executed successfully
+{
+    "outcome" => "success",
+    "result" => undefined
+}
+Press any key to continue . . .
+
+C:\Users\honglu\opt\wildfly-11.0.0.Final\wildfly-11.0.0.Final\bin>java -version
+java version "1.8.0_161"
+Java(TM) SE Runtime Environment (build 1.8.0_161-b12)
+Java HotSpot(TM) Client VM (build 25.161-b12, mixed mode, sharing)
+
+C:\Users\honglu\opt\wildfly-11.0.0.Final\wildfly-11.0.0.Final\bin>echo $JAVA_HOME
+$JAVA_HOME
+
+C:\Users\honglu\opt\wildfly-11.0.0.Final\wildfly-11.0.0.Final\bin>echo %JAVA_HOME%
+C:\opt\jdk1.7.0_80
+
+security domain - jboss-web.xml wildfly specific configuration
+web.xml deal with security
+web.xml deal with Authentiation(user name) and credential(authorization) password
+
+can put security constraint as more as you want, web-resource name is 
+<security-constraint>
+        <display-name>MyStore-Adminstration</display-name>
+        <web-resource-collection>
+            <web-resource-name>Adminstration-Pages</web-resource-name>
+            <url-pattern>/adminproduct</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <description>AdminRoles</description>
+            <role-name>Admin</role-name> - what kind of access has 
+        </auth-constraint>
+        <user-data-constraint>
+            <transport-guarantee>NONE</transport-guarantee> -- not force https, if put confidential will force https.
+        </user-data-constraint>
+    </security-constraint>
+
+   <login-config>
+        <auth-method>FORM</auth-method>
+        <realm-name>MyStore Application</realm-name>
+        <form-login-config>
+            <form-login-page>/WEB-INF/jsp/login.jsp</form-login-page> - for login page information
+            <form-error-page>/WEB-INF/jsp/login.jsp?error=invalid</form-error-page> - show mistake
+        </form-login-config>
+    </login-config>
+
+some server use this part, has to match to auth-constraint
+    <security-role>
+        <role-name>Admin</role-name>
+    </security-role>
+    <security-role>
+        <role-name>Guest</role-name>
+    </security-role>
+
+http://localhost:8280/mystore/ want to display the file folder but forbiden, since use sevelet.
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+final String home = request.getContextPath() + "/home";
+response.sendRedirect(home);
+%>
+redirect to home page.
+
+http://localhost:8280/mystore/
+try to get list, if find index and list, return. 
+
+
+http://localhost:8280/mystore/css -> fobidden mean list disable.
+http://localhost:8280/mystore/idex.html, in web.xml, exist in list, so return not found. since page not found
+
+security is server side.
+
+need controller Register
+registerError like generic error message. confirm password not work need error message
+
+Sunday
+
+Identifies the application path that serves as the base URI for all resource URIs provided by Path. May only be applied to a subclass of Application.
+When published in a Servlet container, the value of the application path may be overridden using a servlet-mapping element in the web.xml.
+
+product list - put a table show the product.
+
+context/service/person
+         /xml
+         /json
+
+<display:table id="productlist" name = "${Products.allProducts}" class="table table-striped table-bordered" style="width:100%" pagesize="2">
+                 
+                </display:table>
+
+

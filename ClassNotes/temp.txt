@@ -1,0 +1,33 @@
+javaBean: getter, setter
+
+${ person.firstName }
+
+person match attribute name here 
+firstName is getFirstName in the model file.
+
+Jsp get attribute from model and display don't put code here
+Controller - get the parameter from web and get model stuff and send to the webpage ( communication between model and jsp )
+Model - object
+
+Model handle the error
+
+Model can apply to different place(uI), so handle error or logic in model ( centeral the management )
+
+./gradlew clean build --refresh-dependencies
+
+model control the view?
+model won't in the list
+
+
+Browser  Request    Controller
+         Response
+
+Browser send request Controller send the id in cookies ( header )
+Browser send request again
+
+PersonDetailsFrom model = (PersonDetailsFrom) request.getAttribute("personDetailsForm");
+for (ca.sait.entity.Person p: model.getPeople()) {
+    out.append(p.toString()).append("<br />");
+}
+
+
