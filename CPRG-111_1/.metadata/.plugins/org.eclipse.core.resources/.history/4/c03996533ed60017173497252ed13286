@@ -1,0 +1,37 @@
+/**
+ * 
+ */
+package ca.sait.logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * @author honglu
+ *
+ */
+public class ExampleThreadMain {
+	
+	private final Logger logger = LoggerFactory.getLogger(getClass());
+
+	/**
+	 * 
+	 */
+	public ExampleThreadMain() {
+		logger.trace("START ExampleThread()");
+		final ExampleThread t1 = new ExampleThread();
+		t1.start();
+		
+		logger.trace("EXIT ExampleThread()");
+		
+	}
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		new ExampleThreadMain();
+
+	}
+
+}

@@ -1,0 +1,27 @@
+/**
+ * 
+ */
+package ca.sait.logger;
+
+/**
+ * @author honglu
+ *
+ */
+public class LoggerExample {
+
+	/**
+	 * 
+	 */
+	public LoggerExample() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

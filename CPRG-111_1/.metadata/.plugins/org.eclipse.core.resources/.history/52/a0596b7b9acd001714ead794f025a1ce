@@ -1,0 +1,19 @@
+/**
+ * 
+ */
+package ca.sait.hr.test;
+
+/**
+ * @author honglu
+ *
+ */
+public class FactoryDepartmentTest {
+
+	/**
+	 * 
+	 */
+	public FactoryDepartmentTest() {
+		
+	}
+
+}

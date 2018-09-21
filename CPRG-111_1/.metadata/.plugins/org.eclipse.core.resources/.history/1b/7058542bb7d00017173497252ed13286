@@ -1,0 +1,19 @@
+/**
+ * 
+ */
+package ca.sait.io;
+
+/**
+ * @author honglu
+ *
+ */
+public class Person {
+
+	/**
+	 * 
+	 */
+	public Person() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

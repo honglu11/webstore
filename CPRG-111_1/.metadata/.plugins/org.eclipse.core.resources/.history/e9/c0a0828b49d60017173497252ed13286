@@ -1,0 +1,27 @@
+package ca.sait.logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class ExampleRunnableStop implements Runnable {
+	
+	private final Logger logger = LoggerFactory.getLogger(getClass());
+	public volatile boolean timeToQuit = false; // share this value in shared, 
+	
+	@Override
+	public void run() {
+       logger.trace("ENTER run()");
+		
+		try {
+			logger.info("Thread started");
+			while (!timeToQuit) {
+				
+			}
+			logger.info("Thread stop");
+		} finally {
+			logger.trace("EXIT run()");
+		}
+		
+	}
+
+}

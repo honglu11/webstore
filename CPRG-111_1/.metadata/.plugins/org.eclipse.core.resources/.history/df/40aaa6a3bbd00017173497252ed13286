@@ -1,0 +1,65 @@
+/**
+ * 
+ */
+package ca.sait.io;
+
+import java.io.Serializable;
+import java.time.LocalDate;
+
+/**
+ * @author honglu
+ *
+ */
+public class Person implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 992862647750517766L;
+
+	
+	// no method can implement
+	
+	private String name;
+	private LocalDate birthdate;
+	private Double salary;
+	
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+	/**
+	 * @return the birthdate
+	 */
+	public LocalDate getBirthdate() {
+		return birthdate;
+	}
+	/**
+	 * @param birthdate the birthdate to set
+	 */
+	public void setBirthdate(LocalDate birthdate) {
+		this.birthdate = birthdate;
+	}
+	/**
+	 * @return the salary
+	 */
+	public Double getSalary() {
+		return salary;
+	}
+	/**
+	 * @param salary the salary to set
+	 */
+	public void setSalary(Double salary) {
+		this.salary = salary;
+	}
+
+
+	
+}

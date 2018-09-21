@@ -1,0 +1,74 @@
+/**
+ * 
+ */
+package ca.sait.socket;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+/**
+ * @author chris
+ *
+ */
+public class SimpleWebServer {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+
+		try (final ServerSocket server = new ServerSocket(16000);) {
+			
+			while (true) {
+				System.out.println("Waiting...");
+				
+				try (final Socket socket = server.accept();
+					 final BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				     final BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));) {
+
+					// what did the browser send, read browser send
+			        String s;
+			        while ((s = in.readLine()) != null) {
+			            System.out.println(s);
+			            if (s.isEmpty()) {
+			                break;
+			            }
+			        }
+		      
+			        final StringBuilder html = new StringBuilder();
+			        html.append("<html>");
+			        html.append("<head>");
+			        html.append("<title>This is a test</title>");
+			        html.append("</head>");
+			        
+			        html.append("<body>");
+			        html.append("Have a nice day");
+			        html.append("</body></html>");
+
+			        final int size = html.length();
+			        
+			        out.write("HTTP/1.0 200 OK\r\n");
+			        out.write("Date: Tue, 28 Nov 2017 18:00:00 GMT\r\n");
+			        out.write("Server: Special/1.0.0\r\n");
+			        out.write("Content-Type: text/html\r\n");
+			        out.write("Content-Length: " + size + "\r\n");
+			        out.write("Expires: Thu, 30 Nov 2017 00:59:59 GMT\r\n");
+			        out.write("Last-modified: Tue, 28 Nov 2017 18:00:00 GMT\r\n");
+			        out.write("\r\n");
+			        out.write(html.toString());
+			     }
+			}
+			
+		} catch(final IOException ex) {
+			ex.printStackTrace();
+		}
+
+		
+	}
+
+}

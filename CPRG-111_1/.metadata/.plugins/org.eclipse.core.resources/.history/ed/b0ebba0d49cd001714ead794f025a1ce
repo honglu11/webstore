@@ -1,0 +1,33 @@
+/**
+ * 
+ */
+package ca.sait.hr.test;
+
+import java.time.LocalDate;
+
+import ca.sait.hr.dao.EmployeeDAO;
+import ca.sait.hr.dao.EmployeeDAOFatory;
+import ca.sait.hr.model.Employee;
+
+/**
+ * @author honglu
+ *
+ */
+public class SortEmployeeTest {
+
+	/**
+	 * 
+	 */
+	public SortEmployeeTest() {
+		final EmployeeDAO employeeDAO = EmployeeDAOFatory.createInstance();
+
+		final LocalDate now = LocalDate.now();
+		final Employee emp = employeeDAO.add("fred", "smith", now, 2.00);
+		final Employee emp2 = employeeDAO.add("mike", "smith", now, 2.00);
+		final Employee emp3 = employeeDAO.add("mike", "smith", now, 2.00);
+		final Employee emp4 = employeeDAO.add("mike", "smith", now, 2.00);
+		
+		
+	}
+
+}

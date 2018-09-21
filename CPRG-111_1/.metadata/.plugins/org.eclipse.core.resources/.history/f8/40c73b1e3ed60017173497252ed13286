@@ -1,0 +1,9 @@
+package ca.sait.logger;
+
+public class ExampleRunnable {
+
+	public ExampleRunnable() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

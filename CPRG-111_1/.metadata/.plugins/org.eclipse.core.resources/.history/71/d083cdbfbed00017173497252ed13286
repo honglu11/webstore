@@ -1,0 +1,81 @@
+/**
+ * 
+ */
+package ca.sait.io;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+/**
+ * @author honglu
+ *
+ */
+public class Person implements Serializable {
+	/**
+	 * Marker interface Serializable
+	 */
+	private static final long serialVersionUID = 992862647750517766L;
+	
+	private void writeObject(ObjectOutputStream oos) throws IOException {
+		oos.defaultWriteObject();
+		oos.writeObject(LocalDateTime.now());		
+	}
+	
+	private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+		ois.defaultReadObject();
+		final LocalDateTime date = (LocalDateTime)ois.readObject();
+		System.out.println("Object was serialized: " + date.toString());
+	}
+
+	
+	// no data method can implement
+	// if change the field or change anything, better to regenerate the serialVersionUID
+	
+	private String name;
+	private LocalDate birthdate;
+	private Double salary;
+	
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+	/**
+	 * @return the birthdate
+	 */
+	public LocalDate getBirthdate() {
+		return birthdate;
+	}
+	/**
+	 * @param birthdate the birthdate to set
+	 */
+	public void setBirthdate(LocalDate birthdate) {
+		this.birthdate = birthdate;
+	}
+	/**
+	 * @return the salary
+	 */
+	public Double getSalary() {
+		return salary;
+	}
+	/**
+	 * @param salary the salary to set
+	 */
+	public void setSalary(Double salary) {
+		this.salary = salary;
+	}
+
+
+	
+}

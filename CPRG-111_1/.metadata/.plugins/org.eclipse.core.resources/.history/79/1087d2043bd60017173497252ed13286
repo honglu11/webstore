@@ -1,0 +1,27 @@
+/**
+ * 
+ */
+package ca.sait.logger;
+
+/**
+ * @author honglu
+ *
+ */
+public class ExampleThreadMain {
+
+	/**
+	 * 
+	 */
+	public ExampleThreadMain() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

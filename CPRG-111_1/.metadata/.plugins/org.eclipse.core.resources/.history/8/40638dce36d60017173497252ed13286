@@ -1,0 +1,36 @@
+/**
+ * 
+ */
+package ca.sait.logger;
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * @author honglu
+ *
+ */
+public class LoggerExample {
+	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		
+		new LoggerExample().run();
+
+	}
+	
+	public void run() {
+		logger.trace("This is trace");
+		logger.trace("This is debug");
+		logger.trace("This is info");
+		logger.trace("This is warn");
+		logger.trace("This is error");
+	}
+	
+
+}

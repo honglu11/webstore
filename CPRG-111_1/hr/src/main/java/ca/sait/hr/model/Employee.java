@@ -1,0 +1,171 @@
+/**
+ * 
+ */
+package ca.sait.hr.model;
+
+import java.time.LocalDate;
+
+/**
+ * @author honglu
+ *
+ */
+public class Employee extends DataItem implements Comparable<Employee> {
+
+	private String firstName;
+	private String lastName;
+	private LocalDate birthDate;
+	private Double salary; // if double salary: 0 mean no pay, -1.0 ? Double allow null as business
+							// concern. Collection should use Object type.
+	
+	@Override
+	public int compareTo(Employee other) {
+		final int comareLastName = this.lastName.compareToIgnoreCase(other.lastName);
+		if (comareLastName == 0) {
+			return this.firstName.compareToIgnoreCase(other.firstName);
+		}
+		
+		return comareLastName;
+	}
+	
+
+
+	/**
+	 * @return the firstName
+	 */
+	public String getFirstName() {
+		return firstName;
+	}
+
+	/**
+	 * @param firstName
+	 *            the firstName to set
+	 */
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	/**
+	 * @return the lastName
+	 */
+	public String getLastName() {
+		return lastName;
+	}
+
+	/**
+	 * @param lastName
+	 *            the lastName to set
+	 */
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	/**
+	 * @return the birthDate
+	 */
+	public LocalDate getBirthDate() {
+		return birthDate;
+	}
+
+	/**
+	 * @param birthDate
+	 *            the birthDate to set
+	 */
+	public void setBirthDate(LocalDate birthDate) {
+		this.birthDate = birthDate;
+	}
+
+	/**
+	 * @return the salary
+	 */
+	public Double getSalary() {
+		return salary;
+	}
+
+	/**
+	 * @param salary
+	 *            the salary to set
+	 */
+	public void setSalary(Double salary) {
+		this.salary = salary;
+	}
+
+	// use hashCode and compare to for set or map method.
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((birthDate == null) ? 0 : birthDate.hashCode());
+		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
+		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Employee other = (Employee) obj;
+		if (birthDate == null) {
+			if (other.birthDate != null)
+				return false;
+		} else if (!birthDate.equals(other.birthDate))
+			return false;
+		if (firstName == null) {
+			if (other.firstName != null)
+				return false;
+		} else if (!firstName.equals(other.firstName))
+			return false;
+		if (lastName == null) {
+			if (other.lastName != null)
+				return false;
+		} else if (!lastName.equals(other.lastName))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		//return getLastName().concat(",").concat(getFirstName()).concat(", ").concat(getBirthDate().toString()).concat(", ").concat(getSalary().toString());
+		//return getLastName().concat(", ").concat(getFirstName()).concat(", ");
+		 final StringBuilder employee = new StringBuilder();
+		 final String ln = getLastName() != null? getLastName() : "";
+		 final String fn = getFirstName() != null? getFirstName() : "";
+		 return employee.append(ln).append(", ").append(fn).append(" - OID -").append(getOid()).toString();
+		// if ( getLastName() != null ) {
+		// employee.append(getLastName());
+		// }
+		//
+		// if ( getFirstName() != null ) {
+		// employee.append(", ").append(getLastName());
+		// }
+		//
+		// employee.append(", ");
+		//
+		// employee.append(" - OID -").append(getOid());
+		//
+		// return employee.toString();
+		
+//		if ( getLastName() != null && getFirstName() != null) {
+//		return getLastName().concat(", ").concat(getFirstName()).concat(" - OID -").concat(getOid().toString());//.concat(", ").concat(getBirthDate().toString()).concat(", ").concat(getSalary().toString());
+//		}
+//		else
+//		{
+//			return null;
+//		}
+	}
+}

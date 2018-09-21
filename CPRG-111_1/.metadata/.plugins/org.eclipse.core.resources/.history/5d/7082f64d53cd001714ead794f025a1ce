@@ -1,0 +1,19 @@
+/**
+ * 
+ */
+package ca.sait.hr.model;
+
+/**
+ * @author honglu
+ *
+ */
+public class EmployeeFunctions {
+
+	/**
+	 * 
+	 */
+	public EmployeeFunctions() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

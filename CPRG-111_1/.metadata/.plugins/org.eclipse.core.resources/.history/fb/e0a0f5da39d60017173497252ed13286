@@ -1,0 +1,19 @@
+/**
+ * 
+ */
+package ca.sait.logger;
+
+/**
+ * @author honglu
+ *
+ */
+public class ExampleThread {
+
+	/**
+	 * 
+	 */
+	public ExampleThread() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

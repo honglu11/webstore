@@ -1,0 +1,122 @@
+/**
+ * 
+ */
+package ca.sait.hr.process;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.Properties;
+import java.util.Scanner;
+
+import ca.sait.hr.dao.EmployeeDAO;
+import ca.sait.hr.dao.EmployeeDAOFactory;
+import ca.sait.hr.model.Employee;
+
+/**
+ * @author celias
+ *
+ */
+public class CreateEmployee {
+
+	public void createEmployee() {
+		
+		try (final Scanner consoleScanner = new Scanner(System.in)) {
+			String firstName = null;
+			String lastName = null;
+			LocalDate birthdate = null;
+			Double salary = null;
+			
+			System.out.print("Enter First Name:");
+			firstName = consoleScanner.nextLine();
+			
+			System.out.print("Enter Last Name:");
+			lastName = consoleScanner.nextLine();
+			
+			while(true) {
+				try {
+					System.out.print("Enter Birthdate (yyyy-mm-dd):");
+					birthdate = LocalDate.parse(consoleScanner.nextLine());
+					break;
+				} catch(final DateTimeParseException ex) {
+					System.out.println("\t" + ex.getMessage());
+				}
+			} 
+			
+			while(true) {
+				try {
+					System.out.print("Enter Salary:");
+					final String tmpSalary = consoleScanner.nextLine();
+					final String cleanSalary = tmpSalary.trim();
+					if (cleanSalary.length() > 10) {
+						throw new NumberFormatException("Number is way to large");
+					}
+					
+					salary = Double.parseDouble(tmpSalary);
+					break;
+				} catch(final NumberFormatException ex) {
+					System.out.println("\t" + ex.getMessage());
+				}
+			}
+			
+			final EmployeeDAO employeeDAO = EmployeeDAOFactory.createInstance();
+			final Employee emp = employeeDAO.add(firstName, lastName, birthdate, salary);
+			
+			System.out.println(emp);
+		}
+	}
+	
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+//		final CreateEmployee createEmployee = new CreateEmployee();
+//		createEmployee.createEmployee();
+		
+		// try some properties
+		Properties myProps = new Properties();
+		try {
+			FileInputStream fis = new FileInputStream("C:\\Users\\honglu\\opt\\hr_sample\\hr\\src\\main\\java\\ca\\sait\\hr\\process\\Server.properties");
+			myProps.load(fis);
+		} catch (IOException e) {
+			System.out.println("Error: " + e.getMessage());
+			
+		}
+		
+		//print value
+		System.out.println("Server: " + myProps.getProperty("hostName"));
+		System.out.println("Username: " + myProps.getProperty("userName"));
+		System.out.println("Password: " + myProps.getProperty("password"));
+		//pass by commandline
+		System.out.println("Server Get From System: " + System.getProperty("hostName"));
+		
+		PrintWriter pw = new PrintWriter(System.out, true);
+		pw.println("This is some output.");
+		pw.println("I agree.");
+		
+		double price = 24.99;
+		int quantity = 2;
+		String color = "Blue";
+		System.out.printf("We have %03d %s Plolo shirt that cost $%3.2f.\n", quantity, color, price);
+		System.out.format("We have %03d %s Plolo shirt that cost $%3.2f.\n", quantity, color, price);
+		String out = String.format("We have %03d %s Plolo shirt that cost $%3.2f.\n", quantity, color, price);
+		System.out.println(out);
+		pw.printf("We have %03d %s Plolo shirt that cost $%3.2f.\n", quantity, color, price);
+		String shirts = "Blue Shirt, Red Shirt, Black Shirt, Maroon Shirt";
+		String[] results = shirts.split(", ");
+		for(String shirtStr:results) {
+			System.out.println(shirtStr);
+		}
+	}
+}
+
+
+
+
+
+
+
+
+

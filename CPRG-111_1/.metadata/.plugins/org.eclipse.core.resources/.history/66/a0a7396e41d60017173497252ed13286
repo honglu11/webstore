@@ -1,0 +1,26 @@
+package ca.sait.logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class ExampleRunnable2 implements Runnable {
+	
+	private final Logger logger = LoggerFactory.getLogger(getClass());
+	private int i; // share in the top cause thread confusing, temp memory back to original 0...
+	
+	@Override
+	public void run() {
+       logger.trace("ENTER run()");
+		
+		try {
+			for (i = 0; i < 100; i++) {
+				Synchroize(this);
+				logger.info("i: {}", i); //logger air mode, use {} will output only if it turn on level.
+			}
+		} finally {
+			logger.trace("EXIT run()");
+		}
+		
+	}
+
+}
